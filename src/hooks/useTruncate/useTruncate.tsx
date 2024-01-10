@@ -1,7 +1,6 @@
 import { useUpdatingRef } from ".."
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { createDetectElementResize } from "helpers/detectElementResize"
-import generateRandomId from "helpers/generateRandomId"
+import { useCallback, useRef, useState } from "react"
+import useSize from "hooks/useSize"
 
 export enum TruncateFrom {
   Start = "start",
@@ -168,7 +167,6 @@ const useAutoTruncateText = (
     ...options,
   }
   const textRef = useRef<HTMLElement>()
-  const resizeListenedRef = useRef<HTMLElement>()
   // Casting props.children to string - risky up as far as early exit
   const [truncatedText, setTruncatedText] = useState<string>(originalString)
   const truncatedTextRef = useUpdatingRef(truncatedText)
@@ -223,20 +221,7 @@ const useAutoTruncateText = (
     console.log("resizing")
     onNeedRecalculateRef.current()
   }, [onNeedRecalculateRef])
-  const resizeObserver = useMemo(
-    () => createDetectElementResize(generateRandomId()),
-    [],
-  )
-  const disconnectObserver = useCallback(() => {
-    if (textRef.current && resizeListenedRef.current && resizeObserver) {
-      resizeObserver.removeResizeListener(resizeListenedRef.current, onResize)
-    }
-  }, [resizeObserver, onResize])
-  useEffect(() => {
-    return () => {
-      disconnectObserver()
-    }
-  }, [resizeObserver, onResize, disconnectObserver])
+  const { setRef: setUseSizeRef } = useSize({ onResize })
 
   const setupTruncate = useCallback(
     (ref: HTMLElement) => {
@@ -246,28 +231,21 @@ const useAutoTruncateText = (
         ref.style.textOverflow = "ellipsis"
         ref.style.display = "block"
       } else {
-        resizeListenedRef.current = ref.parentElement || document.body
-        resizeObserver.addResizeListener(resizeListenedRef.current, onResize)
         onNeedRecalculate()
       }
     },
-    [onNeedRecalculate, resizeObserver, onResize, shouldUseNativeTruncate],
+    [onNeedRecalculate, shouldUseNativeTruncate],
   )
 
   const refCallback = useCallback(
     (ref: HTMLElement | null) => {
       if (ref) {
-        if (textRef.current) {
-          disconnectObserver()
-        }
-        if (resizeListenedRef.current) {
-          resizeListenedRef.current = undefined
-        }
+        setUseSizeRef(ref)
         textRef.current = ref
         setupTruncate(ref)
       }
     },
-    [setupTruncate, disconnectObserver],
+    [setupTruncate, setUseSizeRef],
   )
 
   // Not memoized to avoid needless checks - Expected use involves destructuring (e.g. const [text, ref] = useAutoTruncateText(...))
