@@ -32,6 +32,7 @@ const useTwitchChat = (options: UseTwitchChatOptions) => {
     leaveChannel,
     chatJoined,
     chatJoining,
+    chatReconnecting,
     chatError,
   } = useTwitchChatBotMessages({
     oauthToken,
@@ -56,6 +57,7 @@ const useTwitchChat = (options: UseTwitchChatOptions) => {
     leaveChannel,
     chatJoined,
     chatJoining,
+    chatReconnecting,
     chatError,
   }
 }

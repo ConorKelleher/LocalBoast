@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
-import useTwitchChatBot from "./useTwitchChatBot"
+import useTwitchChatBot, {
+  DEFAULT_RECONNECT_TIMEOUT_MS,
+} from "./useTwitchChatBot"
 import { useUpdatingRef } from "hooks"
 
 export type OnMessage = (newMessages: string[], allMessages: string[]) => void
@@ -16,23 +18,32 @@ const useTwitchChatBotMessages = ({
   onMessage,
 }: UseTwitchChatBotMessages) => {
   const [chats, setChats] = useState<string[]>([])
-  const { connect, part, disconnect, joined, joining, error } =
+  const { connect, part, disconnect, joined, joining, reconnecting, error } =
     useTwitchChatBot()
   const onMessageRef = useUpdatingRef(onMessage)
 
   const joinChannel = useCallback(
-    (channel?: string) => {
+    (
+      channel?: string,
+      reconnectTimeoutMs: number | null = DEFAULT_RECONNECT_TIMEOUT_MS,
+    ) => {
       if (username) {
         const channelToJoin = channel || username
-        connect(oauthToken!, channelToJoin, username, (newChats: string[]) => {
-          setChats((oldChats) => {
-            const newAllChats = [...oldChats, ...newChats]
-            if (onMessageRef.current) {
-              onMessageRef.current(newChats, newAllChats)
-            }
-            return newAllChats
-          })
-        })
+        connect(
+          oauthToken!,
+          channelToJoin,
+          username,
+          (newChats: string[]) => {
+            setChats((oldChats) => {
+              const newAllChats = [...oldChats, ...newChats]
+              if (onMessageRef.current) {
+                onMessageRef.current(newChats, newAllChats)
+              }
+              return newAllChats
+            })
+          },
+          reconnectTimeoutMs,
+        )
       }
     },
     [connect, oauthToken, username, onMessageRef],
@@ -54,6 +65,7 @@ const useTwitchChatBotMessages = ({
     leaveChannel: part,
     chatJoined: joined,
     chatJoining: joining,
+    chatReconnecting: reconnecting,
     chatError: error,
     disconnect: useCallback(() => {
       disconnect && disconnect()

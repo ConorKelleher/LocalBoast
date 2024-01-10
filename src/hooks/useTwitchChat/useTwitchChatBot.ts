@@ -1,12 +1,41 @@
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { parseMessage } from "./helpers/TwitchChatMessageHelpers"
+import { useUpdatingRef } from "hooks"
+
+export const DEFAULT_RECONNECT_TIMEOUT_MS = 3000
 
 const useTwitchChatBot = () => {
   const disconnectRef = useRef<() => void>()
   const partRef = useRef<() => void>()
   const [joined, setJoined] = useState(false)
   const [joining, setJoining] = useState(false)
+  const [reconnecting, setReconnecting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const joinedRef = useUpdatingRef(joined)
+  const joiningRef = useUpdatingRef(joining)
+
+  const stopReconnect = useCallback(() => {
+    if (reconnectTimeoutRef.current) {
+      setReconnecting(false)
+      clearTimeout(reconnectTimeoutRef.current)
+    }
+  }, [])
+
+  // When component unmounts, get rid of auto-reconnect
+  useEffect(() => {
+    return () => {
+      setJoined(false)
+      setJoining(false)
+      joinedRef.current = false
+      stopReconnect()
+    }
+  }, [stopReconnect, joinedRef])
+
+  // When joined or joining changes, get rid of auto-reconnect
+  useEffect(() => {
+    stopReconnect()
+  }, [stopReconnect, joined, joining])
 
   const connectIRC = useCallback(
     (
@@ -14,6 +43,7 @@ const useTwitchChatBot = () => {
       channelName: string,
       accountName: string,
       onNewChats: (chats: string[]) => void,
+      reconnectTimeoutMs: number | null = DEFAULT_RECONNECT_TIMEOUT_MS,
     ) => {
       console.log("Connecting with args:", oauthPass, channelName, accountName)
       const ws = new WebSocket("wss://irc-ws.chat.twitch.tv:443")
@@ -37,12 +67,25 @@ const useTwitchChatBot = () => {
         console.log(`close description: ${closeEvent.reason}`)
         console.log(`close reason code: ${closeEvent.code}`)
 
-        if (joined && ws.readyState === WebSocket.CLOSED) {
-          console.log("Reconnecting in 5 seconds")
-          setTimeout(() => {
+        if (
+          reconnectTimeoutMs &&
+          (joinedRef.current || joiningRef.current) &&
+          ws.readyState === WebSocket.CLOSED
+        ) {
+          console.log(`Reconnecting in ${reconnectTimeoutMs} seconds`)
+          setReconnecting(true)
+          reconnectTimeoutRef.current = setTimeout(() => {
+            reconnectTimeoutRef.current = null
+            setReconnecting(false)
             console.log("Reconnecting")
-            connectIRC(oauthPass, channelName, accountName, onNewChats)
-          }, 5000)
+            connectIRC(
+              oauthPass,
+              channelName,
+              accountName,
+              onNewChats,
+              reconnectTimeoutMs,
+            )
+          }, reconnectTimeoutMs)
         } else {
           setJoined(false)
           setJoining(false)
@@ -137,7 +180,7 @@ const useTwitchChatBot = () => {
         ws.send(`PART ${channel}`)
       }
     },
-    [],
+    [joinedRef, joiningRef],
   )
 
   return {
@@ -146,6 +189,7 @@ const useTwitchChatBot = () => {
     part: partRef.current,
     joined,
     joining,
+    reconnecting,
     error,
   }
 }
