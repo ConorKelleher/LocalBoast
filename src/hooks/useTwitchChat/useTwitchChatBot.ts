@@ -37,8 +37,16 @@ const useTwitchChatBot = () => {
         console.log(`close description: ${closeEvent.reason}`)
         console.log(`close reason code: ${closeEvent.code}`)
 
-        setJoined(false)
-        setJoining(false)
+        if (joined && ws.readyState === WebSocket.CLOSED) {
+          console.log("Reconnecting in 5 seconds")
+          setTimeout(() => {
+            console.log("Reconnecting")
+            connectIRC(oauthPass, channelName, accountName, onNewChats)
+          }, 5000)
+        } else {
+          setJoined(false)
+          setJoining(false)
+        }
         // setError(`Connection closed: ${closeEvent.reason}`)
       }
 
