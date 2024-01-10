@@ -1,4 +1,4 @@
-import { generateRandomId } from "helpers"
+import { debounce, generateRandomId } from "helpers"
 import { createDetectElementResize } from "helpers/detectElementResize"
 import { useUpdatingRef } from "hooks"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -9,6 +9,8 @@ type Size = {
 }
 
 interface UseSizeOptions {
+  debounceMs?: number
+  maxDebounceMs?: number
   onResize?: (newSize: Size) => void
 }
 
@@ -63,9 +65,17 @@ const useSize = (options?: UseSizeOptions) => {
       onResize()
 
       resizeListenedRef.current = newEl.parentElement || document.body
-      resizeObserver.addResizeListener(resizeListenedRef.current, onResize)
+      resizeObserver.addResizeListener(
+        resizeListenedRef.current,
+        optionsRef.current?.debounceMs
+          ? debounce(onResize, {
+              ms: optionsRef.current?.debounceMs,
+              maxDebounceMs: optionsRef.current?.maxDebounceMs,
+            })
+          : onResize,
+      )
     },
-    [onResize, resizeObserver, disconnectObserver],
+    [onResize, resizeObserver, disconnectObserver, optionsRef],
   )
 
   // Disconnect on unmount
