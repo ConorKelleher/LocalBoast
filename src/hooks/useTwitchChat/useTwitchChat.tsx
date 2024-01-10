@@ -3,9 +3,11 @@ import useTwitchChatBotAuth, {
   UseTwitchChatBotAuthOptions,
   DEFAULT_OPTIONS as USE_CHAT_BOT_AUTH_DEFAULT_OPTIONS,
 } from "./useTwitchChatBotAuth"
-import useTwitchChatBotMessages from "./useTwitchChatBotMessages"
+import useTwitchChatBotMessages, { OnMessage } from "./useTwitchChatBotMessages"
 
-interface UseTwitchChatOptions extends UseTwitchChatBotAuthOptions {}
+interface UseTwitchChatOptions extends UseTwitchChatBotAuthOptions {
+  onMessage?: OnMessage
+}
 
 const DEFAULT_OPTIONS = {
   ...USE_CHAT_BOT_AUTH_DEFAULT_OPTIONS,
@@ -31,7 +33,11 @@ const useTwitchChat = (options: UseTwitchChatOptions) => {
     chatJoined,
     chatJoining,
     chatError,
-  } = useTwitchChatBotMessages({ oauthToken, username })
+  } = useTwitchChatBotMessages({
+    oauthToken,
+    username,
+    onMessage: mergedOptions.onMessage,
+  })
 
   return {
     authIFrameRef,
