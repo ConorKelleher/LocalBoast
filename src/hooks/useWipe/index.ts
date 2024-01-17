@@ -1,1 +1,1 @@
-export { default } from "./useWipe"
+export { default, Shape } from "./useWipe"
