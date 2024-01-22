@@ -4,8 +4,10 @@ import { useUpdatingRef } from "hooks"
 
 const strings = [
   "Test",
-  "Test: this is a POC",
-  "Test: this is a POC of animating text.",
+  "Test: this is a PoC",
+  "Test: this is a PoC of animating text.",
+  "Test: those are PoCs of animating text.",
+  "Test: those are PoCs of animating text that I hope you like.",
 ]
 
 type ProgressUpdate = (progress: number) => void
@@ -132,7 +134,7 @@ const diffStringAdditions = (
         aString.charAt(aString.length - 1 - i) ===
         bString.charAt(bString.length - 1 - i)
       if (!charsEqual) {
-        added = bString.slice(addedIndex, bString.length - 1 - i)
+        added = bString.slice(addedIndex, bString.length - i)
         break
       }
     }
@@ -143,6 +145,26 @@ const diffStringAdditions = (
     added,
     addedIndex,
   }
+}
+
+const insertToString = (source: string, index: number, value: string) =>
+  `${source.slice(0, index)}${value}${source.slice(index)}`
+
+const removeFromString = (source: string, index: number, count: number) =>
+  `${source.slice(0, index)}${source.slice(
+    Math.min(source.length, index + count),
+  )}`
+
+const getInterpolatedStringDiff = (
+  startString: string,
+  diff: StringAddition,
+  progress: number,
+) => {
+  return insertToString(
+    startString,
+    diff.addedIndex,
+    diff.added.slice(0, Math.floor(diff.added.length * progress)),
+  )
 }
 
 const diffStrings = (aString: string, bString: string): StringDiff => {
@@ -170,7 +192,6 @@ const diffStrings = (aString: string, bString: string): StringDiff => {
   // } else {
   //   removedIndex = -1
   // }
-  debugger
   const { added: removed, addedIndex: removedIndex } = diffStringAdditions(
     bString,
     aString,
@@ -178,7 +199,7 @@ const diffStrings = (aString: string, bString: string): StringDiff => {
 
   const stringAfterRemovals =
     removedIndex >= 0
-      ? aString.slice(removedIndex, removedIndex + removed.length)
+      ? removeFromString(aString, removedIndex, removed.length)
       : aString
   const { added, addedIndex } = diffStringAdditions(
     stringAfterRemovals,
@@ -194,22 +215,11 @@ const diffStrings = (aString: string, bString: string): StringDiff => {
   }
 }
 
-const getInterpolatedStringDiff = (
-  startString: string,
-  diff: StringAddition,
-  progress: number,
-) => {
-  return `${startString.slice(0, diff.addedIndex)}${diff.added.slice(
-    0,
-    Math.floor(diff.added.length * progress),
-  )}${startString.slice(diff.addedIndex)}`
-}
-
 const Playback = (options: PlaybackOptions) => {
   const [index, setIndex] = useState(0)
   const goalString = strings[index]
   const [currString, setCurrString] = useState(goalString)
-  const currStringRef = useUpdatingRef(currString)
+  const currStringRef = useRef(currString)
   const { start } = useAnimate()
   const mergedOptionsRef = useUpdatingRef({
     ...DEFAULT_OPTIONS,
@@ -267,7 +277,10 @@ const Playback = (options: PlaybackOptions) => {
               clampedAdditionProgress,
             )
           }
-          setCurrString(interpolatedString)
+          if (interpolatedString !== currStringRef.current) {
+            setCurrString(interpolatedString)
+            currStringRef.current = interpolatedString
+          }
         }, animTime)
       }
     },
