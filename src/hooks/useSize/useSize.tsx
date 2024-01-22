@@ -56,6 +56,9 @@ const useSize = (options?: UseSizeOptions) => {
 
   const onChangeRef = useCallback(
     (newEl: HTMLElement) => {
+      if (!newEl) {
+        return
+      }
       if (resizeListenedRef.current) {
         disconnectObserver()
         resizeListenedRef.current = undefined

@@ -144,7 +144,7 @@ const useWipe = (options?: UseWipeOptions) => {
   const setupCloneRef = useRef((wipeId: string) => {
     const clone = document.body.cloneNode(true) as HTMLDivElement
     clone.style.position = "fixed"
-    clone.style.zIndex = "1"
+    clone.style.zIndex = "9000"
     clone.style.inset = "0"
     clone.style.pointerEvents = "none"
     clone.style.mask = `url(#lbWipeMask_${wipeId})`
