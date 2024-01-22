@@ -10,6 +10,8 @@ export { default as useSize } from "./useSize"
 export type { UseSizeSize } from "./useSize"
 export { default as useFooterPadding } from "./useFooterPadding"
 export { default as useWipe, Shape as UseWipeShape } from "./useWipe"
+export { default as useAnimate } from "./useAnimate"
+export { default as useAnimatedText } from "./useAnimatedText"
 export * from "./useTwitchChat"
 
 // module.exports.default = null
