@@ -12,11 +12,11 @@ exportFolders.forEach((exportFolder) => {
       const modulePath = `${exportFolderPath}/${item}`
       const generatorPath = `${modulePath}/stories/generateReadme.ts`
       if (fs.existsSync(generatorPath)) {
-        const { default: generateReadme } = await import(
+        const { generatePackageReadme } = await import(
           `${import.meta.url}/../${generatorPath}`
         )
 
-        fs.writeFileSync(`${modulePath}/README.md`, generateReadme())
+        fs.writeFileSync(`${modulePath}/README.md`, generatePackageReadme())
       }
     })
   })
