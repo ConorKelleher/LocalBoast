@@ -5,6 +5,8 @@ import {
 } from "components/AnimatedText/stories/AnimatedTextDemo"
 import UseAnimatedTextDemo from "./UseAnimatedTextDemo"
 import { DEFAULT_OPTIONS as USE_ANIMATED_TEXT_DEFAULT_OPTIONS } from ".."
+import { getStoryGithubLink } from "storybook_utils/helpers"
+import { StoryTypes } from "storybook_utils/packageConstants"
 
 const meta = {
   title: "hooks/useAnimatedText",
@@ -15,7 +17,9 @@ const meta = {
       description: {
         component: `Hook to allow per-character animating of any string. Simply pass in a string and the component will return a self-updating string animating each character that is different from the previous provided value.
 
-See the component-based solution at <strong>[AnimatedText](/docs/components-AnimatedText--docs)</strong>.`,
+See the component-based solution: <strong>[AnimatedText](/docs/components-AnimatedText--docs)</strong>.
+
+${getStoryGithubLink(StoryTypes.Hook, "useAnimatedText")}`,
       },
       source: {
         transform: (_: string, context: StoryContext) => {

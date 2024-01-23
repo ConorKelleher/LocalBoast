@@ -1,6 +1,7 @@
 import type { Meta, StoryContext, StoryObj } from "@storybook/react"
 import { UseTruncateDemo, renderDemoArgs } from "./UseTruncateDemo"
 import { TruncateFrom } from ".."
+import { generateStoryReadme } from "./generateReadme"
 
 const meta = {
   title: "Hooks/useTruncate",
@@ -14,11 +15,10 @@ const meta = {
         },
       },
       description: {
-        component: `
-Hook to allow any string rendered in the DOM to be programmatically truncated  with customizable truncation position, offsets and ellipsis.<br>
-In most cases, the component-based solution (which simply wraps a call to this hook) is probably preferred.
-            
-See full documentation of the options at the [Truncate](/docs/components-truncate--docs) component.`,
+        component: `${generateStoryReadme()}
+
+<h3 style="margin-bottom: -10px">Demo</h3>
+`,
       },
     },
     deepControls: { enabled: true },

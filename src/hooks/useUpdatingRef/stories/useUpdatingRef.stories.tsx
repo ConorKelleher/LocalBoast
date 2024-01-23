@@ -1,5 +1,7 @@
 import type { Meta, StoryContext, StoryObj } from "@storybook/react"
 import { UseUpdatingRefDemo, renderDemoArgs } from "./UseUpdatingRefDemo"
+import { getStoryGithubLink } from "storybook_utils/helpers"
+import { StoryTypes } from "storybook_utils/packageConstants"
 
 const meta = {
   title: "Hooks/useUpdatingRef",
@@ -23,7 +25,10 @@ const meta = {
       description: {
         component: `Hook to persist any arbitrary value in a useRef and automatically update the <strong>current</strong> when the value changes. Useful for referencing changeable values inside effects without bloating the deps array.
 
-<strong>Note:</strong> You probably don't need this. I feel bad any time I use it, but it's annoyingly useful.`,
+<strong>Note:</strong> You probably don't need this. I feel bad any time I use it, but it's annoyingly useful.
+
+<br><br>
+${getStoryGithubLink(StoryTypes.Hook, "useUpdatingRef")}`,
       },
     },
   },
