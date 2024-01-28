@@ -12,7 +12,7 @@ const AnimatedText = ({ children, ...otherProps }: AnimatedTextProps) => {
       let childText = ""
       switch (true) {
         case typeof children === "string":
-          childText = children
+          childText = children as "string"
           break
         case Array.isArray(children) &&
           children.every((child) => typeof child === "string"):

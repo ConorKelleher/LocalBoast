@@ -11,7 +11,13 @@ export type { UseSizeSize } from "./useSize"
 export { default as useFooterPadding } from "./useFooterPadding"
 export { default as useWipe, Shape as UseWipeShape } from "./useWipe"
 export { default as useAnimate } from "./useAnimate"
-export { default as useAnimatedText } from "./useAnimatedText"
+export {
+  default as useAnimatedText,
+  type UseAnimatedTextOptions,
+} from "./useAnimatedText"
+export { default as useOnUnmount } from "./useOnUnmount"
+export { default as useOnMount } from "./useOnMount"
+export { default as useScrollDetection } from "./useScrollDetection"
 export * from "./useTwitchChat"
 
 // module.exports.default = null

@@ -1,1 +1,5 @@
-export { default, DEFAULT_OPTIONS } from "./useAnimatedText"
+export {
+  default,
+  DEFAULT_OPTIONS,
+  type UseAnimatedTextOptions,
+} from "./useAnimatedText"

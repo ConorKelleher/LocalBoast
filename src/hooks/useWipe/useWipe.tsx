@@ -15,7 +15,8 @@ type SVGShape = Shape | string
 const getSVGContainer = () => {
   const container = document.createElement("div")
 
-  container.style.position = "absolute"
+  container.id = "lb_svg_mask_container"
+  container.style.position = "fixed"
   container.style.inset = "0"
   container.style.pointerEvents = "none"
   return container
@@ -75,7 +76,10 @@ const stringifyStyles = (styles: CSSStyleDeclaration) => {
     .map((styleName) => {
       const styleValue = styles[styleName as keyof typeof styles]
 
-      if (styleValue !== undefined) {
+      if (
+        // @ts-ignore
+        ![undefined, "auto", "none", "normal", "0s", null].includes(styleValue)
+      ) {
         return `${styleName}: ${styleValue}`
       }
     })
@@ -105,6 +109,7 @@ const removeAllDescendentIds = (node: Node) => {
     el.removeAttribute("name")
     // el.removeAttribute("class");
     applyElStyles(el)
+    el.style.overflow = "hidden !important"
     if (el.parentElement?.tagName === "BODY") {
       el.style.position = "fixed"
       el.style.inset = "0"
