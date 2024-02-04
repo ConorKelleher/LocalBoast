@@ -33,7 +33,6 @@ const useRotate = (options?: UseRotateOptions) => {
   const [rotation, setRotation] = useState(0)
   const rotationRef = useUpdatingRef(rotation)
   const persistedRotationRef = useRef(rotation)
-  console.log(persistedRotationRef.current)
   const onGrabHandle = useCallback((e: MouseEvent) => {
     if (!handleRef.current) {
       return

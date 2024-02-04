@@ -1,5 +1,5 @@
-import { useAnimatedText } from "hooks"
-import { UseAnimatedTextOptions } from "hooks/useAnimatedText/useAnimatedText"
+import { useAnimatedText } from "../../hooks"
+import { UseAnimatedTextOptions } from "../../hooks/useAnimatedText/useAnimatedText"
 import { PropsWithChildren, useMemo } from "react"
 
 export interface AnimatedTextProps

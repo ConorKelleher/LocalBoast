@@ -218,7 +218,6 @@ const useAutoTruncateText = (
   ])
   const onNeedRecalculateRef = useUpdatingRef(onNeedRecalculate)
   const onResize = useCallback(() => {
-    console.log("resizing")
     onNeedRecalculateRef.current()
   }, [onNeedRecalculateRef])
   const { setRef: setUseSizeRef } = useSize({ onResize })

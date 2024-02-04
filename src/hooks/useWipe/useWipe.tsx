@@ -6,11 +6,20 @@ const getSVGForegroundTransition = (ms: number) =>
   `transition: transform ${ms / 1000}s 0s ease-in-out`
 const getSVGBackgroundTransition = (ms: number) =>
   `transition: opacity ${ms / 2000}s ${ms / 2000}s ease-in-out`
-export enum Shape {
+export enum UseWipeShape {
   Circle = "circle",
   Square = "rect",
 }
-type SVGShape = Shape | string
+export type SVGShape = UseWipeShape | string
+
+export interface UseWipeOptions {
+  ms?: number
+  shape?: SVGShape
+}
+export const DEFAULT_USE_WIPE_OPTIONS = {
+  ms: 2000,
+  shape: UseWipeShape.Circle,
+}
 
 const getSVGContainer = () => {
   const container = document.createElement("div")
@@ -42,8 +51,10 @@ const getNewSVG = (
   newSVG.setAttribute("viewBox", getSVGViewBox(size))
   newSVG.setAttribute("xmlns", "http://www.w3.org/2000/svg")
   const shape = options.shape
-  const ms = options.ms || DEFAULT_OPTIONS.ms
-  const isCustomSVGShape = !Object.values(Shape).includes(shape as Shape)
+  const ms = options.ms || DEFAULT_USE_WIPE_OPTIONS.ms
+  const isCustomSVGShape = !Object.values(UseWipeShape).includes(
+    shape as UseWipeShape,
+  )
   const shapeTagName = isCustomSVGShape ? "image" : shape
 
   newSVG.innerHTML = `<defs>
@@ -56,14 +67,22 @@ const getNewSVG = (
       style="${cx(
         "transform: scale(0);",
         {
-          "transform-origin: center;": shape !== Shape.Circle,
-          "transform-box: fill-box;": shape !== Shape.Circle,
+          "transform-origin: center;": shape !== UseWipeShape.Circle,
+          "transform-box: fill-box;": shape !== UseWipeShape.Circle,
         },
         getSVGForegroundTransition(ms),
       )}"
-      ${shape !== Shape.Circle ? `width="${getSVGRectDimensions(size)}"` : ""}
-      ${shape !== Shape.Circle ? `height="${getSVGRectDimensions(size)}"` : ""}
-      ${shape === Shape.Circle ? `r="${getSVGCircleRadius(size)}"` : ""}
+      ${
+        shape !== UseWipeShape.Circle
+          ? `width="${getSVGRectDimensions(size)}"`
+          : ""
+      }
+      ${
+        shape !== UseWipeShape.Circle
+          ? `height="${getSVGRectDimensions(size)}"`
+          : ""
+      }
+      ${shape === UseWipeShape.Circle ? `r="${getSVGCircleRadius(size)}"` : ""}
       ${isCustomSVGShape ? `href="${shape}"` : ""}
     />
   </mask>
@@ -117,22 +136,13 @@ const removeAllDescendentIds = (node: Node) => {
   }
 }
 
-interface UseWipeOptions {
-  ms?: number
-  shape: SVGShape
-}
-const DEFAULT_OPTIONS = {
-  ms: 2000,
-  shape: Shape.Circle,
-}
-
 const useWipe = (options?: UseWipeOptions) => {
   const { size, setRef: setSizeRef } = useSize()
   const svgContainerRef = useRef<HTMLDivElement>(getSVGContainer())
   const sizeRef = useUpdatingRef(size)
   const positionRef = useRef<HTMLElement | null>(null)
   const mergedOptionsRef = useUpdatingRef({
-    ...DEFAULT_OPTIONS,
+    ...DEFAULT_USE_WIPE_OPTIONS,
     ...options,
   })
 
@@ -214,7 +224,7 @@ const useWipe = (options?: UseWipeOptions) => {
       sizeRef.current.width,
     )
 
-    if (mergedOptionsRef.current.shape !== Shape.Circle) {
+    if (mergedOptionsRef.current.shape !== UseWipeShape.Circle) {
       // rect is positioned by top-left pixel, have to inset it by half to get its center
       maskInsetAmount = smallestPageDimension / 2
     }

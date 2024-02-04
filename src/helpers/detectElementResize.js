@@ -209,7 +209,6 @@ function createDetectElementResize(nonce) {
   const addResizeListener = function (element, fn) {
     if (attachEvent) {
       element.attachEvent("onresize", () => {
-        console.log("in onresize")
         fn()
       })
     } else {
