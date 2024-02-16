@@ -1,3 +1,4 @@
+import TruncateTextWrapper from "components/Truncate/stories/TruncateTextWrapper"
 import useTruncate, { TruncateFrom, UseTruncateOptions } from ".."
 
 interface UseTruncateDemoProps {
@@ -21,21 +22,7 @@ export const UseTruncateDemo = ({
   },
 }: UseTruncateDemoProps) => {
   const [text, ref] = useTruncate(originalString, options)
-  return (
-    <h3
-      ref={ref}
-      style={{
-        resize: "both",
-        height: 30,
-        width: 500,
-        overflow: "hidden",
-        border: "solid 1px",
-        borderRadius: "4px",
-      }}
-    >
-      {text}
-    </h3>
-  )
+  return <TruncateTextWrapper ref={ref}>{text}</TruncateTextWrapper>
 }
 
 export const renderDemoArgs = (args: UseTruncateDemoProps) => {

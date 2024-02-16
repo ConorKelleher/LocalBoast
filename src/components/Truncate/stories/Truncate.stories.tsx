@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import Truncate from ".."
 import { TruncateFrom } from "hooks/useTruncate"
+import TruncateTextWrapper from "./TruncateTextWrapper"
 
 const meta = {
   title: "Components/Truncate",
@@ -16,33 +17,22 @@ This wraps the <strong>useTruncate</strong> component to allow ease-of use with 
             
 See the hook-based solution: <strong>[useTruncate](/docs/hooks-useTruncate--docs)</strong>.`,
       },
+      source: {
+        transform: (originalString: string) => {
+          return originalString
+            .replace(/ +tag={{((.|\n)(?!}}))+(.|\n)}}\n?/, "") // Remove tag prop
+            .replace(/<Truncate\s+>/, "<Truncate>") // Remove whitespace if no other props than tag
+        },
+      },
     },
   },
   argTypes: {
     tag: {
       control: {
-        type: "text",
+        type: null,
       },
     },
   },
-  decorators: [
-    (Story) => (
-      <div
-        style={{
-          resize: "both",
-          display: "block",
-          border: "solid 1px",
-          borderRadius: 5,
-          overflow: "auto",
-          width: 500,
-        }}
-      >
-        <div style={{ height: "100%", width: "100%" }}>
-          <Story />
-        </div>
-      </div>
-    ),
-  ],
   tags: ["autodocs"],
 } satisfies Meta<typeof Truncate>
 
@@ -55,18 +45,21 @@ const fullString =
 export const TruncateEnd: Story = {
   args: {
     children: fullString,
+    tag: TruncateTextWrapper,
   },
 }
 export const TruncateMiddle: Story = {
   args: {
     children: fullString,
     from: TruncateFrom.Middle,
+    tag: TruncateTextWrapper,
   },
 }
 export const TruncateStart: Story = {
   args: {
     children: fullString,
     from: TruncateFrom.Start,
+    tag: TruncateTextWrapper,
   },
 }
 
@@ -75,12 +68,14 @@ export const TruncateOffsetStart: Story = {
     children: fullString,
     from: TruncateFrom.Start,
     startOffset: 4,
+    tag: TruncateTextWrapper,
   },
 }
 export const TruncateOffsetEnd: Story = {
   args: {
     children: fullString,
     endOffset: 4,
+    tag: TruncateTextWrapper,
   },
 }
 export const TruncateMiddleOffsetEnd: Story = {
@@ -88,6 +83,7 @@ export const TruncateMiddleOffsetEnd: Story = {
     children: fullString,
     from: TruncateFrom.Middle,
     endOffset: 15,
+    tag: TruncateTextWrapper,
   },
 }
 export const TruncateMiddleOffsetStart: Story = {
@@ -95,5 +91,6 @@ export const TruncateMiddleOffsetStart: Story = {
     children: fullString,
     from: TruncateFrom.Middle,
     startOffset: 15,
+    tag: TruncateTextWrapper,
   },
 }
