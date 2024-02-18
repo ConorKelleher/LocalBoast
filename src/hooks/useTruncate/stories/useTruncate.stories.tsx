@@ -1,32 +1,28 @@
 import type { Meta, StoryContext, StoryObj } from "@storybook/react"
 import { UseTruncateDemo, renderDemoArgs } from "./UseTruncateDemo"
 import { TruncateFrom } from ".."
-import { generateStoryReadme } from "./generateReadme"
+import { default as storyConfig } from "./config"
+import { getStoryMeta } from "storybook_utils/helpers"
+import { merge } from "helpers/objectHelpers"
 
-const meta = {
+let meta = {
   title: "Hooks/useTruncate",
-  component: UseTruncateDemo,
   parameters: {
-    layout: "centered",
     docs: {
       source: {
         transform: (_: string, context: StoryContext) => {
           return renderDemoArgs(context.allArgs)
         },
       },
-      description: {
-        component: `${generateStoryReadme()}
-
-<h3 style="margin-bottom: -10px">Demo</h3>
-`,
-      },
     },
-    deepControls: { enabled: true },
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof UseTruncateDemo>
 
+// @ts-ignore
+meta = merge(meta, getStoryMeta(storyConfig))
 export default meta
+
 type Story = StoryObj<typeof UseTruncateDemo>
 
 const fullString =
