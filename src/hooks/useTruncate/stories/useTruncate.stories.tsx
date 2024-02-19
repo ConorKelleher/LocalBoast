@@ -3,7 +3,7 @@ import { UseTruncateDemo, renderDemoArgs } from "./UseTruncateDemo"
 import { TruncateFrom } from ".."
 import { default as storyConfig } from "./config"
 import { getStoryMeta } from "storybook_utils/helpers"
-import { merge } from "helpers/objectHelpers"
+import { merge } from "utils"
 
 let meta = {
   title: "Hooks/useTruncate",

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { generateRandomId } from "helpers"
+import { generateRandomId } from "utils"
 import { useUpdatingRef } from "hooks"
 import {
   LS_KEY_TWITCH_AUTH_TOKEN,

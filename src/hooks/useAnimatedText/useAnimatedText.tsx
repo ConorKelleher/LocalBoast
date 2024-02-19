@@ -1,4 +1,4 @@
-import { diffStrings, getInterpolatedStringDiff } from "helpers/stringHelpers"
+import { diffStrings, getInterpolatedStringDiff } from "utils"
 import { useUpdatingRef, useAnimate } from "hooks"
 import { useCallback, useEffect, useRef, useState } from "react"
 

@@ -1,5 +1,5 @@
-import { debounce, generateRandomId } from "helpers"
-import { createDetectElementResize } from "helpers/detectElementResize"
+import { debounce, generateRandomId } from "utils"
+import { createDetectElementResize } from "./helpers/detectElementResize"
 import { useUpdatingRef } from "hooks"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 

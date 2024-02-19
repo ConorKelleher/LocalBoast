@@ -1,4 +1,4 @@
-import svgToDataUri from "helpers/svgToDataUri"
+import { svgToDataUri } from "utils"
 import { useUpdatingRef } from "hooks"
 import useMove from "hooks/useMove"
 import { useCallback, useEffect, useRef, useState } from "react"

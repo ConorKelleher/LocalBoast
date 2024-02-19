@@ -1,4 +1,4 @@
-import { cx, generateRandomId } from "helpers"
+import { cx, generateRandomId } from "utils"
 import { UseSizeSize, useSize, useUpdatingRef } from "hooks"
 import { useCallback, useEffect, useRef } from "react"
 
