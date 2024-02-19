@@ -17,6 +17,7 @@ export {
 } from "./useAnimatedText"
 export { default as useOnUnmount } from "./useOnUnmount"
 export { default as useOnMount } from "./useOnMount"
+export { default as useInterval } from "./useInterval"
 export { default as useScrollDetection } from "./useScrollDetection"
 export * from "./useTwitchChat"
 

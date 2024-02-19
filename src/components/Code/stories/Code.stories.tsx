@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import Playback from ".."
+import Code from ".."
+// import SampleCode from "./SampleCode"
 
 const meta = {
-  title: "Components/Playback",
-  component: Playback,
+  title: "Components/Code",
+  component: Code,
   parameters: {
     layout: "centered",
     // deepControls: { enabled: true },
@@ -34,11 +35,14 @@ Useful for code demos and tutorials.`,
     ),
   ],
   tags: ["autodocs"],
-} satisfies Meta<typeof Playback>
+} satisfies Meta<typeof Code>
 
 export default meta
-type Story = StoryObj<typeof Playback>
+type Story = StoryObj<typeof Code>
 
-export const PlaybackJS: Story = {
-  args: {},
+export const CodeBasic: Story = {
+  args: {
+    // children: SampleCode,
+    children: "import React from 'react'; const thing = true;",
+  },
 }

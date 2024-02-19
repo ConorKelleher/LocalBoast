@@ -21,13 +21,13 @@ yarn add localboast
 
 # Contents
 
-- [useTruncate](#todo)
+- [useTruncate](undefined/useTruncate)
 
 # To Use
 
 Each of the links in the [Contents](#contents) table above has a dedicated Readme explaining usage of the particular function.
 
-All of these helpers are exported from the root index, allowing for cleaner imports like:
+All of these hooks are exported from the root index, allowing for cleaner imports like:
 
 ```javascript
 import { useMove } from "localboast"

@@ -26,23 +26,23 @@ yarn add localboast
 
 # Contents
 
-- [Components](#todo)
+- [Components](src/components)
 	
-- [Hooks](#todo)
-	- [useTruncate](#todo)
-- [Helpers](#todo)
+- [Hooks](src/hooks)
+	- [useTruncate](src/hooks/useTruncate)
+- [Utils](src/utils)
 	
 
 # To Use
 
-This library includes a range of [**Components**](https://github.com/ConorKelleher/localboast/tree/main/src/components), [**Hooks**](https://github.com/ConorKelleher/localboast/tree/main/src/hooks) and [**Helpers**](https://github.com/ConorKelleher/localboast/tree/main/src/helpers). These are all able to be used independently and are intended to provide quick access to powerful functionality.
+This library includes a range of [**Components**](https://github.com/ConorKelleher/localboast/tree/main/src/components), [**Hooks**](https://github.com/ConorKelleher/localboast/tree/main/src/hooks) and [**Utils**](https://github.com/ConorKelleher/localboast/tree/main/src/utils). These are all able to be used independently and are intended to provide quick access to powerful functionality.
 
 Each of the core folders provides an index of the exported contents, allowing you to directly import from specific places in the app, e.g.:
 
 ```javascript
 import { Truncate } from "localboast/dist/components"
 import { useMove } from "localboast/dist/hooks"
-import { cx } from "localboast/dist/helpers"
+import { cx } from "localboast/dist/utils"
 ```
 
 All of these exported elements are also exported from the root index, allowing for cleaner imports like:

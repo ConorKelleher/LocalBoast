@@ -164,21 +164,27 @@ export type TableOfContents = { [exportKey: string]: string[] }
 
 export const getMarkdownTableOfContents = (
   contentsData: string[] | TableOfContents,
+  parentPath?: string,
 ) => {
   let table = ""
 
   if (Array.isArray(contentsData)) {
     console.log("is array. ContentsData: ", JSON.stringify(contentsData))
-    table = contentsData.map((title) => `- [${title}](#todo)`).join("\n")
+    table = contentsData
+      .map((title) => `- [${title}](${parentPath}/${title})`)
+      .join("\n")
   } else {
     table = Object.entries(contentsData)
-      .map(
-        ([exportName, contents]) =>
-          `- [${exportName}](#todo)\n${getMarkdownTableOfContents(contents)
-            .split("\n")
-            .map((entry) => `\t${entry}`)
-            .join("\n")}`,
-      )
+      .map(([exportName, contents]) => {
+        const exportFilePath = `src/${exportName.toLocaleLowerCase()}`
+        return `- [${exportName}](${exportFilePath})\n${getMarkdownTableOfContents(
+          contents,
+          exportFilePath,
+        )
+          .split("\n")
+          .map((entry) => `\t${entry}`)
+          .join("\n")}`
+      })
       .join("\n")
   }
 
