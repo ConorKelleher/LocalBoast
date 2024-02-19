@@ -21,7 +21,7 @@ yarn add localboast
 
 # Contents
 
-- [useTruncate](undefined/useTruncate)
+- [useTruncate](useTruncate)
 
 # To Use
 
