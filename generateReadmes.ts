@@ -31,7 +31,7 @@ exportFolders.forEach((exportFolder) => {
         populateTemplate(generatePackageReadme(item, config)),
       )
       fs.writeFileSync(
-        `${modulePath}/${item}/stories/${item}.stories.tsx`,
+        `${modulePath}/stories/${item}.stories.tsx`,
         generateStoryFile(item, config),
       )
     }

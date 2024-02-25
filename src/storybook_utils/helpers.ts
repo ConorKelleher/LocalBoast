@@ -7,11 +7,11 @@ import {
   storybookPath,
 } from "./packageConstants.ts" // keep extension, generateReadmes.ts needs it
 import { capitalize, isFirstLetterUppercase } from "utils"
-import storiesTemplate from "./storiesTemplate.txt?raw"
-import readmeTemplate from "./readmeTemplate.txt?raw"
+import storiesTemplate from "./storiesTemplate"
+import readmeTemplate from "./readmeTemplate"
 
 export const parseUnquotedJSON = (unquoted: string) =>
-  JSON.parse(unquoted.replaceAll(/([A-Za-z]+):/g, '"$1":'))
+  JSON.parse(unquoted.replace(/([A-Za-z]+):/g, '"$1":'))
 
 // Used for linking from github readme to storybook
 export const getStoryURL = (type: StoryTypes, name: string) =>
@@ -85,8 +85,8 @@ export const generateStoryReadme = (
       .replaceAll(DESCRIPTION_PLACEHOLDER, storyConfig.description)
       .replaceAll(USAGE_TITLE_PLACEHOLDER, "<h3>Usage</h3>")
       .replaceAll(USAGE_PLACEHOLDER, storyConfig.usage)
-      .replaceAll(/<h3>/g, '<h3 style="margin-bottom: -15px">') // remove spacing from h3 tags in mdx
-      .replaceAll(/<br><br>/g, "<br>") // md seemingly needs more spacing than mdx :shrug:
+      .replace(/<h3>/g, '<h3 style="margin-bottom: -15px">') // remove spacing from h3 tags in mdx
+      .replace(/<br><br>/g, "<br>") // md seemingly needs more spacing than mdx :shrug:
       .replaceAll(LINKS_PLACEHOLDER, links.join("<br><br>"))
       .replaceAll(HOW_TO_INSTALL_PLACEHOLDER, "<br>") +
     `
@@ -127,7 +127,7 @@ export const generatePackageReadme = (
   )
 }
 
-export const getStoryStories = (storySpecs: StorySpec[]) =>
+export const getStoryStories = (storySpecs: StorySpec[] = []) =>
   storySpecs
     .map(
       (storySpec) => `export const ${storySpec.name} = {
@@ -236,7 +236,7 @@ export const populateTemplate = (
   contentsData?: string[] | TableOfContents,
 ) =>
   template
-    .replaceAll(/^/, getMarkdownComment())
+    .replace(/^/, getMarkdownComment())
     .replaceAll(HOW_TO_INSTALL_PLACEHOLDER, getMarkdownHowToInstall())
     .replaceAll(
       CONTENTS_PLACEHOLDER,

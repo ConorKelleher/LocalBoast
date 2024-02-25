@@ -19,7 +19,7 @@ export type StorySpec = {
   name: string
   args: { [key: string]: unknown }
 }
-export interface StoryConfig {
+export type StoryConfig = {
   // name: string
   description: string
   usage: string

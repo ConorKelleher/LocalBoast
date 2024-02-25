@@ -1,4 +1,4 @@
-INSERT_TITLE_HERE
+const ReadmeTemplate = `INSERT_TITLE_HERE
 INSERT_DESCRIPTION_HERE
 <br><br>
 
@@ -8,6 +8,9 @@ INSERT_HOW_TO_INSTALL_HERE
 
 INSERT_USAGE_TITLE_HERE
 
-```javascript
+\`\`\`javascript
 INSERT_USAGE_HERE
-```
+\`\`\`
+`
+
+export default ReadmeTemplate
