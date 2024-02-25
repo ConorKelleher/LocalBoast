@@ -1,5 +1,5 @@
 import { diffStrings, getInterpolatedStringDiff } from "utils"
-import { useUpdatingRef, useAnimate } from "hooks"
+import { useUpdatingRef, useAnimationFrames } from "hooks"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 export const DEFAULT_OPTIONS = {
@@ -20,7 +20,7 @@ export interface UseAnimatedTextOptions {
 const useAnimatedText = (text: string, options?: UseAnimatedTextOptions) => {
   const [currString, setCurrString] = useState(text)
   const currStringRef = useRef(currString)
-  const { start } = useAnimate()
+  const { start } = useAnimationFrames()
   const mergedOptionsRef = useUpdatingRef({
     ...DEFAULT_OPTIONS,
     ...options,

@@ -17,9 +17,8 @@ let meta = {
     },
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof UseTruncateDemo>
+} as Meta<typeof UseTruncateDemo>
 
-// @ts-ignore
 meta = merge(meta, getStoryMeta(storyConfig))
 export default meta
 

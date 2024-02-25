@@ -1,23 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import Code from ".."
-import SampleCode from "./SampleCode"
+import UseAnimationFramesDemo from "./UseAnimationFramesDemo"
 import { merge } from "utils"
 import { getStoryMeta } from "storybook_utils/helpers"
 import storyConfig from "./config"
 
 let meta = {
-  title: "Components/Code",
+  title: "hooks/useAnimationFrames",
   tags: ["autodocs"],
-} as Meta<typeof Code>
+} as Meta<typeof UseAnimationFramesDemo>
 
 meta = merge(meta, getStoryMeta(storyConfig))
 export default meta
 
-type Story = StoryObj<typeof Code>
+type Story = StoryObj<typeof UseAnimationFramesDemo>
 
 export const CodeBasic: Story = {
-  args: {
-    children: SampleCode,
-    colorScheme: "dark",
-  },
+  args: {},
 }

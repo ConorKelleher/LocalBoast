@@ -1,20 +1,27 @@
 import useSyntaxHighlighting from "hooks/useSyntaxHighlighting"
+import { UseSyntaxHighlightingOptions } from "hooks/useSyntaxHighlighting/useSyntaxHighlighting"
 import { useEffect, useRef } from "react"
 import { cx } from "utils"
 
-type CodeTagProps = {
+export type CodeTagProps = {
   [key: string]: any
 }
 
-interface CodeProps {
+export interface CodeProps extends UseSyntaxHighlightingOptions {
   children: string | string[]
   style?: React.CSSProperties
   codeProps?: CodeTagProps
   tag?: React.ElementType | string
 }
 
-const Code = ({ children, style, tag, codeProps }: CodeProps) => {
-  const { highlightElement } = useSyntaxHighlighting()
+const Code = ({
+  children,
+  style,
+  tag,
+  codeProps,
+  ...syntaxHighlightingOptions
+}: CodeProps) => {
+  const { highlightElement } = useSyntaxHighlighting(syntaxHighlightingOptions)
   const codeContent = Array.isArray(children) ? children.join("") : children
   const codeEl = useRef<HTMLElement>()
 

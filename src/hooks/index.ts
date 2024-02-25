@@ -10,7 +10,7 @@ export { default as useSize } from "./useSize"
 export type { UseSizeSize } from "./useSize"
 export { default as useFooterPadding } from "./useFooterPadding"
 export { default as useWipe } from "./useWipe"
-export { default as useAnimate } from "./useAnimate"
+export { default as useAnimationFrames } from "./useAnimationFrames"
 export {
   default as useAnimatedText,
   type UseAnimatedTextOptions,

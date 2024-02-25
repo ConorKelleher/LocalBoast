@@ -102,3 +102,6 @@ export const capitalize = (input: string) =>
         .slice(1)
         .toLocaleLowerCase()}`
     : input
+
+export const isFirstLetterUppercase = (letter: string) =>
+  letter[0].toUpperCase() === letter[0]

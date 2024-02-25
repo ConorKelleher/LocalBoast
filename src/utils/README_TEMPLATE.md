@@ -2,8 +2,6 @@
 
 ![BannerImage](../../assets/icons/ColourSolidWide.jpeg)
 
-# To Install
-
 INSERT_HOW_TO_INSTALL_HERE
 
 # Contents

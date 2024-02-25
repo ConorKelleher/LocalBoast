@@ -4,22 +4,14 @@ import AnimatedTextDemo, {
   getLoopingAnimatedTextDemoString,
 } from "./AnimatedTextDemo"
 import { DEFAULT_OPTIONS as USE_ANIMATED_TEXT_DEFAULT_OPTIONS } from "hooks/useAnimatedText"
-import { getStoryGithubLink } from "storybook_utils/helpers"
-import { StoryTypes } from "storybook_utils/packageConstants"
+import { getStoryMeta } from "storybook_utils/helpers"
+import { merge } from "utils"
+import storyConfig from "./config"
 
-const meta = {
+let meta = {
   title: "Components/AnimatedText",
-  component: AnimatedTextDemo,
   parameters: {
-    // layout: "centered",
     docs: {
-      description: {
-        component: `Component to allow per-character animating of any string. Simply pass in a string or array of strings as children and the component will pass through a self-updating string animating each character that is different from the previous children.
-
-See the hook-based solution: <strong>[useAnimatedText](/docs/hooks-useAnimatedText--docs)</strong>.
-<br><br>
-${getStoryGithubLink(StoryTypes.Component, "AnimatedText")}`,
-      },
       source: {
         transform: (_: string, context: StoryContext) => {
           return context.allArgs.type === "button"
@@ -47,9 +39,11 @@ ${getStoryGithubLink(StoryTypes.Component, "AnimatedText")}`,
     },
   },
   tags: ["autodocs"],
-} satisfies Meta<typeof AnimatedTextDemo>
+} as Meta<typeof AnimatedTextDemo>
 
+meta = merge(meta, getStoryMeta(storyConfig))
 export default meta
+
 type Story = StoryObj<typeof AnimatedTextDemo>
 
 export const LoopingExample: Story = {

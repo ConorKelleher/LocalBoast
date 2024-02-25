@@ -1,4 +1,4 @@
-import React from "react"
+import { Meta } from "@storybook/react"
 
 export const githubURL = "https://github.com/conorkelleher/localboast"
 const remoteURL = "https://localboast.com"
@@ -13,13 +13,19 @@ export const octocatURL =
 export enum StoryTypes {
   Component = "Component",
   Hook = "Hook",
-  Helper = "Helper",
+  Util = "Util",
+}
+export type StorySpec = {
+  name: string
+  args: { [key: string]: unknown }
 }
 export interface StoryConfig {
-  name: string
+  // name: string
   description: string
   usage: string
-  type: StoryTypes
-  alternative: string
-  component: React.FunctionComponent
+  // type: StoryTypes
+  alternative?: string
+  metaMutations?: Meta
+  stories: StorySpec[]
+  // component: React.FunctionComponent
 }

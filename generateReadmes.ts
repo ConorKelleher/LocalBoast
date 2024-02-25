@@ -2,6 +2,7 @@ import * as fs from "fs"
 import {
   TableOfContents,
   generatePackageReadme,
+  generateStoryFile,
   populateTemplate,
 } from "./src/storybook_utils/helpers"
 import { capitalize } from "./src"
@@ -25,7 +26,14 @@ exportFolders.forEach((exportFolder) => {
         `${import.meta.url}/../${configPath}`
       )
 
-      fs.writeFileSync(`${modulePath}/README.md`, generatePackageReadme(config))
+      fs.writeFileSync(
+        `${modulePath}/README.md`,
+        populateTemplate(generatePackageReadme(item, config)),
+      )
+      fs.writeFileSync(
+        `${modulePath}/${item}/stories/${item}.stories.tsx`,
+        generateStoryFile(item, config),
+      )
     }
   })
   const templatePath = `${exportFolderPath}/README_TEMPLATE.md`

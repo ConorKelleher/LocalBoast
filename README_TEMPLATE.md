@@ -7,8 +7,6 @@ This is the full LocalBoast React library.
 - GitHub: https://github.com/ConorKelleher/LocalBoast
 - npm: https://www.npmjs.com/package/LocalBoast
 
-# To Install
-
 INSERT_HOW_TO_INSTALL_HERE
 
 # Contents
