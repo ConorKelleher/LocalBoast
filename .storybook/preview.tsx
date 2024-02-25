@@ -1,13 +1,23 @@
 import React from "react"
 import type { Preview } from "@storybook/react"
-import {
-  MantineProvider as TheMantineProvider,
-  createTheme,
-} from "@mantine/core"
-const theme = createTheme({
-  /** Put your mantine theme override here */
-})
+import { MantineProvider } from "@mantine/core"
+import { appTheme } from "../../localboast.com/src/theme"
+import { addons, useEffect } from "@storybook/addons"
+
 import "@mantine/core/styles.css"
+import { DARK_THEME } from "./Themes"
+
+const ThemeChangeProvider = (Story: () => React.ReactElement) => {
+  // todo - actually do something with url themes or system themes or something
+  // useEffect(() => {
+  //   debugger
+  //   addons.setConfig({
+  //     theme: DARK_THEME,
+  //   })
+  // }, [])
+
+  return <Story />
+}
 
 const preview: Preview = {
   parameters: {
@@ -19,14 +29,16 @@ const preview: Preview = {
       },
     },
     deepControls: { enabled: true },
+    layout: "fullscreen",
   },
 }
 
 export const decorators = [
+  ThemeChangeProvider,
   (Story) => (
-    <TheMantineProvider theme={theme}>
+    <MantineProvider theme={appTheme}>
       <Story />
-    </TheMantineProvider>
+    </MantineProvider>
   ),
 ]
 
