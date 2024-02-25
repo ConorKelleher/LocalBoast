@@ -1,0 +1,78 @@
+/*
+
+local-boast-dark (c) Conor Kelleher localboast@outlook.com
+
+Adapted from atom-one-light: https://github.com/highlightjs/cdn-release/blob/7e73c9303752f82690bd7727be387f1fc3efcff3/build/styles/atom-one-light.min.css
+
+*/
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+code.hljs {
+  padding: 3px 5px;
+}
+.hljs {
+  color: #383a42;
+  background: #fcfcfc;
+}
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+.hljs-doctag,
+.hljs-formula,
+.hljs-keyword {
+  color: #8a4fb7;
+}
+.hljs-deletion,
+.hljs-name,
+.hljs-section,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #e85f5c;
+}
+.hljs-literal {
+  color: #36a1b5;
+}
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string,
+.hljs-regexp,
+.hljs-string {
+  color: #4abe81;
+}
+.hljs-attr,
+.hljs-number,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-pseudo,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable {
+  color: #e4a300;
+}
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-symbol,
+.hljs-title {
+  color: #36a1b5;
+}
+.hljs-built_in,
+.hljs-class .hljs-title,
+.hljs-title.class_ {
+  color: #ca9100;
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 700;
+}
+.hljs-link {
+  text-decoration: underline;
+}
