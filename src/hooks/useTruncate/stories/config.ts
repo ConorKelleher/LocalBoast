@@ -3,7 +3,7 @@ import {
   StoryTypes,
   StoryConfig,
 } from "../../../storybook_utils/packageConstants.ts"
-import { UseTruncateDemo } from "./UseTruncateDemo.tsx"
+import UseTruncateDemo from "./demos/UseTruncateDemo.tsx"
 
 export default {
   type: StoryTypes.Hook,

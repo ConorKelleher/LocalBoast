@@ -6,18 +6,21 @@ import lightThemeURL from "./themes/codeLight.css?url"
 export interface UseSyntaxHighlightingOptions {
   /**
    * Which of the default colour sets to use - light or dark
-   * Note: this value is ignored if a custom "themeName" option is provided
+   * Note:
+   * - This value is ignored if a custom "themeName" option is provided
    */
   colorScheme?: "light" | "dark"
   /**
    * File name of remote theme file to load (must be one of https://github.com/highlightjs/cdn-release/tree/main/build/styles - not including css extension - if the file is called test.min.css, call it "test.min")
-   * Note: using the default theme or customising it yourself uses only local code. Including a value for this will result in a remote call to load in a css file
-   * - this will likely cause issues with CORS etc and you may have to whitelist the cdn (https://cdnjs.cloudflare.com at the time of writing this)
-   * Note: this value is ignored if a custom "themeURL" option is provided
+   *
+   * Note:
+   * - Avoiding this prop and using only the default theme or customising it yourself uses only local code. Including a value for this prop will result in a remote call to load in a CSS file. This will likely cause issues with CORS etc and you may have to whitelist the cdn (https://cdnjs.cloudflare.com at the time of writing this)
+   * - This value is ignored if a custom "themeURL" option is provided
    */
   themeName?: string
   /**
-   * URL of a theme file compatible with highlight.js Can be any of https://github.com/highlightjs/cdn-release/tree/main/build/styles or any URI that resolves to a css file
+   * URL of a theme file compatible with highlight.js (see examples linked in description of themeName prop) or any URI that resolves to a css file
+   * - Since this loads an external stylesheet, you'll likely run into issues with CORS. Any whitelisting concerns are yours to deal with
    */
   themeURL?: string
 }

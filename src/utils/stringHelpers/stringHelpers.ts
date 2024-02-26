@@ -98,10 +98,9 @@ export const diffStrings = (aString: string, bString: string): StringDiff => {
 
 export const capitalize = (input: string) =>
   input.length
-    ? `${input.charAt(0).toLocaleUpperCase()}${input
-        .slice(1)
-        .toLocaleLowerCase()}`
-    : input
+    ? `${input.charAt(0).toLocaleUpperCase()}${input.slice(1)}`
+    : // .toLocaleLowerCase()}`
+      input
 
 export const isFirstLetterUppercase = (letter: string) =>
   letter[0].toUpperCase() === letter[0]

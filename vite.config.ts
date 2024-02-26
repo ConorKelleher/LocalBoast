@@ -9,6 +9,12 @@ import svgr from "vite-plugin-svgr"
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      localboast: path.resolve(__dirname, "./src/index.ts"),
+      "localboast/*": path.resolve(__dirname, "./src/*"),
+    },
+  },
   plugins: [
     react(),
     tsconfigPaths(),
@@ -21,7 +27,7 @@ export default defineConfig({
     minify: true,
     reportCompressedSize: true,
     lib: {
-      entry: path.resolve(__dirname, "src/index.ts"),
+      entry: path.resolve(__dirname, "./src/index.ts"),
       fileName: "index",
       formats: ["es", "cjs"],
     },

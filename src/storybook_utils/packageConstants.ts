@@ -20,12 +20,10 @@ export type StorySpec = {
   args: { [key: string]: unknown }
 }
 export type StoryConfig = {
-  // name: string
   description: string
-  usage: string
-  // type: StoryTypes
+  usage?: string
+  forceDemoComponent?: boolean
   alternative?: string
   metaMutations?: Meta
-  stories: StorySpec[]
-  // component: React.FunctionComponent
+  stories?: StorySpec[]
 }

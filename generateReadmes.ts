@@ -3,6 +3,7 @@ import {
   TableOfContents,
   generatePackageReadme,
   generateStoryFile,
+  getRuntimeConfig,
   populateTemplate,
 } from "./src/storybook_utils/helpers"
 import { capitalize } from "./src"
@@ -19,12 +20,14 @@ exportFolders.forEach((exportFolder) => {
   const items = fs.readdirSync(exportFolderPath)
   items.forEach(async (item) => {
     const modulePath = `${exportFolderPath}/${item}`
-    const configPath = `${modulePath}/stories/config.ts`
+    const storiesPath = `${modulePath}/stories`
+    const configPath = `${storiesPath}/config.ts`
     if (fs.existsSync(configPath)) {
       exportContents.push(item)
-      const { default: config } = await import(
+      const { default: configWithoutUsage } = await import(
         `${import.meta.url}/../${configPath}`
       )
+      const config = getRuntimeConfig(item, configWithoutUsage, storiesPath)
 
       fs.writeFileSync(
         `${modulePath}/README.md`,

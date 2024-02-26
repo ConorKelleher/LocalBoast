@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import AnimatedText, { AnimatedTextProps } from "../AnimatedText"
+import AnimatedText, { AnimatedTextProps } from "../.."
 import { useAnimatedText } from "hooks"
 import { Stack } from "@mantine/core"
 

@@ -1,5 +1,5 @@
+import { useAnimationFrames } from "hooks"
 import { useEffect, useState } from "react"
-import useAnimationFrames from "../useAnimationFrames"
 
 const fullWidth = 500
 const UseAnimationFramesDemo = () => {

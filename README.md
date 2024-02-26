@@ -28,6 +28,7 @@ yarn add localboast
 	- [AnimatedText](src/components/AnimatedText)
 	- [Code](src/components/Code)
 - [Hooks](src/hooks)
+	- [useAnimationFrames](src/hooks/useAnimationFrames)
 	- [useTruncate](src/hooks/useTruncate)
 - [Utils](src/utils)
 	

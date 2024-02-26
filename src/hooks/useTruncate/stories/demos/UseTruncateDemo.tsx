@@ -1,5 +1,5 @@
 import TruncateTextWrapper from "components/Truncate/stories/TruncateTextWrapper"
-import useTruncate, { TruncateFrom, UseTruncateOptions } from ".."
+import useTruncate, { TruncateFrom, UseTruncateOptions } from "../.."
 
 interface UseTruncateDemoProps {
   /**
@@ -12,7 +12,7 @@ interface UseTruncateDemoProps {
   options?: UseTruncateOptions
 }
 
-export const UseTruncateDemo = ({
+const UseTruncateDemo = ({
   originalString,
   options = {
     from: TruncateFrom.End,
@@ -39,3 +39,5 @@ const SomeComponent = () => {
 }
 `
 }
+
+export default UseTruncateDemo

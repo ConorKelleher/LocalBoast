@@ -6,25 +6,6 @@ export default {
   
   Uses a local copy of [highlight.js](https://github.com/highlightjs/highlight.js) under the hood to perform the syntax highlighting.`,
   alternative: "useSyntaxHighlighting",
-  usage: `import { Code } from "localboast"
-
-const srcCode = \`
-import React from "react"
-
-const MyComponent = () => {
-  return "This is a nice component, innit?
-}
-
-export default MyComponent
-\`
-
-const SomeComponent = () => {
-  return (
-    <Code>
-      {srcCode}
-    </Code>
-  )
-}`,
   stories: [
     {
       name: "CodeBasic",

@@ -1,3 +1,4 @@
+import * as fs from "fs"
 import {
   StoryConfig,
   StorySpec,
@@ -57,6 +58,61 @@ const getElementTypeFromName = (elementName: string): StoryTypes => {
   return type
 }
 
+const getShouldUseDedicatedDemoComponent = (
+  elementName: string,
+  storyConfig: StoryConfig,
+) =>
+  getElementTypeFromName(elementName) !== StoryTypes.Component ||
+  !!storyConfig.forceDemoComponent
+
+const getDemoComponentName = (
+  elementName: string,
+  shouldUseDedicatedDemoComponent: boolean = true,
+) =>
+  shouldUseDedicatedDemoComponent
+    ? `${capitalize(elementName)}Demo`
+    : elementName
+const getDemoComponentImportPath = (
+  elementName: string,
+  shouldUseDedicatedDemoComponent: boolean = true,
+) =>
+  shouldUseDedicatedDemoComponent
+    ? `stories/demos/${getDemoComponentName(
+        elementName,
+        shouldUseDedicatedDemoComponent,
+      )}`
+    : ""
+
+// jsx cli doesn't play nicely with the ?raw loader. Have to import it at runtime in order to get the correct usage file's source code
+export const getRuntimeConfig = (
+  elementName: string,
+  storyConfig: StoryConfig,
+  storiesPath: string,
+) => {
+  const runtimeConfig = {
+    ...storyConfig,
+  }
+  let usageFilePath
+  const dedicatedUsagePath = `${storiesPath}/demos/Usage.tsx`
+  if (fs.existsSync(dedicatedUsagePath)) {
+    usageFilePath = dedicatedUsagePath
+  } else {
+    const relativeImportPath = getDemoComponentImportPath(elementName)
+    if (relativeImportPath) {
+      // Don't use direct component source code as usage. If no dedicated demo, just skip
+      usageFilePath = `${storiesPath}/../${relativeImportPath}.tsx`
+    }
+  }
+
+  if (usageFilePath && fs.existsSync(usageFilePath)) {
+    runtimeConfig.usage = fs.readFileSync(usageFilePath, {
+      encoding: "utf8",
+      flag: "r",
+    })
+  }
+  return runtimeConfig
+}
+
 export const generateStoryReadme = (
   elementName: string,
   storyConfig: StoryConfig,
@@ -83,15 +139,17 @@ export const generateStoryReadme = (
     readmeTemplate
       .replaceAll(TITLE_PLACEHOLDER, "") // Storybook adds title by default, so can omit
       .replaceAll(DESCRIPTION_PLACEHOLDER, storyConfig.description)
-      .replaceAll(USAGE_TITLE_PLACEHOLDER, "<h3>Usage</h3>")
-      .replaceAll(USAGE_PLACEHOLDER, storyConfig.usage)
+      .replaceAll(
+        USAGE_TITLE_PLACEHOLDER,
+        storyConfig.usage ? "<h3>Usage</h3>" : "",
+      )
+      .replaceAll(USAGE_PLACEHOLDER, storyConfig.usage || "")
       .replace(/<h3>/g, '<h3 style="margin-bottom: -15px">') // remove spacing from h3 tags in mdx
       .replace(/<br><br>/g, "<br>") // md seemingly needs more spacing than mdx :shrug:
       .replaceAll(LINKS_PLACEHOLDER, links.join("<br><br>"))
-      .replaceAll(HOW_TO_INSTALL_PLACEHOLDER, "<br>") +
-    `
-
-    <h3 style="margin-bottom: -10px">Demo</h3>`
+      .replaceAll(HOW_TO_INSTALL_PLACEHOLDER, "<br>")
+      .replaceAll("`", "\\`")
+      .replaceAll("${", "\\${") + `<h3 style="margin-bottom: -10px">Demo</h3>`
   )
 }
 
@@ -121,38 +179,55 @@ export const generatePackageReadme = (
     readmeTemplate
       .replaceAll(TITLE_PLACEHOLDER, `<h1>${elementName}</h1>`)
       .replaceAll(DESCRIPTION_PLACEHOLDER, storyConfig.description)
-      .replaceAll(USAGE_TITLE_PLACEHOLDER, "## Usage")
-      .replaceAll(USAGE_PLACEHOLDER, storyConfig.usage)
+      .replaceAll(USAGE_TITLE_PLACEHOLDER, storyConfig.usage ? "## Usage" : "")
+      .replaceAll(USAGE_PLACEHOLDER, storyConfig.usage || "")
       .replaceAll(LINKS_PLACEHOLDER, links.join("<br>")) + FOOTER_PLACEHOLDER
   )
 }
 
-export const getStoryStories = (storySpecs: StorySpec[] = []) =>
+export const getStoryStories = (storySpecs?: StorySpec[]) =>
   storySpecs
-    .map(
-      (storySpec) => `export const ${storySpec.name} = {
-  args: ${JSON.stringify(storySpec.args, null, 2)}
+    ? storySpecs
+        .map(
+          (storySpec) => `export const ${storySpec.name}: Story = {
+  args: ${JSON.stringify(storySpec.args, null, 2).replace(/\n/g, "\n  ")}
 }`,
-    )
-    .join("\n")
+        )
+        .join("\n")
+    : `export const Default: Story = { args: {} }`
 
 export const generateStoryFile = (
   elementName: string,
   storyConfig: StoryConfig,
 ) => {
   const storyType = getElementTypeFromName(elementName)
-  const demoComponentName =
-    storyType === StoryTypes.Component
-      ? elementName
-      : `${capitalize(elementName)}Demo`
-  const demoComponentImportPath =
-    storyType === StoryTypes.Component ? ".." : `./demos/${demoComponentName}`
-  const demoComponentImport = `import ${demoComponentName} from "${demoComponentImportPath}"`
+  const shouldUseDedicatedDemoComponent = getShouldUseDedicatedDemoComponent(
+    elementName,
+    storyConfig,
+  )
+  const demoComponentName = getDemoComponentName(
+    elementName,
+    shouldUseDedicatedDemoComponent,
+  )
+  const demoComponentImportPathFromExportFolder = getDemoComponentImportPath(
+    elementName,
+    shouldUseDedicatedDemoComponent,
+  )
+  const relativeImportPath = demoComponentImportPathFromExportFolder
+    ? `../${demoComponentImportPathFromExportFolder}`
+    : ".."
+  const demoComponentImport = `import ${demoComponentName} from "${relativeImportPath}"`
   return storiesTemplate
-    .replaceAll(STORY_TITLE_PLACEHOLDER, `${storyType}/${elementName}`)
+    .replaceAll(
+      STORY_TITLE_PLACEHOLDER,
+      `${storyType.toLocaleLowerCase()}s/${elementName}`,
+    )
     .replaceAll(COMPONENT_IMPORT_PLACEHOLDER, demoComponentImport)
     .replaceAll(COMPONENT_PLACEHOLDER, demoComponentName)
-    .replaceAll(DESCRIPTION_PLACEHOLDER, storyConfig.description)
+    .replaceAll(
+      DESCRIPTION_PLACEHOLDER,
+      generateStoryReadme(elementName, storyConfig),
+    )
     .replaceAll(STORIES_PLACEHOLDER, getStoryStories(storyConfig.stories))
 }
 

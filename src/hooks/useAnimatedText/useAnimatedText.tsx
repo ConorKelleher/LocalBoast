@@ -1,5 +1,11 @@
-import { diffStrings, getInterpolatedStringDiff } from "utils"
-import { useUpdatingRef, useAnimationFrames } from "hooks"
+// import { diffStrings, getInterpolatedStringDiff } from "utils"
+// import { useUpdatingRef, useAnimationFrames } from "hooks"
+import {
+  diffStrings,
+  getInterpolatedStringDiff,
+  useUpdatingRef,
+  useAnimationFrames,
+} from "../.."
 import { useCallback, useEffect, useRef, useState } from "react"
 
 export const DEFAULT_OPTIONS = {

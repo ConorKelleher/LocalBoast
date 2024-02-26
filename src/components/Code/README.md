@@ -24,25 +24,21 @@ yarn add localboast
 ## Usage
 
 ```javascript
-import { Code } from "localboast"
+import { Code } from "../../.."
 
-const srcCode = `
-import React from "react"
+export const srcCode = `import React from "react"
 
 const MyComponent = () => {
-  return "This is a nice component, innit?
+  return "This is a nice component, innit?"
 }
 
 export default MyComponent
 `
 
 const SomeComponent = () => {
-  return (
-    <Code>
-      {srcCode}
-    </Code>
-  )
+  return <Code>{srcCode}</Code>
 }
+
 ```
 ## Docs/Example
 

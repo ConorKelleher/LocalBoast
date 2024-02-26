@@ -1,6 +1,6 @@
 import AnimatedTextDemo, {
   AnimatedTextDemoType,
-} from "components/AnimatedText/stories/AnimatedTextDemo"
+} from "components/AnimatedText/stories/demos/AnimatedTextDemo"
 import { UseAnimatedTextOptions } from "../useAnimatedText"
 
 interface UseAnimatedTextDemoProps {

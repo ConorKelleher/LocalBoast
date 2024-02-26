@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "vite",
     "tsc": "tsc",
-    "build": "tsc && vite build && cp ./package.json ./dist",
+    "build": "tsc --project ./tsconfig.build.json && vite build && cp ./package.json ./dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",

@@ -1,4 +1,5 @@
 const process = require("process")
+const path = require("path")
 const viteTsconfig = require("vite-tsconfig-paths")
 const tsconfigPaths = viteTsconfig.default
 
@@ -18,6 +19,23 @@ const config = {
   },
   docs: {
     autodocs: "tag",
+  },
+  async viteFinal(config) {
+    // Merge custom configuration into the default config
+    return mergeConfig(config, {
+      resolve: {
+        alias: [
+          {
+            find: "localboast",
+            replacement: path.resolve(__dirname, "../src/index.ts"),
+          },
+          {
+            find: "localboast/*",
+            replacement: path.resolve(__dirname, "../src/*"),
+          },
+        ],
+      },
+    })
   },
 }
 export default config

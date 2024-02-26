@@ -22,12 +22,10 @@ yarn add localboast
 ## Usage
 
 ```javascript
-import { AnimatedText } from "localboast"
+import { AnimatedText, useInterval } from "localboast"
+import { useState } from "react"
 
-const texts = [
-  "This is the first string",
-  "This is the second string",
-] 
+const texts = ["This is the first string", "This is the second string"]
 
 const SomeComponent = () => {
   const [textIndex, setTextIndex] = useState(0)
@@ -37,12 +35,9 @@ const SomeComponent = () => {
     setTextIndex((oldIndex) => (oldIndex + 1) % texts.length)
   }, 5000)
 
-  return (
-    <AnimatedText>
-      {textToAnimate}
-    </AnimatedText>
-  )
+  return <AnimatedText>{textToAnimate}</AnimatedText>
 }
+
 ```
 ## Docs/Example
 

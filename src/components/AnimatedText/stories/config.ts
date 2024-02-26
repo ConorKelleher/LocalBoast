@@ -1,31 +1,60 @@
-import { StoryTypes, StoryConfig } from "storybook_utils/packageConstants.ts"
-import AnimatedTextDemo from "./AnimatedTextDemo"
+import { StoryConfig } from "storybook_utils/packageConstants.ts"
+import { DEFAULT_OPTIONS as USE_ANIMATED_TEXT_DEFAULT_OPTIONS } from "hooks/useAnimatedText"
+import {
+  getButtonAnimatedTextDemoString,
+  getLoopingAnimatedTextDemoString,
+} from "./demos/AnimatedTextDemo"
+import { StoryContext } from "@storybook/react"
 
 export default {
-  type: StoryTypes.Component,
-  name: "AnimatedText",
   description: `Component to allow per-character animating of any string. Simply pass in a string or array of strings as children and the component will pass through a self-updating string animating each character that is different from the previous children.`,
   alternative: "useAnimatedText",
-  component: AnimatedTextDemo,
-  usage: `import { AnimatedText } from "localboast"
-
-const texts = [
-  "This is the first string",
-  "This is the second string",
-] 
-
-const SomeComponent = () => {
-  const [textIndex, setTextIndex] = useState(0)
-  const textToAnimate = texts[textIndex]
-
-  useInterval(() => {
-    setTextIndex((oldIndex) => (oldIndex + 1) % texts.length)
-  }, 5000)
-
-  return (
-    <AnimatedText>
-      {textToAnimate}
-    </AnimatedText>
-  )
-}`,
+  forceDemoComponent: true,
+  metaMutations: {
+    parameters: {
+      docs: {
+        source: {
+          transform: (_: string, context: StoryContext) => {
+            return context.allArgs.type === "button"
+              ? getButtonAnimatedTextDemoString(false)
+              : getLoopingAnimatedTextDemoString(false)
+          },
+        },
+      },
+    },
+    argTypes: {
+      msPerChar: {
+        table: {
+          defaultValue: {
+            summary: USE_ANIMATED_TEXT_DEFAULT_OPTIONS.msPerChar,
+          },
+        },
+      },
+      children: {
+        table: {
+          type: { summary: "string | string[]" },
+        },
+      },
+      type: {
+        table: {
+          disable: true,
+        },
+      },
+    },
+  },
+  stories: [
+    {
+      name: "LoopingExample",
+      args: {
+        children:
+          "My value is being changed from this string to an empty string for the sake of a demo. Try your own string!",
+      },
+    },
+    {
+      name: "PagedExample",
+      args: {
+        type: "button",
+      },
+    },
+  ],
 } as StoryConfig
