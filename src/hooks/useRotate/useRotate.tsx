@@ -1,6 +1,6 @@
 import { useUpdatingRef, svgToDataUri, useMove, merge } from "localboast"
 import { useCallback, useEffect, useRef, useState } from "react"
-import RotateIcon from "../../icons/Rotate.svg?raw"
+import RotateIcon from "../../icons/RotateIcon/RotateIcon.svg?raw"
 
 type Coordinates = { x: number; y: number }
 

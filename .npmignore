@@ -4,13 +4,17 @@ stories
 *.stories
 storybook_utils
 test_utils
+src
+scripts
+assets
 
 .eslintrc
 .prettierrc
 .storybook
 .yarn
 .yarnrc
-README.md
+**/README.md
+**/README_TEMPLATE.md
 babel.config.cjs
 postcss.config.cjs
 coverage

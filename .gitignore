@@ -7,12 +7,18 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dev
 node_modules
-dist
-storybook-static
-dist-ssr
-*.local
 .env
+
+# Build
+index.cjs
+index.cjs.map
+index.js
+index.js.map
+lib
+storybook-static
+*.local
 
 # Editor directories and files
 .vscode/*

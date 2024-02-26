@@ -5,8 +5,8 @@ import {
   generateStoryFile,
   getRuntimeConfig,
   populateTemplate,
-} from "./src/storybook_utils/helpers"
-import { capitalize } from "./src"
+} from "../src/storybook_utils/helpers"
+import { capitalize } from "../src"
 
 const rootPath = "src"
 
@@ -25,7 +25,7 @@ exportFolders.forEach((exportFolder) => {
     if (fs.existsSync(configPath)) {
       exportContents.push(item)
       const { default: configWithoutUsage } = await import(
-        `${import.meta.url}/../${configPath}`
+        `${import.meta.url}/../../${configPath}`
       )
       const config = getRuntimeConfig(item, configWithoutUsage, storiesPath)
 

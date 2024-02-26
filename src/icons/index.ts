@@ -1,1 +1,1 @@
-export { default as RotateIcon } from "./Rotate.svg?react"
+export * from "./RotateIcon"

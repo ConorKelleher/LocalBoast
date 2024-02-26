@@ -35,6 +35,7 @@ export default defineConfig({
       external: [],
       output: {
         sourcemap: true,
+        dir: ".",
       },
       plugins: [
         excludeDependenciesFromBundle(),
@@ -44,7 +45,8 @@ export default defineConfig({
         typescript({
           sourceMap: true,
           declaration: true,
-          outDir: "dist",
+          emitDeclarationOnly: true,
+          outDir: "lib",
           allowImportingTsExtensions: false,
           // include: ["**/src/components/**", "**/src/hooks/**"],
           exclude: [
