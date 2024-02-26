@@ -3,10 +3,11 @@ import {
   useTwitchChatBotAuth,
   useTwitchChatBotMessages,
   UseTwitchChatBotAuthOptions,
-  USE_TWITCH_CHAT_BOT_AUTH_DEFAULT_OPTIONS,
   OnTwitchChatMessage,
   merge,
 } from "localboast"
+// Have to import the following separately to avoid circular dependencies
+import { USE_TWITCH_CHAT_BOT_AUTH_DEFAULT_OPTIONS } from "./useTwitchChatBotAuth"
 
 export interface UseTwitchChatOptions extends UseTwitchChatBotAuthOptions {
   onMessage?: OnTwitchChatMessage

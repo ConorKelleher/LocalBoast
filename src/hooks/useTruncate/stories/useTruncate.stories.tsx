@@ -24,8 +24,8 @@ See the component-based solution: [Truncate](https://localboast.com/docs?path=/d
 <h3 style="margin-bottom: -15px">Usage</h3>
 
 \`\`\`javascript
+import { useTruncate, TruncateFrom, UseTruncateOptions } from "localboast"
 import TruncateTextWrapper from "components/Truncate/stories/TruncateTextWrapper"
-import useTruncate, { TruncateFrom, UseTruncateOptions } from "../.."
 
 interface UseTruncateDemoProps {
   /**

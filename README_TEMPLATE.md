@@ -2,6 +2,8 @@
 
 ![BannerImage](assets/icons/ColourSolidWide.jpeg)
 
+[![npm](https://img.shields.io/npm/dm/localboast)](https://www.npmjs.com/package/localboast)
+
 This is the full LocalBoast React library.
 
 - GitHub: https://github.com/ConorKelleher/LocalBoast
