@@ -1,2 +1,3 @@
 export { default } from "./useImageLoader"
-export { default as useImageLoaderWithFallback } from "./useImageLoaderWithCallback"
+export * from "./useImageLoader"
+export * from "./useImageLoaderWithFallback"

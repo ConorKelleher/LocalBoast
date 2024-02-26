@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
-import AnimatedText, { AnimatedTextProps } from "../.."
-import { useAnimatedText } from "hooks"
+import { AnimatedText, AnimatedTextProps, useAnimatedText } from "localboast"
 import { Stack } from "@mantine/core"
 
 export type AnimatedTextDemoType = "button" | "plain"

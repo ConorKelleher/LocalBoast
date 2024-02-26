@@ -1,6 +1,5 @@
-import { debounce, generateRandomId } from "utils"
+import { debounce, generateRandomId, useUpdatingRef } from "localboast"
 import { createDetectElementResize } from "./helpers/detectElementResize"
-import { useUpdatingRef } from "hooks"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 export type Size = {
@@ -8,13 +7,13 @@ export type Size = {
   width: number
 }
 
-interface UseSizeOptions {
+export interface UseSizeOptions {
   debounceMs?: number
   maxDebounceMs?: number
   onResize?: (newSize: Size) => void
 }
 
-const useSize = (options?: UseSizeOptions) => {
+export const useSize = (options?: UseSizeOptions) => {
   const [size, setSize] = useState<Size | null>(null)
   const resizeListenedRef = useRef<HTMLElement>()
   const elementRef = useRef<HTMLElement | null>(null)

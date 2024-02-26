@@ -1,7 +1,20 @@
-export type StringIndexableObject = { [key: string]: any }
+export type MergeableObject = { [key: string]: any }
+export type OptionalMergeableObject = undefined | MergeableObject
 
-export const merge = (a: StringIndexableObject, b: StringIndexableObject) => {
-  const merged = { ...a }
+export const merge = <
+  A extends MergeableObject,
+  B extends OptionalMergeableObject,
+>(
+  a: A,
+  b: B,
+) => {
+  if (!a) {
+    return b as A & B
+  }
+  if (!b) {
+    return a as A & B
+  }
+  const merged: MergeableObject = { ...a }
   Object.entries(b).forEach(([key, value]) => {
     if (typeof merged[key] === "object" && !Array.isArray(merged[key])) {
       // if key exists and is object, create shallow clone
@@ -21,5 +34,5 @@ export const merge = (a: StringIndexableObject, b: StringIndexableObject) => {
       merged[key] = value
     }
   })
-  return merged
+  return merged as A & B
 }

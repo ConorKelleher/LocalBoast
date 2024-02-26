@@ -1,14 +1,10 @@
-import { DEFAULT_OPTIONS as DEFAULT_TRUNCATE_OPTIONS } from "hooks/useTruncate/useTruncate"
-import useTruncate, { TruncateFrom } from "hooks/useTruncate"
+import {
+  useTruncate,
+  TruncateFrom,
+  USE_TRUNCATE_DEFAULT_OPTIONS,
+} from "localboast"
 import React from "react"
 
-/**
- * Controls behavior of truncation
- * - from - Where should the truncation take place ("start" | "middle" | "end")
- * - startOffset - How many leading characters should be allowed before chosen truncation point
- * - endOffset - How many trailing characters should be allowed after chosen truncation point
- * - disableWarnings - If true, console warnings for non-string children prop will be disabled
- */
 export interface TruncateProps {
   /**
    * Raw string that is to be truncated. If you want to use a custom component, use the "tag" prop. Don't pass it as a child
@@ -53,7 +49,13 @@ export interface TruncateProps {
   disableWarnings?: boolean
 }
 
-const Truncate = (props: TruncateProps) => {
+export const TRUNCATE_DEFAULT_PROPS = {
+  ...USE_TRUNCATE_DEFAULT_OPTIONS,
+  children: "",
+  tag: "span",
+}
+
+export const Truncate = (props: TruncateProps) => {
   const { children: originalString, ...otherProps } = props
   const isValidChildType = typeof originalString === "string"
   const [truncatedText, ref] = useTruncate(
@@ -74,10 +76,6 @@ const Truncate = (props: TruncateProps) => {
   return <Tag ref={ref}>{truncatedText}</Tag>
 }
 
-Truncate.defaultProps = {
-  ...DEFAULT_TRUNCATE_OPTIONS,
-  children: "",
-  tag: "span",
-}
+Truncate.defaultProps = TRUNCATE_DEFAULT_PROPS
 
 export default Truncate

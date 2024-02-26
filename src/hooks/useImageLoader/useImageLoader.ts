@@ -1,28 +1,34 @@
-import React from "react"
+import { merge } from "localboast"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 
-type UseImageLoaderArguments = { src: string; load?: boolean }
+export type UseImageLoaderOptions = { src: string; load?: boolean }
 
-const useImageLoader = ({ src, load = true }: UseImageLoaderArguments) => {
-  const [loading, setLoading] = React.useState(load)
-  const loadingRef = React.useRef(loading)
-  const [loaded, setLoaded] = React.useState(false)
-  const loadedRef = React.useRef(loaded)
-  const [failedToLoad, setFailedToLoad] = React.useState(false)
-  const failedToLoadRef = React.useRef(failedToLoad)
-  const prevEffectedArgsRef = React.useRef({ src, load })
+export const USE_IMAGE_LOADER_DEFAULT_OPTIONS = {
+  load: true,
+}
+
+export const useImageLoader = (options: UseImageLoaderOptions) => {
+  const { src, load } = merge(USE_IMAGE_LOADER_DEFAULT_OPTIONS, options)
+  const [loading, setLoading] = useState(load)
+  const loadingRef = useRef(loading)
+  const [loaded, setLoaded] = useState(false)
+  const loadedRef = useRef(loaded)
+  const [failedToLoad, setFailedToLoad] = useState(false)
+  const failedToLoadRef = useRef(failedToLoad)
+  const prevEffectedArgsRef = useRef({ src, load })
 
   const invalidateState =
     prevEffectedArgsRef.current.src !== src ||
     prevEffectedArgsRef.current.load !== load
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadingRef.current = loading
     loadedRef.current = loaded
     failedToLoadRef.current = failedToLoad
   }, [loading, loaded, failedToLoad])
 
   // Layout effect to commit load state immediately on first render we have it
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     prevEffectedArgsRef.current = { src, load }
     // Negate current load state if props change
     if (load) {
@@ -51,7 +57,7 @@ const useImageLoader = ({ src, load = true }: UseImageLoaderArguments) => {
     }
   }, [src, load])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!load) {
       return
     }
@@ -77,13 +83,10 @@ const useImageLoader = ({ src, load = true }: UseImageLoaderArguments) => {
     }
   }, [load, src])
 
-  return React.useMemo(
-    () => ({
-      loading: invalidateState ? load : loading,
-      loaded: invalidateState ? false : loaded,
-      failedToLoad: invalidateState ? false : failedToLoad,
-    }),
-    [loading, loaded, failedToLoad, invalidateState, load],
-  )
+  return {
+    loading: invalidateState ? load : loading,
+    loaded: invalidateState ? false : loaded,
+    failedToLoad: invalidateState ? false : failedToLoad,
+  }
 }
 export default useImageLoader

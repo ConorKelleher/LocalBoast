@@ -1,10 +1,10 @@
 import type { Meta, StoryContext, StoryObj } from "@storybook/react"
+import { USE_ANIMATED_TEXT_DEFAULT_OPTIONS } from "localboast"
 import {
   getButtonAnimatedTextDemoString,
   getLoopingAnimatedTextDemoString,
 } from "components/AnimatedText/stories/demos/AnimatedTextDemo"
 import UseAnimatedTextDemo from "./UseAnimatedTextDemo"
-import { DEFAULT_OPTIONS as USE_ANIMATED_TEXT_DEFAULT_OPTIONS } from ".."
 import { getStoryGithubLink } from "storybook_utils/helpers"
 import { StoryTypes } from "storybook_utils/packageConstants"
 

@@ -1,5 +1,5 @@
+import { USE_ANIMATED_TEXT_DEFAULT_OPTIONS } from "localboast"
 import { StoryConfig } from "storybook_utils/packageConstants.ts"
-import { DEFAULT_OPTIONS as USE_ANIMATED_TEXT_DEFAULT_OPTIONS } from "hooks/useAnimatedText"
 import {
   getButtonAnimatedTextDemoString,
   getLoopingAnimatedTextDemoString,

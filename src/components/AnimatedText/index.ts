@@ -1,1 +1,2 @@
-export { default, type AnimatedTextProps } from "./AnimatedText"
+export { default } from "./AnimatedText"
+export * from "./AnimatedText"

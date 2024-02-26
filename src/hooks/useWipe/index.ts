@@ -1,7 +1,2 @@
-export {
-  default,
-  UseWipeShape,
-  type SVGShape,
-  type UseWipeOptions,
-  DEFAULT_USE_WIPE_OPTIONS,
-} from "./useWipe"
+export { default } from "./useWipe"
+export * from "./useWipe"

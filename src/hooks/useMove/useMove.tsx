@@ -1,16 +1,16 @@
-import { useUpdatingRef } from "hooks"
+import { merge, useUpdatingRef } from "localboast"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 type Coordinates = { x: number; y: number }
 
-interface UseMoveOptions {
+export interface UseMoveOptions {
   noPersistence?: boolean
   onMoveStart?: (e: MouseEvent) => void
   onMove?: (e: MouseEvent, offset: Coordinates) => void
   onMoveEnd?: (e: MouseEvent) => void
 }
 
-const DEFAULT_OPTIONS = {
+export const USE_MOVE_DEFAULT_OPTIONS = {
   noPersistence: false,
   onMoveStart: () => {},
   onMove: () => {},
@@ -19,7 +19,7 @@ const DEFAULT_OPTIONS = {
 
 const NO_OFFSET: Coordinates = { x: 0, y: 0 }
 
-const useMove = (options?: UseMoveOptions) => {
+export const useMove = (options?: UseMoveOptions) => {
   const handleRef = useRef<HTMLElement | null>(null)
   const startCoordinatesRef = useRef<Coordinates | null>(null)
   const [offset, setOffset] = useState<Coordinates>(NO_OFFSET)
@@ -27,7 +27,7 @@ const useMove = (options?: UseMoveOptions) => {
   // When we've moved the element, track how much we've offset it, so next time (even if it's moved on the page), we have a record of how much initial offset is required
   const persistedOffsetRef = useRef<Coordinates>(offset)
   const movingRef = useRef(false)
-  const mergedOptions = { ...DEFAULT_OPTIONS, ...options }
+  const mergedOptions = merge(USE_MOVE_DEFAULT_OPTIONS, options)
   const optionsRef = useUpdatingRef(mergedOptions)
 
   const onMouseDown = useCallback(

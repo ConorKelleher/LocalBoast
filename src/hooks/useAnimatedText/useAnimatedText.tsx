@@ -5,10 +5,11 @@ import {
   getInterpolatedStringDiff,
   useUpdatingRef,
   useAnimationFrames,
-} from "../.."
+  merge,
+} from "localboast"
 import { useCallback, useEffect, useRef, useState } from "react"
 
-export const DEFAULT_OPTIONS = {
+export const USE_ANIMATED_TEXT_DEFAULT_OPTIONS = {
   msPerChar: 15,
 }
 
@@ -23,14 +24,16 @@ export interface UseAnimatedTextOptions {
   msPerChar?: number
 }
 
-const useAnimatedText = (text: string, options?: UseAnimatedTextOptions) => {
+export const useAnimatedText = (
+  text: string,
+  options?: UseAnimatedTextOptions,
+) => {
   const [currString, setCurrString] = useState(text)
   const currStringRef = useRef(currString)
   const { start } = useAnimationFrames()
-  const mergedOptionsRef = useUpdatingRef({
-    ...DEFAULT_OPTIONS,
-    ...options,
-  })
+  const mergedOptionsRef = useUpdatingRef(
+    merge(USE_ANIMATED_TEXT_DEFAULT_OPTIONS, options),
+  )
 
   const animate = useCallback(
     (goalString: string) => {
@@ -48,7 +51,7 @@ const useAnimatedText = (text: string, options?: UseAnimatedTextOptions) => {
         const removedRatio = removed.length / totalCharsChange
         const additionRatio = 1 - removedRatio
         let completedRemoval = removed.length === 0
-        const animTime = totalCharsChange * mergedOptionsRef.current.msPerChar
+        const animTime = totalCharsChange * mergedOptionsRef.current!.msPerChar! // Safe to assert since we've merged in our defaults
         start((progress) => {
           let interpolatedString
 

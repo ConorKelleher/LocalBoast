@@ -1,17 +1,15 @@
-import { svgToDataUri } from "utils"
-import { useUpdatingRef } from "hooks"
-import useMove from "hooks/useMove"
+import { useUpdatingRef, svgToDataUri, useMove, merge } from "localboast"
 import { useCallback, useEffect, useRef, useState } from "react"
 import RotateIcon from "icons/Rotate.svg?raw"
 
 type Coordinates = { x: number; y: number }
 
-interface UseRotateOptions {
+export interface UseRotateOptions {
   handleVisible?: boolean
   outerSelectionRadius?: number
 }
 
-export const DEFAULT_OPTIONS = {
+export const USE_ROTATE_DEFAULT_OPTIONS = {
   handleVisible: true,
   outerSelectionRadius: 15,
 }
@@ -22,11 +20,8 @@ const RAD_TO_DEG = 180 / Math.PI
 const getAngleFromOffset = (offset: Coordinates) =>
   Math.atan2(offset.y, offset.x) * RAD_TO_DEG
 
-const useRotate = (options?: UseRotateOptions) => {
-  const mergedOptions = {
-    ...DEFAULT_OPTIONS,
-    ...options,
-  }
+export const useRotate = (options?: UseRotateOptions) => {
+  const mergedOptions = merge(USE_ROTATE_DEFAULT_OPTIONS, options)
   const optionsRef = useUpdatingRef(mergedOptions)
   const objectCenterCoordsRef = useRef(NO_OFFSET)
   const initialVectorAngleRef = useRef(0)
@@ -98,8 +93,7 @@ const useRotate = (options?: UseRotateOptions) => {
       rotatableRef.current.appendChild(handleRef.current)
       handleRef.current.style.position = "absolute"
       handleRef.current.style.zIndex = "99999"
-      const { outerSelectionRadius = DEFAULT_OPTIONS.outerSelectionRadius } =
-        optionsRef.current
+      const { outerSelectionRadius } = optionsRef.current
       handleRef.current.style.inset = `-${outerSelectionRadius}px`
       handleRef.current.style.pointerEvents = "none"
       handleRef.current.style.borderRadius = `${outerSelectionRadius}px`

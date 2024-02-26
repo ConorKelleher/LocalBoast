@@ -24,7 +24,7 @@ yarn add localboast
 ## Usage
 
 ```javascript
-import { Code } from "../../.."
+import { Code } from "localboast"
 
 export const srcCode = `import React from "react"
 

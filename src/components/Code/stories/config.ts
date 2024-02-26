@@ -1,5 +1,5 @@
 import { StoryConfig } from "storybook_utils/packageConstants"
-import SampleCode from "./SampleCode"
+import { srcCode as sampleCodeSrc } from "./demos/CodeDemo"
 
 export default {
   description: `Component to automatically syntax-highlight and preformat any code passed to it.
@@ -10,7 +10,7 @@ export default {
     {
       name: "CodeBasic",
       args: {
-        children: SampleCode,
+        children: sampleCodeSrc,
         colorScheme: "dark",
       },
     },

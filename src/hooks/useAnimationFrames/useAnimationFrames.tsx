@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 
-type ProgressUpdate = (progress: number) => void
+export type ProgressUpdate = (progress: number) => void
 
-const useAnimationFrames = () => {
+export const useAnimationFrames = () => {
   const animationStartRef = useRef<number>()
   const previousTimeStampRef = useRef<number>()
   const [animating, setAnimating] = useState(false)

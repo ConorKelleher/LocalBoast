@@ -1,7 +1,7 @@
 import { useUpdatingRef } from "hooks"
 import { useEffect, useRef } from "react"
 
-const useInterval = (func: () => void, ms: number) => {
+export const useInterval = (func: () => void, ms: number) => {
   const intervalRef = useRef<NodeJS.Timeout>()
   const funcRef = useUpdatingRef(func)
 

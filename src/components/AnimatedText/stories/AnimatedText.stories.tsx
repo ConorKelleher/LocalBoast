@@ -49,7 +49,7 @@ const SomeComponent = () => {
 } as Meta<typeof AnimatedTextDemo>
 
 if (storyConfig.metaMutations) {
-  meta = merge(meta, storyConfig.metaMutations)
+  meta = merge(meta, storyConfig.metaMutations as Meta<typeof AnimatedTextDemo>)
 }
 
 export default meta

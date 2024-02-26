@@ -1,3 +1,3 @@
-export { default as Truncate } from "./Truncate"
-export { default as Code } from "./Code"
-export { default as AnimatedText, type AnimatedTextProps } from "./AnimatedText"
+export * from "./Truncate"
+export * from "./Code"
+export * from "./AnimatedText"

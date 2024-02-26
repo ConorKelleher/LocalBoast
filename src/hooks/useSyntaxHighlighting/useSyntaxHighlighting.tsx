@@ -24,15 +24,17 @@ export interface UseSyntaxHighlightingOptions {
    */
   themeURL?: string
 }
-export const DEFAULT_USE_SYNTAX_HIGHLIGHTING_OPTIONS: UseSyntaxHighlightingOptions =
+export const USE_SYNTAX_HIGHLIGHTING_DEFAULT_OPTIONS: UseSyntaxHighlightingOptions =
   {
     colorScheme: "dark",
   }
 
-const useSyntaxHighlighting = (options?: UseSyntaxHighlightingOptions) => {
+export const useSyntaxHighlighting = (
+  options?: UseSyntaxHighlightingOptions,
+) => {
   const [themeLoaded, setThemeLoaded] = useState(false)
   const mergedOptions = {
-    ...DEFAULT_USE_SYNTAX_HIGHLIGHTING_OPTIONS,
+    ...USE_SYNTAX_HIGHLIGHTING_DEFAULT_OPTIONS,
     ...options,
   }
 

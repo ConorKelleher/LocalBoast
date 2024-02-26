@@ -1,5 +1,5 @@
+import { useTruncate, TruncateFrom, UseTruncateOptions } from "localboast"
 import TruncateTextWrapper from "components/Truncate/stories/TruncateTextWrapper"
-import useTruncate, { TruncateFrom, UseTruncateOptions } from "../.."
 
 interface UseTruncateDemoProps {
   /**

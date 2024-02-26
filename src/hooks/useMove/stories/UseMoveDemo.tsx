@@ -1,4 +1,4 @@
-import useMove from ".."
+import { useMove } from "localboast"
 
 export const UseMoveDemo = () => {
   const [setHandle, offset] = useMove()

@@ -1,1 +1,2 @@
-export { default, TruncateFrom, type UseTruncateOptions } from "./useTruncate"
+export { default } from "./useTruncate"
+export * from "./useTruncate"

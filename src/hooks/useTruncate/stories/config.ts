@@ -1,8 +1,5 @@
 // These imports must be relative - top level generateReadmes.ts file imports this directly and can't resolve absolute imports
-import {
-  StoryTypes,
-  StoryConfig,
-} from "../../../storybook_utils/packageConstants.ts"
+import { StoryTypes, StoryConfig } from "storybook_utils/packageConstants.ts"
 import UseTruncateDemo from "./demos/UseTruncateDemo.tsx"
 
 export default {

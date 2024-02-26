@@ -1,7 +1,7 @@
+import { UseAnimatedTextOptions } from "localboast"
 import AnimatedTextDemo, {
   AnimatedTextDemoType,
 } from "components/AnimatedText/stories/demos/AnimatedTextDemo"
-import { UseAnimatedTextOptions } from "../useAnimatedText"
 
 interface UseAnimatedTextDemoProps {
   text: string

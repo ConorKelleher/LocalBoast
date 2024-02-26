@@ -21,7 +21,7 @@ let meta = {
 } as Meta<typeof INSERT_COMPONENT_HERE>
 
 if (storyConfig.metaMutations) {
-  meta = merge(meta, storyConfig.metaMutations)
+  meta = merge(meta, storyConfig.metaMutations as Meta<typeof INSERT_COMPONENT_HERE>)
 }
 
 export default meta

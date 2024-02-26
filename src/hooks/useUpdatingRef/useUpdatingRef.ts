@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react"
  * @returns React.MutableRefObject with current value of type T (unknown if not provided)
  */
 // Trailing comma after T to avoid parsing ambiguity (https://github.com/microsoft/TypeScript/issues/15713#issuecomment-499474386)
-const useUpdatingRef = <T>(value: T) => {
+export const useUpdatingRef = <T>(value: T) => {
   const ref = useRef<T>(value)
 
   useEffect(() => {

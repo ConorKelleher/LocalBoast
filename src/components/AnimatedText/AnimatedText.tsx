@@ -1,12 +1,14 @@
-import { useAnimatedText } from "../../hooks"
-import { UseAnimatedTextOptions } from "../../hooks/useAnimatedText/useAnimatedText"
+import { useAnimatedText, UseAnimatedTextOptions } from "localboast"
 import { PropsWithChildren, useMemo } from "react"
 
 export interface AnimatedTextProps
   extends PropsWithChildren,
     UseAnimatedTextOptions {}
 
-const AnimatedText = ({ children, ...otherProps }: AnimatedTextProps) => {
+export const AnimatedText = ({
+  children,
+  ...otherProps
+}: AnimatedTextProps) => {
   return useAnimatedText(
     useMemo(() => {
       let childText = ""

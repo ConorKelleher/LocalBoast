@@ -1,9 +1,9 @@
-import { useUpdatingRef } from "hooks"
+import { useUpdatingRef } from "localboast"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 type OnScroll = (e: Event) => void
 
-const useScrollDetection = (onScroll: OnScroll) => {
+export const useScrollDetection = (onScroll: OnScroll) => {
   const scrollListenedRef = useRef<HTMLElement | null>(null)
   const [listenerIndex, setListenerIndex] = useState(0)
   const onScrollRef = useUpdatingRef(onScroll)

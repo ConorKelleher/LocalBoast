@@ -1,20 +1,23 @@
 import { useCallback } from "react"
-import useTwitchChatBotAuth, {
+import {
+  useTwitchChatBotAuth,
+  useTwitchChatBotMessages,
   UseTwitchChatBotAuthOptions,
-  DEFAULT_OPTIONS as USE_CHAT_BOT_AUTH_DEFAULT_OPTIONS,
-} from "./useTwitchChatBotAuth"
-import useTwitchChatBotMessages, { OnMessage } from "./useTwitchChatBotMessages"
+  USE_TWITCH_CHAT_BOT_AUTH_DEFAULT_OPTIONS,
+  OnTwitchChatMessage,
+  merge,
+} from "localboast"
 
-interface UseTwitchChatOptions extends UseTwitchChatBotAuthOptions {
-  onMessage?: OnMessage
+export interface UseTwitchChatOptions extends UseTwitchChatBotAuthOptions {
+  onMessage?: OnTwitchChatMessage
 }
 
-const DEFAULT_OPTIONS = {
-  ...USE_CHAT_BOT_AUTH_DEFAULT_OPTIONS,
+export const USE_TWITCH_CHAT_DEFAULT_OPTIONS = {
+  ...USE_TWITCH_CHAT_BOT_AUTH_DEFAULT_OPTIONS,
 }
 
-const useTwitchChat = (options: UseTwitchChatOptions) => {
-  const mergedOptions = { ...DEFAULT_OPTIONS, ...options }
+export const useTwitchChat = (options: UseTwitchChatOptions) => {
+  const mergedOptions = merge(USE_TWITCH_CHAT_DEFAULT_OPTIONS, options)
   const {
     authenticated,
     oauthToken,

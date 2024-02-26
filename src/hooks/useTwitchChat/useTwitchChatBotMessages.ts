@@ -1,49 +1,51 @@
 import { useCallback, useEffect, useState } from "react"
-import useTwitchChatBot, {
-  DEFAULT_RECONNECT_TIMEOUT_MS,
-} from "./useTwitchChatBot"
-import { useUpdatingRef } from "hooks"
+import {
+  useUpdatingRef,
+  useTwitchChatBot,
+  UseTwitchChatBotOptions,
+  USE_TWITCH_CHAT_BOT_DEFAULT_OPTIONS,
+} from "localboast"
 
-export type OnMessage = (newMessages: string[], allMessages: string[]) => void
+export type OnTwitchChatMessage = (
+  newMessages: string[],
+  allMessages: string[],
+) => void
 
-interface UseTwitchChatBotMessages {
+export interface UseTwitchChatBotMessagesOptions
+  extends UseTwitchChatBotOptions {
   oauthToken: string | null
   username: string | null
-  onMessage?: OnMessage
+  onMessage?: OnTwitchChatMessage
 }
 
-const useTwitchChatBotMessages = ({
+export const USE_TWITCH_CHAT_BOT_MESSAGES_DEFAULT_OPTIONS = {
+  ...USE_TWITCH_CHAT_BOT_DEFAULT_OPTIONS,
+}
+
+export const useTwitchChatBotMessages = ({
   username,
   oauthToken,
   onMessage,
-}: UseTwitchChatBotMessages) => {
+  ...chatBotOptions
+}: UseTwitchChatBotMessagesOptions) => {
   const [chats, setChats] = useState<string[]>([])
   const { connect, part, disconnect, joined, joining, reconnecting, error } =
-    useTwitchChatBot()
+    useTwitchChatBot(chatBotOptions)
   const onMessageRef = useUpdatingRef(onMessage)
 
   const joinChannel = useCallback(
-    (
-      channel?: string,
-      reconnectTimeoutMs: number | null = DEFAULT_RECONNECT_TIMEOUT_MS,
-    ) => {
+    (channel?: string) => {
       if (username) {
         const channelToJoin = channel || username
-        connect(
-          oauthToken!,
-          channelToJoin,
-          username,
-          (newChats: string[]) => {
-            setChats((oldChats) => {
-              const newAllChats = [...oldChats, ...newChats]
-              if (onMessageRef.current) {
-                onMessageRef.current(newChats, newAllChats)
-              }
-              return newAllChats
-            })
-          },
-          reconnectTimeoutMs,
-        )
+        connect(oauthToken!, channelToJoin, username, (newChats: string[]) => {
+          setChats((oldChats) => {
+            const newAllChats = [...oldChats, ...newChats]
+            if (onMessageRef.current) {
+              onMessageRef.current(newChats, newAllChats)
+            }
+            return newAllChats
+          })
+        })
       }
     },
     [connect, oauthToken, username, onMessageRef],

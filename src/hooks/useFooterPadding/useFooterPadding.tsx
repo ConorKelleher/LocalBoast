@@ -1,6 +1,6 @@
-import { useSize } from "hooks"
+import { useSize } from "localboast"
 
-const useFooterPadding = () => {
+export const useFooterPadding = () => {
   const { size, setRef } = useSize()
 
   return {

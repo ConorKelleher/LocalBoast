@@ -1,5 +1,11 @@
-import { cx, generateRandomId } from "utils"
-import { UseSizeSize, useSize, useUpdatingRef } from "hooks"
+import {
+  Size,
+  useSize,
+  useUpdatingRef,
+  cx,
+  generateRandomId,
+  merge,
+} from "localboast"
 import { useCallback, useEffect, useRef } from "react"
 
 const getSVGForegroundTransition = (ms: number) =>
@@ -16,7 +22,7 @@ export interface UseWipeOptions {
   ms?: number
   shape?: SVGShape
 }
-export const DEFAULT_USE_WIPE_OPTIONS = {
+export const USE_WIPE_DEFAULT_OPTIONS = {
   ms: 2000,
   shape: UseWipeShape.Circle,
 }
@@ -31,15 +37,15 @@ const getSVGContainer = () => {
   return container
 }
 
-const getSVGViewBox = (size: UseSizeSize | null) =>
+const getSVGViewBox = (size: Size | null) =>
   `0 0 ${size?.width || 100} ${size?.height || 100}`
-const getSVGRectDimensions = (size: UseSizeSize | null) =>
+const getSVGRectDimensions = (size: Size | null) =>
   `${!size ? 100 : Math.min(size.height, size.width)}px`
-const getSVGCircleRadius = (size: UseSizeSize | null) =>
+const getSVGCircleRadius = (size: Size | null) =>
   `${!size ? 50 : Math.min(size.height, size.width) / 2}px`
 
 const getNewSVG = (
-  size: UseSizeSize | null,
+  size: Size | null,
   options: UseWipeOptions,
   wipeId: string,
 ) => {
@@ -51,7 +57,7 @@ const getNewSVG = (
   newSVG.setAttribute("viewBox", getSVGViewBox(size))
   newSVG.setAttribute("xmlns", "http://www.w3.org/2000/svg")
   const shape = options.shape
-  const ms = options.ms || DEFAULT_USE_WIPE_OPTIONS.ms
+  const ms = options.ms! // safe to assert since options were merged with defaults
   const isCustomSVGShape = !Object.values(UseWipeShape).includes(
     shape as UseWipeShape,
   )
@@ -136,15 +142,14 @@ const removeAllDescendentIds = (node: Node) => {
   }
 }
 
-const useWipe = (options?: UseWipeOptions) => {
+export const useWipe = (options?: UseWipeOptions) => {
   const { size, setRef: setSizeRef } = useSize()
   const svgContainerRef = useRef<HTMLDivElement>(getSVGContainer())
   const sizeRef = useUpdatingRef(size)
   const positionRef = useRef<HTMLElement | null>(null)
-  const mergedOptionsRef = useUpdatingRef({
-    ...DEFAULT_USE_WIPE_OPTIONS,
-    ...options,
-  })
+  const mergedOptionsRef = useUpdatingRef(
+    merge(USE_WIPE_DEFAULT_OPTIONS, options),
+  )
 
   // Append svg mask container on mount + remove on unmount
   useEffect(() => {

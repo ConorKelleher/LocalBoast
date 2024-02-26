@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { generateRandomId } from "utils"
-import { useUpdatingRef } from "hooks"
 import {
+  Size,
+  generateRandomId,
+  useUpdatingRef,
   LS_KEY_TWITCH_AUTH_TOKEN,
   LS_KEY_TWITCH_CSRF_TOKEN,
-} from "constants/twitchConstants"
+  merge,
+} from "localboast"
 
 const getAuthUrl = (chatBotClientId: string, uid: string) =>
   `
@@ -36,10 +38,6 @@ const checkTokenValid = async (token: string) => {
   }
 }
 
-type Dimensions = {
-  height: number
-  width: number
-}
 export enum WindowOption {
   Tab,
   Popup,
@@ -48,20 +46,20 @@ export enum WindowOption {
 export interface UseTwitchChatBotAuthOptions {
   botId: string
   window?: WindowOption
-  popupDimensions?: Dimensions
+  popupDimensions?: Size
+  pollingInterval?: number
 }
 
-export const DEFAULT_OPTIONS = {
+export const USE_TWITCH_CHAT_BOT_AUTH_DEFAULT_OPTIONS = {
   window: WindowOption.Popup,
   popupDimensions: { height: 500, width: 700 },
+  pollingInterval: 500,
 }
-
-const POLLING_INTERVAL = 500
 
 const getPersistedAuthToken = () =>
   localStorage.getItem(LS_KEY_TWITCH_AUTH_TOKEN)
 
-const useTwitchChatBotAuth = (options: UseTwitchChatBotAuthOptions) => {
+export const useTwitchChatBotAuth = (options: UseTwitchChatBotAuthOptions) => {
   const [oauthToken, setOauthToken] = useState<string | null>(
     getPersistedAuthToken,
   )
@@ -70,10 +68,7 @@ const useTwitchChatBotAuth = (options: UseTwitchChatBotAuthOptions) => {
   const [pollingForToken, setPollingForToken] = useState(false)
   const [username, setUsername] = useState<string | null>(null)
   const [validating, setValidating] = useState(false)
-  const mergedOptions: UseTwitchChatBotAuthOptions = {
-    ...DEFAULT_OPTIONS,
-    ...options,
-  }
+  const mergedOptions = merge(USE_TWITCH_CHAT_BOT_AUTH_DEFAULT_OPTIONS, options)
   const mergedOptionsRef = useUpdatingRef(mergedOptions)
   const oauthTokenRef = useUpdatingRef(oauthToken)
 
@@ -148,9 +143,9 @@ const useTwitchChatBotAuth = (options: UseTwitchChatBotAuthOptions) => {
       closeNewWindows()
       validateToken(accessToken)
     } else {
-      setTimeout(pollAuthInLs, POLLING_INTERVAL)
+      setTimeout(pollAuthInLs, mergedOptionsRef.current.pollingInterval)
     }
-  }, [closeNewWindows, validateToken])
+  }, [closeNewWindows, validateToken, mergedOptionsRef])
 
   const unauthenticate = useCallback(() => {
     localStorage.removeItem(LS_KEY_TWITCH_AUTH_TOKEN)
@@ -164,9 +159,9 @@ const useTwitchChatBotAuth = (options: UseTwitchChatBotAuthOptions) => {
   // When polingForToken first becomes true, start the actual polling
   useEffect(() => {
     if (pollingForToken) {
-      setTimeout(pollAuthInLs, POLLING_INTERVAL)
+      setTimeout(pollAuthInLs, mergedOptions.pollingInterval)
     }
-  }, [pollingForToken, pollAuthInLs])
+  }, [pollingForToken, pollAuthInLs, mergedOptions.pollingInterval])
 
   // If we have persisted token and aren't validating, validate it
   useEffect(() => {

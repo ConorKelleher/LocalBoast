@@ -1,11 +1,8 @@
-import useSyntaxHighlighting from "hooks/useSyntaxHighlighting"
-import { UseSyntaxHighlightingOptions } from "hooks/useSyntaxHighlighting/useSyntaxHighlighting"
+import { useSyntaxHighlighting, UseSyntaxHighlightingOptions } from "localboast"
 import { useEffect, useRef } from "react"
 import { cx } from "utils"
 
-export type CodeTagProps = {
-  [key: string]: any
-}
+export type CodeTagProps = Record<string, any>
 
 export interface CodeProps extends UseSyntaxHighlightingOptions {
   children: string | string[]
@@ -14,7 +11,7 @@ export interface CodeProps extends UseSyntaxHighlightingOptions {
   tag?: React.ElementType | string
 }
 
-const Code = ({
+export const Code = ({
   children,
   style,
   tag,

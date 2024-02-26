@@ -24,7 +24,7 @@ Call the returned "start" function and provide a callback (which fires every tim
 <h3 style="margin-bottom: -15px">Usage</h3>
 
 \`\`\`javascript
-import { useAnimationFrames } from "hooks"
+import { useAnimationFrames } from "localboast"
 import { useEffect, useState } from "react"
 
 const fullWidth = 500
@@ -75,7 +75,7 @@ export default UseAnimationFramesDemo
 } as Meta<typeof UseAnimationFramesDemo>
 
 if (storyConfig.metaMutations) {
-  meta = merge(meta, storyConfig.metaMutations)
+  meta = merge(meta, storyConfig.metaMutations as Meta<typeof UseAnimationFramesDemo>)
 }
 
 export default meta
