@@ -2,7 +2,7 @@
 <h1>useAnimationFrames</h1>
 Hook to handle creation and cancellation of a recursive requestAnimationFrame loop.
 Call the returned "start" function and provide a callback (which fires every time a new animation frame is created, passing back the progress [0..1]), and the total duration to run for
-<br><br>
+<br>
 
 <h4>See [examples and full documentation](https://localboast.com/docs?path=/docs/hooks-useanimationframes--docs)</h4>
 
@@ -23,7 +23,7 @@ yarn add localboast
 ## Usage
 
 ```javascript
-import { useAnimationFrames } from "localboast"
+import useAnimationFrames from "localboast/hooks/useAnimationFrames"
 import { useEffect, useState } from "react"
 
 const fullWidth = 500

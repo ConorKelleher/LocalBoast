@@ -2,7 +2,7 @@
 <h1>useTruncate</h1>
 Hook to allow any string rendered in the DOM to be programmatically truncated  with customizable truncation position, offsets and ellipsis.<br>
 In most cases, the component-based solution (which simply wraps a call to this hook) is probably preferred.
-<br><br>
+<br>
 
 See the component-based solution: [Truncate](https://github.com/conorkelleher/localboast/tree/main/src/components/Truncate)<br><h4>See [examples and full documentation](https://localboast.com/docs?path=/docs/hooks-usetruncate--docs)</h4>
 
@@ -23,7 +23,11 @@ yarn add localboast
 ## Usage
 
 ```javascript
-import { useTruncate, TruncateFrom, UseTruncateOptions } from "localboast"
+import {
+  useTruncate,
+  TruncateFrom,
+  UseTruncateOptions,
+} from "localboast/hooks/useTruncate"
 import TruncateTextWrapper from "components/Truncate/stories/TruncateTextWrapper"
 
 interface UseTruncateDemoProps {

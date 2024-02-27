@@ -12,16 +12,22 @@ INSERT_CONTENTS_HERE
 
 Each of the links in the [Contents](#contents) table above has a dedicated Readme explaining usage of the particular function.
 
-All of these utils are exported from the root index, allowing for cleaner imports like:
+All of these utils are exported from the root index, allowing for simple imports like:
 
 ```javascript
-import { cx } from "localboast"
+import { debounce } from "localboast"
 ```
 
-They can also be imported specifically from the `utils` directory as below
+They can also be imported directly from the `utils` directory like:
 
 ```javascript
-import { cx } from "localboast/dist/utils"
+import { debounce } from "localboast/utils"
+```
+
+The specific file can also be imported directly for most optimization
+
+```javascript
+import debounce from "localboast/utils/debounce
 ```
 
 INSERT_FOOTER_HERE

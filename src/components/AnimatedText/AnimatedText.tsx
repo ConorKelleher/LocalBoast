@@ -25,8 +25,9 @@ export const AnimatedText = ({
           break
         default:
           console.warn(
-            "Children of AnimatedText must be string or array of strings. Returning children without modification",
+            'Children of AnimatedText must be string or array of strings. Will call ".toString" on the provided child and hope for the best',
           )
+          childText = children?.toString() || ""
       }
       return childText
     }, [children]),

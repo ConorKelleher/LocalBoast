@@ -3,7 +3,6 @@ import {
   UseSyntaxHighlightingOptions,
 } from "localboast/hooks/useSyntaxHighlighting"
 import { useEffect, useRef } from "react"
-import { cx } from "utils"
 
 export type CodeTagProps = Record<string, any>
 
@@ -46,9 +45,7 @@ export const Code = ({
       <CodeTag
         ref={updateCodeEl}
         {...codeProps}
-        className={cx("highlight language-js", {
-          [codeProps?.className]: !!codeProps?.className,
-        })}
+        className={codeProps?.className}
       >
         {children}
       </CodeTag>

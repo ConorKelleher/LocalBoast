@@ -7,7 +7,7 @@ import {
   octocatURL,
   storybookPath,
 } from "./packageConstants.ts" // keep extension, generateReadmes.ts needs it
-import { capitalize, isFirstLetterUppercase } from "utils"
+import { capitalize, isFirstLetterUppercase } from "localboast/utils"
 import storiesTemplate from "./storiesTemplate"
 import readmeTemplate from "./readmeTemplate"
 

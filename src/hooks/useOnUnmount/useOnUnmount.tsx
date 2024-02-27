@@ -1,4 +1,4 @@
-import { useUpdatingRef } from "hooks"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
 import { useEffect } from "react"
 
 export const useUnmount = (func: () => void) => {

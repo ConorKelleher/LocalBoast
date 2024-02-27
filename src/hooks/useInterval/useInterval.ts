@@ -1,4 +1,4 @@
-import { useUpdatingRef } from "hooks"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
 import { useEffect, useRef } from "react"
 
 export const useInterval = (func: () => void, ms: number) => {

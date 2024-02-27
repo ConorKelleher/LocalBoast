@@ -1,6 +1,6 @@
 const ReadmeTemplate = `INSERT_TITLE_HERE
 INSERT_DESCRIPTION_HERE
-<br><br>
+<br>
 
 INSERT_LINKS_HERE
 

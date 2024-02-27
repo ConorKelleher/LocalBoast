@@ -12,16 +12,22 @@ INSERT_CONTENTS_HERE
 
 Each of the links in the [Contents](#contents) table above has a dedicated Readme explaining usage of the particular function.
 
-All of these hooks are exported from the root index, allowing for cleaner imports like:
+All of these hooks are exported from the root index, allowing for simple imports like:
 
 ```javascript
 import { useMove } from "localboast"
 ```
 
-They can also be imported specifically from the `hooks` directory as below
+They can also be imported directly from the `hooks` directory like:
 
 ```javascript
-import { useMove } from "localboast/dist/hooks"
+import { useMove } from "localboast/hooks"
+```
+
+The specific file can also be imported directly for most optimization
+
+```javascript
+import useMove from "localboast/hooks/useMove
 ```
 
 INSERT_FOOTER_HERE

@@ -26,16 +26,22 @@ yarn add localboast
 
 Each of the links in the [Contents](#contents) table above has a dedicated Readme explaining usage of the particular function.
 
-All of these components are exported from the root index, allowing for cleaner imports like:
+All of these components are exported from the root index, allowing for simple imports like:
 
 ```javascript
 import { Truncate } from "localboast"
 ```
 
-They can also be imported specifically from the `components` directory as below
+They can also be imported specifically from the `components` directory like:
 
 ```javascript
-import { Truncate } from "localboast/dist/components"
+import { Truncate } from "localboast/components"
+```
+
+The specific file can also be imported directly for most optimization
+
+```javascript
+import Truncate from "localboast/components/Truncate
 ```
 
 ## Docs/Example
