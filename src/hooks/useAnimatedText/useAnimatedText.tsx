@@ -1,12 +1,10 @@
-// import { diffStrings, getInterpolatedStringDiff } from "utils"
-// import { useUpdatingRef, useAnimationFrames } from "hooks"
 import {
   diffStrings,
   getInterpolatedStringDiff,
-  useUpdatingRef,
-  useAnimationFrames,
-  merge,
-} from "localboast"
+} from "localboast/utils/stringHelpers"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
+import useAnimationFrames from "localboast/hooks/useAnimationFrames"
+import { merge } from "localboast/utils/objectHelpers"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 export const USE_ANIMATED_TEXT_DEFAULT_OPTIONS = {

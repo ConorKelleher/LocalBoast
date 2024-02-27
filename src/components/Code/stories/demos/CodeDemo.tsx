@@ -1,4 +1,4 @@
-import { Code } from "localboast"
+import Code from "localboast/components/Code"
 
 export const srcCode = `import React from "react"
 

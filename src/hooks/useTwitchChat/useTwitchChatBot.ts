@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { useUpdatingRef, merge } from "localboast"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
+import { merge } from "localboast/utils/objectHelpers"
 import { parseMessage } from "./helpers/TwitchChatMessageHelpers"
 
 export interface UseTwitchChatBotOptions {

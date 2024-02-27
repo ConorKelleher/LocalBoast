@@ -1,4 +1,4 @@
-import { useRotate } from "localboast"
+import useRotate from "localboast/hooks/useRotate"
 
 export const UseRotateDemo = () => {
   const [setHandle, rotation] = useRotate()

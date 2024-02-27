@@ -1,11 +1,13 @@
 import { useCallback } from "react"
 import {
   useTwitchChatBotAuth,
-  useTwitchChatBotMessages,
   UseTwitchChatBotAuthOptions,
+} from "localboast/hooks/useTwitchChat/useTwitchChatBotAuth"
+import {
+  useTwitchChatBotMessages,
   OnTwitchChatMessage,
-  merge,
-} from "localboast"
+} from "localboast/hooks/useTwitchChat/useTwitchChatBotMessages"
+import { merge } from "localboast/utils/objectHelpers"
 // Have to import the following separately to avoid circular dependencies
 import { USE_TWITCH_CHAT_BOT_AUTH_DEFAULT_OPTIONS } from "./useTwitchChatBotAuth"
 

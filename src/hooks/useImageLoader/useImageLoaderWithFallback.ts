@@ -2,7 +2,7 @@ import {
   useImageLoader,
   UseImageLoaderOptions,
   USE_IMAGE_LOADER_DEFAULT_OPTIONS,
-} from "localboast"
+} from "localboast/hooks/useImageLoader"
 
 export interface UseImageWithFallbackOptions extends UseImageLoaderOptions {
   fallbackSrc: string

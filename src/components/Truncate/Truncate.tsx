@@ -2,7 +2,8 @@ import {
   useTruncate,
   TruncateFrom,
   USE_TRUNCATE_DEFAULT_OPTIONS,
-} from "localboast"
+} from "localboast/hooks/useTruncate"
+
 import React from "react"
 
 export interface TruncateProps {

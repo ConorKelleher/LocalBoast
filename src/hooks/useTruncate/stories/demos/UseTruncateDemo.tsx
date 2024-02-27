@@ -1,4 +1,8 @@
-import { useTruncate, TruncateFrom, UseTruncateOptions } from "localboast"
+import {
+  useTruncate,
+  TruncateFrom,
+  UseTruncateOptions,
+} from "localboast/hooks/useTruncate"
 import TruncateTextWrapper from "components/Truncate/stories/TruncateTextWrapper"
 
 interface UseTruncateDemoProps {

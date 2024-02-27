@@ -1,4 +1,4 @@
-import { merge } from "localboast"
+import { merge } from "localboast/utils/objectHelpers"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 
 export type UseImageLoaderOptions = { src: string; load?: boolean }

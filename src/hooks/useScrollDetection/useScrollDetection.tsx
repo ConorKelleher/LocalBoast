@@ -1,4 +1,4 @@
-import { useUpdatingRef } from "localboast"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 type OnScroll = (e: Event) => void

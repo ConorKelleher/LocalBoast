@@ -1,4 +1,4 @@
-import { UseAnimatedTextOptions } from "localboast"
+import { UseAnimatedTextOptions } from "localboast/hooks/useAnimatedText"
 import AnimatedTextDemo, {
   AnimatedTextDemoType,
 } from "components/AnimatedText/stories/demos/AnimatedTextDemo"

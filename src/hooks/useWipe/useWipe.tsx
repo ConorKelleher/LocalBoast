@@ -1,11 +1,8 @@
-import {
-  Size,
-  useSize,
-  useUpdatingRef,
-  cx,
-  generateRandomId,
-  merge,
-} from "localboast"
+import { useUpdatingRef } from "localboast/hooks/useUpdatingRef"
+import cx from "localboast/utils/cx"
+import generateRandomId from "localboast/utils/generateRandomId"
+import { merge } from "localboast/utils/objectHelpers"
+import { Size, useSize } from "localboast/hooks/useSize"
 import { useCallback, useEffect, useRef } from "react"
 
 const getSVGForegroundTransition = (ms: number) =>

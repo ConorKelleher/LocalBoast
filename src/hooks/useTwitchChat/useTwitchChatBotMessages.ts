@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
 import {
-  useUpdatingRef,
   useTwitchChatBot,
   UseTwitchChatBotOptions,
   USE_TWITCH_CHAT_BOT_DEFAULT_OPTIONS,
-} from "localboast"
+} from "localboast/hooks/useTwitchChat/useTwitchChatBot"
 
 export type OnTwitchChatMessage = (
   newMessages: string[],

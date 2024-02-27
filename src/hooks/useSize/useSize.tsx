@@ -1,4 +1,6 @@
-import { debounce, generateRandomId, useUpdatingRef } from "localboast"
+import debounce from "localboast/utils/debounce"
+import generateRandomId from "localboast/utils/generateRandomId"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
 import { createDetectElementResize } from "./helpers/detectElementResize"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 

@@ -24,7 +24,7 @@ yarn add localboast
 ## Usage
 
 ```javascript
-import { Code } from "localboast"
+import Code from "localboast/components/Code"
 
 export const srcCode = `import React from "react"
 
@@ -38,8 +38,8 @@ export default MyComponent
 const SomeComponent = () => {
   return <Code>{srcCode}</Code>
 }
-
 ```
+
 ## Docs/Example
 
 This library is developed and documented through storybook.

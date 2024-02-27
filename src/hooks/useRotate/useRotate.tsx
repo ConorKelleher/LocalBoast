@@ -1,4 +1,7 @@
-import { useUpdatingRef, svgToDataUri, useMove, merge } from "localboast"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
+import useMove from "localboast/hooks/useMove"
+import { svgToDataUri } from "localboast/utils/svgHelpers"
+import { merge } from "localboast/utils/objectHelpers"
 import { useCallback, useEffect, useRef, useState } from "react"
 import RotateIcon from "../../icons/RotateIcon/RotateIcon.svg?raw"
 

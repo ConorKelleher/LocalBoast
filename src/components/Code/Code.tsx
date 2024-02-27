@@ -1,4 +1,7 @@
-import { useSyntaxHighlighting, UseSyntaxHighlightingOptions } from "localboast"
+import {
+  useSyntaxHighlighting,
+  UseSyntaxHighlightingOptions,
+} from "localboast/hooks/useSyntaxHighlighting"
 import { useEffect, useRef } from "react"
 import { cx } from "utils"
 

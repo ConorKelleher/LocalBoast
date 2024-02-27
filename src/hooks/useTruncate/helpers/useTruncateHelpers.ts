@@ -1,4 +1,4 @@
-import { TruncateFrom, UseTruncateOptions } from "localboast"
+import { TruncateFrom, UseTruncateOptions } from "localboast/hooks/useTruncate"
 
 // Inspired by (and with thanks to) https://stackoverflow.com/a/9541579
 const isOverflownHoriz = ({ clientWidth, scrollWidth }: HTMLElement) => {

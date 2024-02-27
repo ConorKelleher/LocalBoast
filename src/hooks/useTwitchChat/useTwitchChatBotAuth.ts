@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react"
+import { Size } from "localboast/hooks/useSize"
+import generateRandomId from "localboast/utils/generateRandomId"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
 import {
-  Size,
-  generateRandomId,
-  useUpdatingRef,
   LS_KEY_TWITCH_AUTH_TOKEN,
   LS_KEY_TWITCH_CSRF_TOKEN,
-  merge,
-} from "localboast"
+} from "localboast/constants/twitchConstants"
+import { merge } from "localboast/utils/objectHelpers"
 
 const getAuthUrl = (chatBotClientId: string, uid: string) =>
   `

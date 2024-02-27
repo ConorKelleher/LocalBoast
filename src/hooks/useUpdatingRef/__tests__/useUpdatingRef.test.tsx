@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import "test_utils/polyfils"
 import mantineRender from "test_utils/mantineRender"
-import { useUpdatingRef } from "localboast"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
 
 interface UseUpdatingRefTestProps {
   value: unknown

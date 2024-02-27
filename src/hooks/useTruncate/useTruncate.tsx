@@ -1,4 +1,5 @@
-import { useUpdatingRef, useSize } from "localboast"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
+import useSize from "localboast/hooks/useSize"
 import { useCallback, useRef, useState } from "react"
 import { calculate } from "./helpers/useTruncateHelpers"
 

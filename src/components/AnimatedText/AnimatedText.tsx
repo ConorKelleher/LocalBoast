@@ -1,4 +1,7 @@
-import { useAnimatedText, UseAnimatedTextOptions } from "localboast"
+import {
+  useAnimatedText,
+  UseAnimatedTextOptions,
+} from "localboast/hooks/useAnimatedText"
 import { PropsWithChildren, useMemo } from "react"
 
 export interface AnimatedTextProps

@@ -1,4 +1,5 @@
-import { merge, useUpdatingRef } from "localboast"
+import useUpdatingRef from "localboast/hooks/useUpdatingRef"
+import { merge } from "localboast/utils/objectHelpers"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 type Coordinates = { x: number; y: number }

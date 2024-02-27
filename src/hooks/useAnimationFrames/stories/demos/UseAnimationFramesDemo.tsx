@@ -1,4 +1,4 @@
-import { useAnimationFrames } from "localboast"
+import useAnimationFrames from "localboast/hooks/useAnimationFrames"
 import { useEffect, useState } from "react"
 
 const fullWidth = 500
