@@ -4,8 +4,6 @@ import {
   USE_TRUNCATE_DEFAULT_OPTIONS,
 } from "localboast/hooks/useTruncate"
 
-import React from "react"
-
 export interface TruncateProps {
   /**
    * Raw string that is to be truncated. If you want to use a custom component, use the "tag" prop. Don't pass it as a child

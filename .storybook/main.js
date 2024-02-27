@@ -26,10 +26,6 @@ const config = {
       resolve: {
         alias: [
           {
-            find: "localboast",
-            replacement: path.resolve(__dirname, "../src/index.ts"),
-          },
-          {
             find: "localboast/*",
             replacement: path.resolve(__dirname, "../src/*"),
           },

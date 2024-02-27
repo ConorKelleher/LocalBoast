@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
-import hljs from "./helpers/highlight.min"
+import { useCallback, useEffect, useRef, useState } from "react"
 import darkThemeURL from "./themes/codeDark.css?url"
 import lightThemeURL from "./themes/codeLight.css?url"
 
@@ -32,11 +31,23 @@ export const USE_SYNTAX_HIGHLIGHTING_DEFAULT_OPTIONS: UseSyntaxHighlightingOptio
 export const useSyntaxHighlighting = (
   options?: UseSyntaxHighlightingOptions,
 ) => {
+  const [hljsLoaded, setHljsLoaded] = useState(false)
   const [themeLoaded, setThemeLoaded] = useState(false)
   const mergedOptions = {
     ...USE_SYNTAX_HIGHLIGHTING_DEFAULT_OPTIONS,
     ...options,
   }
+  const hljsRef = useRef<typeof import("./helpers/highlight.min")>()
+
+  // Dynamically import highlight.js on load to save on bundle size
+  useEffect(() => {
+    const importHljs = async () => {
+      const { default: hljs } = await import("./helpers/highlight.min")
+      hljsRef.current = hljs
+      setHljsLoaded(true)
+    }
+    importHljs()
+  }, [])
 
   useEffect(() => {
     const isExternalTheme = !!(
@@ -90,17 +101,17 @@ export const useSyntaxHighlighting = (
 
   return {
     highlightAll: useCallback(() => {
-      if (themeLoaded) {
-        hljs.highlightAll()
+      if (hljsLoaded && themeLoaded) {
+        hljsRef.current!.highlightAll()
       }
-    }, [themeLoaded]),
+    }, [hljsLoaded, themeLoaded]),
     highlightElement: useCallback(
       (el: HTMLElement) => {
-        if (themeLoaded) {
-          hljs.highlightElement(el)
+        if (hljsLoaded && themeLoaded) {
+          hljsRef.current!.highlightElement(el)
         }
       },
-      [themeLoaded],
+      [hljsLoaded, themeLoaded],
     ),
   }
 }

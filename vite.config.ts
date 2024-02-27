@@ -12,7 +12,6 @@ import svgr from "vite-plugin-svgr"
 export default defineConfig({
   resolve: {
     alias: {
-      localboast: path.resolve(__dirname, "./src/index.ts"),
       "localboast/*": path.resolve(__dirname, "./src/*"),
     },
   },
