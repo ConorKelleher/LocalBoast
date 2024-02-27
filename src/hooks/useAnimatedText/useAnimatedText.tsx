@@ -95,12 +95,13 @@ export const useAnimatedText = (
   )
 
   useEffect(() => {
-    if (text !== currStringRef.current) {
+    if (typeof text === "string" && text !== currStringRef.current) {
       animate(text)
     }
   }, [text, currStringRef, animate])
 
-  return currString
+  // Allow returning of provided argument if not string
+  return typeof text === "string" ? currString : text
 }
 
 export default useAnimatedText
