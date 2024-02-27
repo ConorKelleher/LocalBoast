@@ -24,7 +24,7 @@ export const useSize = (options?: UseSizeOptions) => {
   const resizeObserverRef =
     useRef<
       ReturnType<
-        typeof import("./helpers/detectElementResize").createDetectElementResize
+        typeof import("localboast/internal/detectElementResize").createDetectElementResize
       >
     >()
   const [resizeObserverLoaded, setResizeObserverLoaded] = useState(false)
@@ -34,7 +34,7 @@ export const useSize = (options?: UseSizeOptions) => {
   useEffect(() => {
     const importResizeObserver = async () => {
       const { createDetectElementResize } = await import(
-        "./helpers/detectElementResize"
+        "localboast/internal/detectElementResize"
       )
       resizeObserverRef.current = createDetectElementResize(generateRandomId())
       setResizeObserverLoaded(true)

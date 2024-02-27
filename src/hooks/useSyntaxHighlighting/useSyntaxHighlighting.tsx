@@ -37,12 +37,14 @@ export const useSyntaxHighlighting = (
     ...USE_SYNTAX_HIGHLIGHTING_DEFAULT_OPTIONS,
     ...options,
   }
-  const hljsRef = useRef<typeof import("./helpers/highlight.min")>()
+  const hljsRef = useRef<typeof import("localboast/internal/highlight.min")>()
 
   // Dynamically import highlight.js on load to save on bundle size
   useEffect(() => {
     const importHljs = async () => {
-      const { default: hljs } = await import("./helpers/highlight.min")
+      const { default: hljs } = await import(
+        "localboast/internal/highlight.min"
+      )
       hljsRef.current = hljs
       setHljsLoaded(true)
     }
