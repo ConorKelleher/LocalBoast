@@ -19,6 +19,7 @@
     "dry-run": "cd build && npm publish --dry-run",
     "deploy": "cd build && npm publish",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "analyze": "npx vite-bundle-visualizer --output \"bundle_analysis.html\"",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "readmes": "tsx --loader esm-loader-css --loader esm-loader-images  --experimental-import-meta-resolve ./scripts/generateReadmes.ts",
