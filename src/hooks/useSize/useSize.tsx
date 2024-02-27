@@ -1,8 +1,7 @@
 import debounce from "localboast/utils/debounce"
 import generateRandomId from "localboast/utils/generateRandomId"
 import useUpdatingRef from "localboast/hooks/useUpdatingRef"
-import { createDetectElementResize } from "./helpers/detectElementResize"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 export type Size = {
   height: number
@@ -20,7 +19,39 @@ export const useSize = (options?: UseSizeOptions) => {
   const resizeListenedRef = useRef<HTMLElement>()
   const elementRef = useRef<HTMLElement | null>(null)
   const optionsRef = useUpdatingRef(options)
+  const [hasOnResizeHandlerReady, setHasOnResizeHandlerReady] = useState(false)
+  const onResizeHandlerRef = useRef<() => void>()
+  const resizeObserverRef =
+    useRef<
+      ReturnType<
+        typeof import("./helpers/detectElementResize").createDetectElementResize
+      >
+    >()
+  const [resizeObserverLoaded, setResizeObserverLoaded] = useState(false)
   const sizeRef = useUpdatingRef(size)
+
+  // Dynamically import detectElementResize file on mount
+  useEffect(() => {
+    const importResizeObserver = async () => {
+      const { createDetectElementResize } = await import(
+        "./helpers/detectElementResize"
+      )
+      resizeObserverRef.current = createDetectElementResize(generateRandomId())
+      setResizeObserverLoaded(true)
+    }
+    importResizeObserver()
+  }, [])
+
+  // Effect to attach resize handler to observer once both are in place
+  useEffect(() => {
+    if (resizeObserverLoaded && hasOnResizeHandlerReady) {
+      resizeObserverRef.current!.addResizeListener(
+        resizeListenedRef.current!,
+        onResizeHandlerRef.current!,
+      )
+      setHasOnResizeHandlerReady(false)
+    }
+  }, [resizeObserverLoaded, hasOnResizeHandlerReady])
 
   const getSize = useRef(() => {
     if (elementRef.current) {
@@ -44,16 +75,19 @@ export const useSize = (options?: UseSizeOptions) => {
       optionsRef.current?.onResize(newSize)
   }, [optionsRef])
 
-  const resizeObserver = useMemo(
-    () => createDetectElementResize(generateRandomId()),
-    [],
-  )
-
   const disconnectObserver = useCallback(() => {
-    if (resizeListenedRef.current && resizeObserver) {
-      resizeObserver.removeResizeListener(resizeListenedRef.current, onResize)
+    if (
+      resizeListenedRef.current &&
+      resizeObserverLoaded &&
+      // @ts-ignore
+      resizeListenedRef.current.__resizeListeners__
+    ) {
+      resizeObserverRef.current!.removeResizeListener(
+        resizeListenedRef.current,
+        onResize,
+      )
     }
-  }, [resizeObserver, onResize])
+  }, [resizeObserverLoaded, onResize])
 
   const onChangeRef = useCallback(
     (newEl: HTMLElement) => {
@@ -69,17 +103,18 @@ export const useSize = (options?: UseSizeOptions) => {
       onResize()
 
       resizeListenedRef.current = newEl.parentElement || document.body
-      resizeObserver.addResizeListener(
-        resizeListenedRef.current,
-        optionsRef.current?.debounceMs
-          ? debounce(onResize, {
-              ms: optionsRef.current?.debounceMs,
-              maxDebounceMs: optionsRef.current?.maxDebounceMs,
-            })
-          : onResize,
-      )
+
+      // Observer might not be loaded yet so store handler in state until it's ready to observe
+      const newOnResizeHandler = optionsRef.current?.debounceMs
+        ? debounce(onResize, {
+            ms: optionsRef.current?.debounceMs,
+            maxDebounceMs: optionsRef.current?.maxDebounceMs,
+          })
+        : onResize
+      onResizeHandlerRef.current = newOnResizeHandler
+      setHasOnResizeHandlerReady(true)
     },
-    [onResize, resizeObserver, disconnectObserver, optionsRef],
+    [onResize, disconnectObserver, optionsRef],
   )
 
   // Disconnect on unmount
