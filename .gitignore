@@ -17,6 +17,7 @@ index.cjs.map
 index.js
 index.js.map
 lib
+build
 storybook-static
 *.local
 

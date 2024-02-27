@@ -1,6 +1,7 @@
 import { defineConfig } from "vite"
 import typescript from "@rollup/plugin-typescript"
 import path from "path"
+import glob from "glob"
 import { typescriptPaths } from "rollup-plugin-typescript-paths"
 import excludeDependenciesFromBundle from "rollup-plugin-exclude-dependencies-from-bundle"
 import react from "@vitejs/plugin-react"
@@ -29,14 +30,27 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, "./src/index.ts"),
       fileName: "index",
-      formats: ["es", "cjs"],
+      // formats: ["es", "cjs"],
     },
     rollupOptions: {
       external: [],
-      output: {
-        sourcemap: true,
-        dir: ".",
-      },
+      input: glob.sync(path.resolve(__dirname, "src/**/index.ts")),
+      output: [
+        {
+          sourcemap: true,
+          dir: "build",
+          preserveModules: true,
+          format: "es",
+          entryFileNames: `[name].js`,
+        },
+        {
+          sourcemap: true,
+          dir: "build",
+          preserveModules: true,
+          format: "cjs",
+          entryFileNames: `[name].cjs`,
+        },
+      ],
       plugins: [
         excludeDependenciesFromBundle(),
         typescriptPaths({
@@ -45,8 +59,7 @@ export default defineConfig({
         typescript({
           sourceMap: true,
           declaration: true,
-          emitDeclarationOnly: true,
-          outDir: "lib",
+          outDir: "build",
           allowImportingTsExtensions: false,
           // include: ["**/src/components/**", "**/src/hooks/**"],
           exclude: [

@@ -1,20 +1,23 @@
 {
   "name": "localboast",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "author": "Conor Kelleher - localboast@outlook.com",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://github.com/conorkelleher/localboast.git"
+    "url": "git+https://github.com/conorkelleher/localboast.git"
   },
   "main": "index.cjs",
   "module": "index.js",
-  "types": "lib/index.d.ts",
+  "types": "index.d.ts",
   "scripts": {
     "dev": "vite",
     "tsc": "tsc",
-    "build": "tsc --project ./tsconfig.build.json && rm -rf lib && vite build",
+    "copy-files-to-build": "cp {package.json,README.md,LICENSE,.npmignore} build",
+    "build": "tsc --project ./tsconfig.build.json && vite build && yarn copy-files-to-build",
+    "dry-run": "cd build && npm publish --dry-run",
+    "publish": "cd build && npm publish",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
