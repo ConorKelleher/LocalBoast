@@ -2,7 +2,6 @@ import { defineConfig } from "vite"
 import typescript from "@rollup/plugin-typescript"
 import path from "path"
 import glob from "glob"
-import { typescriptPaths } from "rollup-plugin-typescript-paths"
 import excludeDependenciesFromBundle from "rollup-plugin-exclude-dependencies-from-bundle"
 import react from "@vitejs/plugin-react"
 import tsconfigPaths from "vite-tsconfig-paths"
@@ -52,15 +51,11 @@ export default defineConfig({
       ],
       plugins: [
         excludeDependenciesFromBundle(),
-        typescriptPaths({
-          preserveExtensions: true,
-        }),
         typescript({
           sourceMap: true,
           declaration: true,
           outDir: "build",
           allowImportingTsExtensions: false,
-          // include: ["**/src/components/**", "**/src/hooks/**"],
           exclude: [
             "**/__tests__/**",
             "**/*.test.ts",
