@@ -39,8 +39,8 @@ export default MyComponent
 const SomeComponent = () => {
   return <Code>{srcCode}</Code>
 }
-
 ```
+
 ## Docs/Example
 
 This library is developed and documented through storybook.
@@ -51,7 +51,7 @@ While I intend on keeping the above public build up to date with the functionali
 
 ## Live Development
 
-In an attempt to be somewhat unique, the development of this project is largely happening live on stream over on [Twitch](https://twitch.tv/localboast1) or on [YouTube Live](http://youtube.com/channel/UCt-IaL4qQsOU6_rbS7zky1Q/live). A record of all past live streams and other video documentation can also be found at the above YouTube channel.
+In an attempt to be somewhat unique, the development of this project is largely happening live on stream over on [Twitch](https://twitch.tv/localboast) or on [YouTube Live](http://youtube.com/channel/UCt-IaL4qQsOU6_rbS7zky1Q/live). A record of all past live streams and other video documentation can also be found at the above YouTube channel.
 
 ## Donations
 

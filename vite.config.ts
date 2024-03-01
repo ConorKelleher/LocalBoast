@@ -1,5 +1,6 @@
 import { defineConfig } from "vite"
 import typescript from "@rollup/plugin-typescript"
+import copy from "rollup-plugin-copy"
 import path from "path"
 import glob from "glob"
 import excludeDependenciesFromBundle from "rollup-plugin-exclude-dependencies-from-bundle"
@@ -35,18 +36,20 @@ export default defineConfig({
       input: glob.sync(path.resolve(__dirname, "src/**/index.ts")),
       output: [
         {
-          sourcemap: true,
+          sourcemap: "inline",
           dir: "build",
           preserveModules: true,
           format: "es",
           entryFileNames: `[name].js`,
+          assetFileNames: `[name].[ext]`,
         },
         {
-          sourcemap: true,
+          sourcemap: "inline",
           dir: "build",
           preserveModules: true,
           format: "cjs",
           entryFileNames: `[name].cjs`,
+          assetFileNames: `[name].[ext]`,
         },
       ],
       plugins: [
@@ -63,6 +66,20 @@ export default defineConfig({
             "**/*.stories.ts",
             "**/storybook_utils/**",
             "**/test_utils/**",
+          ],
+        }),
+        copy({
+          verbose: true,
+          hook: "writeBundle",
+          targets: [
+            {
+              src: "src/internal/*.d.ts",
+              dest: "build/internal",
+            },
+            {
+              src: "src/internal/*.js",
+              dest: "build/internal",
+            },
           ],
         }),
       ],
