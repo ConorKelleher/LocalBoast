@@ -3,7 +3,7 @@ import { create } from "@storybook/theming/create"
 
 const SHARED_THEME = {
   brandTitle: "LocalBoast",
-  brandUrl: process.env?.NODE_ENV === "development" ? "./" : "/docs",
+  // brandUrl: process.env?.NODE_ENV === "development" ? "./" : "/docs",
   brandImage:
     "https://s3.eu-west-1.amazonaws.com/localboast.com/icons/ColourTransparentTall.png",
   brandTarget: "_self",

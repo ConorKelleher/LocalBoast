@@ -18,11 +18,12 @@ export enum StoryTypes {
 export type StorySpec = {
   name: string
   args: { [key: string]: unknown }
+  parameters?: Meta["parameters"]
 }
 export type StoryConfig = {
   description: string
+  imports?: string
   usage?: string
-  forceDemoComponent?: boolean
   alternative?: string
   metaMutations?: Meta
   stories?: StorySpec[]

@@ -1,34 +1,40 @@
 import {
+  USE_ANIMATED_TEXT_DEFAULT_OPTIONS,
   useAnimatedText,
   UseAnimatedTextOptions,
 } from "localboast/hooks/useAnimatedText"
-import { PropsWithChildren, useMemo } from "react"
+import { merge } from "localboast/utils/objectHelpers"
+import { Children, PropsWithChildren, useMemo } from "react"
 
 export interface AnimatedTextProps
-  extends PropsWithChildren,
-    UseAnimatedTextOptions {}
+  extends UseAnimatedTextOptions,
+    PropsWithChildren {}
 
-export const AnimatedText = ({
-  children,
-  ...otherProps
-}: AnimatedTextProps) => {
+export const ANIMATED_TEXT_DEFAULT_PROPS = {
+  ...USE_ANIMATED_TEXT_DEFAULT_OPTIONS,
+  children: "" as AnimatedTextProps["children"],
+}
+
+export const AnimatedText = (props: AnimatedTextProps) => {
+  const { children, ...otherProps } = merge(ANIMATED_TEXT_DEFAULT_PROPS, props)
   return useAnimatedText(
     useMemo(() => {
       let childText = ""
       switch (true) {
         case typeof children === "string":
-          childText = children as "string"
+          childText = children
           break
-        case Array.isArray(children) &&
-          children.every((child) => typeof child === "string"):
-          childText = (children as string[]).join("")
+        case Array.isArray(children):
+          childText = Children.map(children, (child) => child.toString()).join(
+            "",
+          )
           break
         default:
-          console.warn(
-            'Children of AnimatedText must be string or array of strings. Will call ".toString" on the provided child if it exists and hope for the best',
-          )
+          if (Array.isArray(children)) {
+            childText = children.map((child) => child.toString()).join("")
+          }
           if (children?.toString) {
-            childText = children.toString()
+            childText = children?.toString()
           }
       }
       return childText
@@ -36,5 +42,7 @@ export const AnimatedText = ({
     otherProps,
   )
 }
+
+AnimatedText.defaultProps = ANIMATED_TEXT_DEFAULT_PROPS
 
 export default AnimatedText

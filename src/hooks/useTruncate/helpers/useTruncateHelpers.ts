@@ -7,13 +7,13 @@ const isOverflownHoriz = ({ clientWidth, scrollWidth }: HTMLElement) => {
 
 const getInitialInsertionIndex = (
   originalString: string,
-  fromSetting: TruncateFrom,
+  fromSetting: UseTruncateOptions["from"],
   startOffset: number,
   endOffset: number,
 ) =>
-  fromSetting === TruncateFrom.Middle
+  fromSetting === TruncateFrom.middle
     ? Math.floor(originalString.length / 2) - startOffset + endOffset
-    : fromSetting === TruncateFrom.Start
+    : fromSetting === TruncateFrom.start
     ? startOffset
     : originalString.length - endOffset
 
@@ -65,7 +65,7 @@ export const calculate = (
     ellipsisEndIndex <= originalString.length
   ) {
     switch (options.from) {
-      case TruncateFrom.Start: {
+      case TruncateFrom.start: {
         if (ellipsisEndIndex >= originalString.length) {
           ellipsisStartIndex -= 1
         } else {
@@ -73,7 +73,7 @@ export const calculate = (
         }
         break
       }
-      case TruncateFrom.End: {
+      case TruncateFrom.end: {
         if (ellipsisStartIndex <= 0) {
           ellipsisEndIndex += 1
         } else {
@@ -81,7 +81,7 @@ export const calculate = (
         }
         break
       }
-      case TruncateFrom.Middle: {
+      case TruncateFrom.middle: {
         if (
           firstHalf.length +
             options.startOffset! -

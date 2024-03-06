@@ -29,6 +29,23 @@ export const getStoryGithubLink = (type: StoryTypes, name: string) =>
     name,
   )})</h4>`
 
+const DIRECT_REFERENCE_START = "__DR_START__"
+const DIRECT_REFERENCE_END = "__DR_END__"
+// Takes a string and returns a special escaped string.
+// This helps remove the leading and trailing " chars from a string
+// e.g const myArgsText = stringifyArgs({ component: directReference("DemoComponent") })
+// => myArgsText === "{ component: DemoComponent }"
+export const directReference = (value: string) => {
+  return `${DIRECT_REFERENCE_START}${value}${DIRECT_REFERENCE_END}`
+}
+
+export const stringifyArgs = (args: object) => {
+  const unsanitizedString = JSON.stringify(args, null, 2)
+  return unsanitizedString
+    .replace(RegExp(`["']${DIRECT_REFERENCE_START}`, "g"), "")
+    .replace(RegExp(`${DIRECT_REFERENCE_END}["']`, "g"), "")
+}
+
 export const TITLE_PLACEHOLDER = "INSERT_TITLE_HERE"
 export const STORY_TITLE_PLACEHOLDER = "INSERT_STORY_TITLE_HERE"
 export const DESCRIPTION_PLACEHOLDER = "INSERT_DESCRIPTION_HERE"
@@ -60,10 +77,15 @@ const getElementTypeFromName = (elementName: string): StoryTypes => {
 
 const getShouldUseDedicatedDemoComponent = (
   elementName: string,
-  storyConfig: StoryConfig,
-) =>
-  getElementTypeFromName(elementName) !== StoryTypes.Component ||
-  !!storyConfig.forceDemoComponent
+  storiesPath: string,
+) => {
+  if (getElementTypeFromName(elementName) !== StoryTypes.Component) {
+    return true
+  }
+  const relativeDemoPath = getDemoComponentImportPath(elementName)
+  const absoluteDemoPath = `${storiesPath}/../${relativeDemoPath}.tsx`
+  return fs.existsSync(absoluteDemoPath)
+}
 
 const getDemoComponentName = (
   elementName: string,
@@ -72,16 +94,8 @@ const getDemoComponentName = (
   shouldUseDedicatedDemoComponent
     ? `${capitalize(elementName)}Demo`
     : elementName
-const getDemoComponentImportPath = (
-  elementName: string,
-  shouldUseDedicatedDemoComponent: boolean = true,
-) =>
-  shouldUseDedicatedDemoComponent
-    ? `stories/demos/${getDemoComponentName(
-        elementName,
-        shouldUseDedicatedDemoComponent,
-      )}`
-    : ""
+const getDemoComponentImportPath = (elementName: string) =>
+  `stories/demos/${getDemoComponentName(elementName, true)}`
 
 // jsx cli doesn't play nicely with the ?raw loader. Have to import it at runtime in order to get the correct usage file's source code
 export const getRuntimeConfig = (
@@ -93,7 +107,9 @@ export const getRuntimeConfig = (
     ...storyConfig,
   }
   let usageFilePath
-  const dedicatedUsagePath = `${storiesPath}/demos/Usage.tsx`
+  const dedicatedUsagePath = `${storiesPath}/demos/${capitalize(
+    elementName,
+  )}Usage.tsx`
   if (fs.existsSync(dedicatedUsagePath)) {
     usageFilePath = dedicatedUsagePath
   } else {
@@ -138,7 +154,7 @@ export const generateStoryReadme = (
   return (
     readmeTemplate
       .replaceAll(TITLE_PLACEHOLDER, "") // Storybook adds title by default, so can omit
-      .replaceAll(DESCRIPTION_PLACEHOLDER, storyConfig.description)
+      .replaceAll(DESCRIPTION_PLACEHOLDER, storyConfig.description || "")
       .replaceAll(
         USAGE_TITLE_PLACEHOLDER,
         storyConfig.usage ? "<h3>Usage</h3>" : "",
@@ -190,7 +206,7 @@ export const getStoryStories = (storySpecs?: StorySpec[]) =>
     ? storySpecs
         .map(
           (storySpec) => `export const ${storySpec.name}: Story = {
-  args: ${JSON.stringify(storySpec.args, null, 2).replace(/\n/g, "\n  ")}
+  args: ${stringifyArgs(storySpec.args).replace(/\n/g, "\n  ")}
 }`,
         )
         .join("\n")
@@ -199,28 +215,31 @@ export const getStoryStories = (storySpecs?: StorySpec[]) =>
 export const generateStoryFile = (
   elementName: string,
   storyConfig: StoryConfig,
+  storiesPath: string,
 ) => {
   const storyType = getElementTypeFromName(elementName)
   const shouldUseDedicatedDemoComponent = getShouldUseDedicatedDemoComponent(
     elementName,
-    storyConfig,
+    storiesPath,
   )
+  let relativeImportPath = ".."
   const demoComponentName = getDemoComponentName(
     elementName,
     shouldUseDedicatedDemoComponent,
   )
-  const demoComponentImportPathFromExportFolder = getDemoComponentImportPath(
-    elementName,
-    shouldUseDedicatedDemoComponent,
-  )
-  const relativeImportPath = demoComponentImportPathFromExportFolder
-    ? `../${demoComponentImportPathFromExportFolder}`
-    : ".."
-  const demoComponentImport = `import ${demoComponentName} from "${relativeImportPath}"`
+  if (shouldUseDedicatedDemoComponent) {
+    const demoComponentImportPathFromExportFolder =
+      getDemoComponentImportPath(elementName)
+    relativeImportPath = `../${demoComponentImportPathFromExportFolder}`
+  }
+  let demoComponentImport = `import ${demoComponentName} from "${relativeImportPath}"`
+  if (storyConfig.imports) {
+    demoComponentImport += `\n${storyConfig.imports}`
+  }
   return storiesTemplate
     .replaceAll(
       STORY_TITLE_PLACEHOLDER,
-      `${storyType.toLocaleLowerCase()}s/${elementName}`,
+      `${capitalize(storyType)}s/${elementName}`,
     )
     .replaceAll(COMPONENT_IMPORT_PLACEHOLDER, demoComponentImport)
     .replaceAll(COMPONENT_PLACEHOLDER, demoComponentName)

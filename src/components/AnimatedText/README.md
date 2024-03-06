@@ -38,8 +38,8 @@ const SomeComponent = () => {
 
   return <AnimatedText>{textToAnimate}</AnimatedText>
 }
-```
 
+```
 ## Docs/Example
 
 This library is developed and documented through storybook.

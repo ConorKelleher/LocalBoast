@@ -35,7 +35,7 @@ exportFolders.forEach((exportFolder) => {
       )
       fs.writeFileSync(
         `${modulePath}/stories/${item}.stories.tsx`,
-        generateStoryFile(item, config),
+        generateStoryFile(item, config, storiesPath),
       )
     }
   })

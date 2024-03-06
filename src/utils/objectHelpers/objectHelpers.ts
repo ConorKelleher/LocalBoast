@@ -28,7 +28,7 @@ export const merge = <
         ...(Array.isArray(merged[key]) ? merged[key] : []),
         ...value,
       ]
-    } else if (typeof value === "object") {
+    } else if (typeof value === "object" && value !== null) {
       merged[key] = merge(merged[key], value)
     } else {
       merged[key] = value

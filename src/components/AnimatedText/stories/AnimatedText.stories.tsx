@@ -6,7 +6,7 @@ import AnimatedTextDemo from "../stories/demos/AnimatedTextDemo"
 import storyConfig from "./config"
 
 let meta = {
-  title: "components/AnimatedText",
+  title: "Components/AnimatedText",
   component: AnimatedTextDemo,
   parameters: {
     layout: "centered",

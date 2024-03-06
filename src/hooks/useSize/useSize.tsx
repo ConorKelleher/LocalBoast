@@ -91,7 +91,7 @@ export const useSize = (options?: UseSizeOptions) => {
 
   const onChangeRef = useCallback(
     (newEl: HTMLElement) => {
-      if (!newEl) {
+      if (!newEl || newEl === elementRef.current) {
         return
       }
       if (resizeListenedRef.current) {

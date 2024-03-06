@@ -1,23 +1,20 @@
 import { USE_ANIMATED_TEXT_DEFAULT_OPTIONS } from "localboast"
 import { StoryConfig } from "storybook_utils/packageConstants.ts"
-import {
-  getButtonAnimatedTextDemoString,
-  getLoopingAnimatedTextDemoString,
-} from "./demos/AnimatedTextDemo"
 import { StoryContext } from "@storybook/react"
+import AnimatedTextLoopingDemoString from "./demos/AnimatedTextLoopingDemo?raw"
+import AnimatedTextButtonDemoString from "./demos/AnimatedTextButtonDemo?raw"
 
 export default {
   description: `Component to allow per-character animating of any string. Simply pass in a string or array of strings as children and the component will pass through a self-updating string animating each character that is different from the previous children.`,
   alternative: "useAnimatedText",
-  forceDemoComponent: true,
   metaMutations: {
     parameters: {
       docs: {
         source: {
           transform: (_: string, context: StoryContext) => {
             return context.allArgs.type === "button"
-              ? getButtonAnimatedTextDemoString(false)
-              : getLoopingAnimatedTextDemoString(false)
+              ? AnimatedTextButtonDemoString
+              : AnimatedTextLoopingDemoString
           },
         },
       },
