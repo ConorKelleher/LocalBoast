@@ -22,16 +22,20 @@ export const AnimatedText = (props: AnimatedTextProps) => {
       let childText = ""
       switch (true) {
         case typeof children === "string":
-          childText = children
+          childText = children as string
           break
         case Array.isArray(children):
-          childText = Children.map(children, (child) => child.toString()).join(
-            "",
-          )
+          // @ts-ignore
+          childText = Children.map(
+            children!,
+            (child) => child?.toString(),
+          ).join("")
           break
         default:
           if (Array.isArray(children)) {
-            childText = children.map((child) => child.toString()).join("")
+            childText = Children.map(children, (child) =>
+              child.toString(),
+            ).join("")
           }
           if (children?.toString) {
             childText = children?.toString()
