@@ -7,6 +7,7 @@ import {
   populateTemplate,
 } from "../src/storybook_utils/helpers"
 import { capitalize } from "../src"
+import { StoryTypes } from "../src/storybook_utils/packageConstants"
 
 const rootPath = "src"
 
@@ -50,6 +51,15 @@ exportFolders.forEach((exportFolder) => {
       `${exportFolderPath}/README.md`,
       populateTemplate(exportTemplate, exportContents),
     )
+    fs.writeFileSync(
+      `${exportFolderPath}/stories/README.mdx`,
+      populateTemplate(
+        exportTemplate,
+        exportContents,
+        capitalize(exportFolder),
+        exportFolder.slice(0, -1) as StoryTypes,
+      ),
+    )
   }
   contents[capitalize(exportFolder)] = exportContents
 })
@@ -60,5 +70,9 @@ const rootTemplate = fs.readFileSync("./README_TEMPLATE.md", {
 })
 
 fs.writeFileSync(`./README.md`, populateTemplate(rootTemplate, contents))
+fs.writeFileSync(
+  `./src/stories/README.mdx`,
+  populateTemplate(rootTemplate, contents, "Welcome"),
+)
 
 console.log("Done generating readmes")

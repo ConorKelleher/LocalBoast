@@ -1,12 +1,8 @@
-# LocalBoast - Make your React App a bit more extra.
+# LocalBoast - Making Web Development Harder for Myself.
 
-![BannerImage](assets/icons/ColourSolidWide.jpeg)
+INSERT_BANNER_HERE
 
-[![npm](https://img.shields.io/npm/dm/localboast)](https://www.npmjs.com/package/localboast)
-[![Ko-Fi](https://shields.io/badge/kofi-Buy_Me_a_Coffee-ffffff?logo=ko-fi&label=)](http://ko-fi.com/localboast)
-[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dlocalboast%26type%3Dpatrons&style=flat)](https://patreon.com/localboast)
-[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCt-IaL4qQsOU6_rbS7zky1Q?label=Subscribers&style=flat&logo=Youtube)](http://youtube.com/channel/UCt-IaL4qQsOU6_rbS7zky1Q/live)
-[![Twitch Channel](https://img.shields.io/twitch/status/localboast?label=Twitch&style=flat&logo=Twitch)](http://twitch.tv/localboast)
+INSERT_SHIELDS_HERE
 
 # What is it?
 

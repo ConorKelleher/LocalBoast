@@ -22,9 +22,10 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "analyze": "npx vite-bundle-visualizer --output \"bundle_analysis.html\"",
     "preview": "vite preview",
-    "storybook": "storybook dev -p 6006",
-    "readmes": "tsx --loader esm-loader-css --loader esm-loader-images  --experimental-import-meta-resolve ./scripts/generateReadmes.ts",
-    "build-storybook": "storybook build -o ../localboast.com/assets/storybook-static",
+    "storybook": "MODE=development storybook dev -p 6006",
+    "readmes-internal": "tsx --loader esm-loader-css --loader esm-loader-images  --experimental-import-meta-resolve ./scripts/generateReadmes.ts",
+    "readmes": "MODE=development yarn readmes-internal",
+    "build-storybook": "MODE=production yarn readmes-internal && storybook build -o ../localboast.com/assets/storybook-static",
     "test": "jest"
   },
   "devDependencies": {

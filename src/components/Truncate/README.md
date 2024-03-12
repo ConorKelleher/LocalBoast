@@ -10,11 +10,7 @@ Install the entire module as a dependency from npm as normal:
 
 ```bash
 npm i localboast
-```
-
-or
-
-```bash
+# or
 yarn add localboast
 ```
 
@@ -67,8 +63,8 @@ In an attempt to be somewhat unique, the development of this project is largely 
 
 I'm working on this instead of having a job that pays me. So for the time being, I'm going to be funded through generosity alone. If you're feeling generous, here are some links:
 
-- Buy me a Coffee (Ko-fi - will show up on stream if I'm live): https://ko-fi.com/localboast
-- Patreon: https://patreon.com/LocalBoast
+- [Buy me a Coffee](https://localboast.com/kofi) (Ko-fi - will show up on stream if I'm live)
+- [Patreon](https://localboast.com/patreon)
 
 ## License
 

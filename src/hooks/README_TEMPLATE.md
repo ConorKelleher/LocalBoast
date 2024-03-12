@@ -1,7 +1,5 @@
 # LocalBoast - Hooks
 
-![BannerImage](../../assets/icons/ColourSolidWide.jpeg)
-
 INSERT_HOW_TO_INSTALL_HERE
 
 # Contents
