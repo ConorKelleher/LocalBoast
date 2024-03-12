@@ -3,6 +3,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { merge } from "localboast/utils"
 import UseTruncateDemo from "../stories/demos/UseTruncateDemo"
+import { TruncateFrom } from "localboast/hooks/useTruncate"
 import storyConfig from "./config"
 
 let meta = {
@@ -52,4 +53,47 @@ export default meta
 
 type Story = StoryObj<typeof UseTruncateDemo>
 
-export const Default: Story = { args: {} }
+export const TruncateEnd: Story = {
+  args: {
+    "originalString": "This is my full, unadulterated string. This is sadly too long for the container. Try resizing the window or expanding the side panel to see this truncation in effect"
+  }
+}
+export const TruncateMiddle: Story = {
+  args: {
+    "from": TruncateFrom.middle,
+    "originalString": "This is my full, unadulterated string. This is sadly too long for the container. Try resizing the window or expanding the side panel to see this truncation in effect"
+  }
+}
+export const TruncateStart: Story = {
+  args: {
+    "from": TruncateFrom.start,
+    "originalString": "This is my full, unadulterated string. This is sadly too long for the container. Try resizing the window or expanding the side panel to see this truncation in effect"
+  }
+}
+export const TruncateOffsetStart: Story = {
+  args: {
+    "from": TruncateFrom.start,
+    "startOffset": 4,
+    "originalString": "This is my full, unadulterated string. This is sadly too long for the container. Try resizing the window or expanding the side panel to see this truncation in effect"
+  }
+}
+export const TruncateOffsetEnd: Story = {
+  args: {
+    "endOffset": 4,
+    "originalString": "This is my full, unadulterated string. This is sadly too long for the container. Try resizing the window or expanding the side panel to see this truncation in effect"
+  }
+}
+export const TruncateMiddleOffsetEnd: Story = {
+  args: {
+    "from": TruncateFrom.middle,
+    "endOffset": 15,
+    "originalString": "This is my full, unadulterated string. This is sadly too long for the container. Try resizing the window or expanding the side panel to see this truncation in effect"
+  }
+}
+export const TruncateMiddleOffsetStart: Story = {
+  args: {
+    "from": TruncateFrom.middle,
+    "startOffset": 15,
+    "originalString": "This is my full, unadulterated string. This is sadly too long for the container. Try resizing the window or expanding the side panel to see this truncation in effect"
+  }
+}

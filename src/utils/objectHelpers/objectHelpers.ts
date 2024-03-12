@@ -36,3 +36,24 @@ export const merge = <
   })
   return merged as A & B
 }
+
+export interface PrettyPrintOptions {
+  singleLine?: boolean
+  tabIndent?: number
+}
+export const PRETTY_PRINT_DEFAULT_OPTIONS = {
+  singleLine: false,
+  tabIndent: 2,
+}
+export const prettyPrint = (json: object, options?: PrettyPrintOptions) => {
+  const mergedOptions = merge(PRETTY_PRINT_DEFAULT_OPTIONS, options)
+  const prettyJson = JSON.stringify(
+    json,
+    null,
+    mergedOptions.singleLine ? 1 : mergedOptions.tabIndent,
+  )
+    .replace(/}$/, " }")
+    .replace(/"([a-zA-Z]+)":/g, "$1:")
+
+  return mergedOptions.singleLine ? prettyJson.replaceAll("\n", "") : prettyJson
+}
