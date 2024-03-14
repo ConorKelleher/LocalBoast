@@ -41,7 +41,7 @@ const SomeComponent = () => {
 }
 
 \`\`\`
-<h3 style="margin-bottom: -10px">Demo</h3>`,
+<h3 style="margin-bottom: -10px">Demo</h3>`.replace("https://localboast.com/docs?path", "?path"),
       },
     },
     deepControls: { enabled: true },

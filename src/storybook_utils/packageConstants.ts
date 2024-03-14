@@ -2,15 +2,25 @@ import { Meta } from "@storybook/react"
 
 const isDev = () => {
   // CLI execution uses process, browser uses import.meta :shrug:
+  console.log("checking is dev")
   const mode =
     typeof process !== "undefined" ? process.env.MODE : import.meta.env.MODE
+  console.log("mode: ", mode)
   return mode === "development"
+}
+
+const isLocalHost = () => {
+  return (
+    typeof window !== "undefined" &&
+    window?.location?.host &&
+    window.location.host.includes("localhost:")
+  )
 }
 
 export const githubURL = "https://github.com/conorkelleher/localboast"
 const remoteURL = "https://localboast.com"
-const localURL = "http://localhost:6006"
-export const websiteURL = isDev() ? localURL : remoteURL
+const localURL = "."
+export const websiteURL = isLocalHost() ? localURL : remoteURL
 export const githubMainBranch = `${githubURL}/tree/main`
 export const storybookPath = isDev() ? "./" : `${websiteURL}/docs`
 export const octocatURL =

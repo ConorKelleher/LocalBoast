@@ -376,10 +376,9 @@ export const populateTemplate = (
     .replaceAll(BANNER_PLACEHOLDER, isStorybook ? "" : getMarkdownBanner())
     .replaceAll(FOOTER_PLACEHOLDER, getMarkdownFooter())
   if (isStorybook) {
-    populatedTemplate = populatedTemplate.replace(
-      /^/,
-      getStoryComment(storyTitle),
-    )
+    populatedTemplate = populatedTemplate
+      .replace(/^/, getStoryComment(storyTitle))
+      .replaceAll("https://localboast.com/docs?path", "?path")
   } else {
     populatedTemplate = populatedTemplate.replace(/^/, getMarkdownComment())
   }

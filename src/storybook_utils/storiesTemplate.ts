@@ -12,7 +12,7 @@ let meta = {
     layout: "centered",
     docs: {
       description: {
-        component: \`INSERT_DESCRIPTION_HERE\`,
+        component: \`INSERT_DESCRIPTION_HERE\`.replace("https://localboast.com/docs?path", "?path"),
       },
     },
     deepControls: { enabled: true },
