@@ -13,9 +13,9 @@ yarn add localboast
 
 # Contents
 
-- [AnimatedText](AnimatedText)
-- [Code](Code)
-- [Truncate](Truncate)
+- ### [AnimatedText](AnimatedText)
+- ### [Code](Code)
+- ### [Truncate](Truncate)
 
 # To Use
 

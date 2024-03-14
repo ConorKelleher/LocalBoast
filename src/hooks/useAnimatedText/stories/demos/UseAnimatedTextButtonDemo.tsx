@@ -18,6 +18,7 @@ const UseAnimatedTextButtonDemo = () => {
     <>
       <pre>{animatedText}</pre>
       <button
+        style={{ display: "flex", margin: "auto " }}
         onClick={() =>
           setIndex((oldIndex) => (oldIndex + 1) % sampleStrings.length)
         }

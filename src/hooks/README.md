@@ -13,9 +13,9 @@ yarn add localboast
 
 # Contents
 
-- [useAnimatedText](useAnimatedText)
-- [useAnimationFrames](useAnimationFrames)
-- [useTruncate](useTruncate)
+- ### [useAnimatedText](useAnimatedText)
+- ### [useAnimationFrames](useAnimationFrames)
+- ### [useTruncate](useTruncate)
 
 # To Use
 

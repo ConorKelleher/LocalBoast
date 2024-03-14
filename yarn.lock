@@ -3346,9 +3346,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-links@npm:^7.6.12":
-  version: 7.6.12
-  resolution: "@storybook/addon-links@npm:7.6.12"
+"@storybook/addon-links@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@storybook/addon-links@npm:8.0.0"
   dependencies:
     "@storybook/csf": "npm:^0.1.2"
     "@storybook/global": "npm:^5.0.0"
@@ -3358,7 +3358,7 @@ __metadata:
   peerDependenciesMeta:
     react:
       optional: true
-  checksum: 68d5b49f80759f4016da12778171b35b665e25fd1ac5042bd747d7aebbbdba9b57e700c8d3d7b2332e5bce5a849032c4885d4ebbe43e14c21d5de89df4c05dc5
+  checksum: bd8d4bd291eb0180749f07ace66ce9a392e5b1e7f11d2722cb60dcbea7b10f92516406ae5f99d1fd0f481e6c4f28f929c755fa36c661ce48388a6b31e1c9a971
   languageName: node
   linkType: hard
 
@@ -4126,6 +4126,24 @@ __metadata:
   peerDependencies:
     "@svgr/core": "*"
   checksum: 07b4d9e00de795540bf70556fa2cc258774d01e97a12a26234c6fdf42b309beb7c10f31ee24d1a71137239347b1547b8bb5587d3a6de10669f95dcfe99cddc56
+  languageName: node
+  linkType: hard
+
+"@tabler/icons-react@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@tabler/icons-react@npm:3.0.1"
+  dependencies:
+    "@tabler/icons": "npm:3.0.1"
+  peerDependencies:
+    react: ">= 16"
+  checksum: ec0f63a526e0da4ae26e9befc0979738c7643e3abaf6849f81cb6562991cc318721890de373f2a6cbcd67ab08ae9bb6f1742351ddc35ccbfedc2419729dde97a
+  languageName: node
+  linkType: hard
+
+"@tabler/icons@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@tabler/icons@npm:3.0.1"
+  checksum: 3ea0b0b3d7180da5b14ffa6600b6df92f6d29e4ad4195b2894b3a0fda24841836a22c665484613e2efd7254c314af34663afb4e233a61c44229a95334c35a7ea
   languageName: node
   linkType: hard
 
@@ -10042,13 +10060,14 @@ __metadata:
     "@storybook/addon-controls": "npm:^7.6.12"
     "@storybook/addon-essentials": "npm:^7.6.12"
     "@storybook/addon-interactions": "npm:^7.6.12"
-    "@storybook/addon-links": "npm:^7.6.12"
+    "@storybook/addon-links": "npm:^8.0.0"
     "@storybook/addons": "npm:^7.6.12"
     "@storybook/blocks": "npm:^7.6.12"
     "@storybook/react": "npm:^7.6.12"
     "@storybook/react-vite": "npm:^7.6.12"
     "@storybook/testing-library": "npm:^0.2.2"
     "@storybook/theming": "npm:^7.6.12"
+    "@tabler/icons-react": "npm:^3.0.1"
     "@testing-library/jest-dom": "npm:^6.1.4"
     "@testing-library/react": "npm:^14.0.0"
     "@types/babel__core": "npm:^7"

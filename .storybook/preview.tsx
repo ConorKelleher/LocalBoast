@@ -1,10 +1,12 @@
 import React from "react"
 import type { Preview } from "@storybook/react"
-import { MantineProvider } from "@mantine/core"
+import { addons } from "@storybook/manager-api"
+import { MantineProvider, MantineProviderProps } from "@mantine/core"
 import { appTheme } from "../../localboast.com/src/theme"
-import { addons, useEffect } from "@storybook/addons"
 
 import "@mantine/core/styles.css"
+import "./storybook.css"
+
 import { DARK_THEME } from "./Themes"
 
 const ThemeChangeProvider = (Story: () => React.ReactElement) => {
@@ -18,6 +20,9 @@ const ThemeChangeProvider = (Story: () => React.ReactElement) => {
 
   return <Story />
 }
+addons.setConfig({
+  theme: DARK_THEME,
+})
 
 const preview: Preview = {
   parameters: {
@@ -36,7 +41,7 @@ const preview: Preview = {
 export const decorators = [
   ThemeChangeProvider,
   (Story) => (
-    <MantineProvider theme={appTheme}>
+    <MantineProvider theme={appTheme as MantineProviderProps["theme"]}>
       <Story />
     </MantineProvider>
   ),

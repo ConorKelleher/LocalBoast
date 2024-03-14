@@ -6,6 +6,9 @@ const tsconfigPaths = viteTsconfig.default
 const { mergeConfig } = require("vite")
 
 const config = {
+  core: {
+    disableWhatsNewNotifications: true,
+  },
   stories: [
     "../src/stories/README.mdx",
     "../src/**/*.mdx",
@@ -23,6 +26,7 @@ const config = {
   },
   docs: {
     autodocs: "tag",
+    docsMode: true,
   },
   async viteFinal(config) {
     // Merge custom configuration into the default config

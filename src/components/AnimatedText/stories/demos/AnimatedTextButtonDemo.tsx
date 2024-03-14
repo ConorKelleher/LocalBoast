@@ -21,6 +21,7 @@ const AnimatedTextButtonDemo = (props: AnimatedTextProps) => {
         <AnimatedText {...props}>{goalString}</AnimatedText>
       </pre>
       <button
+        style={{ display: "flex", margin: "auto " }}
         onClick={() =>
           setIndex((oldIndex) => (oldIndex + 1) % sampleStrings.length)
         }

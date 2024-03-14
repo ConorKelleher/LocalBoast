@@ -297,11 +297,11 @@ I'm working on this instead of having a job that pays me. So for the time being,
 MIT © [ConorKelleher](https://github/com/ConorKelleher)`
 
 export const getMarkdownShields =
-  () => `[![npm](https://img.shields.io/npm/dm/localboast)](https://www.npmjs.com/package/localboast)
-[![Ko-Fi](https://shields.io/badge/kofi-Buy_Me_a_Coffee-ffffff?logo=ko-fi&label=)](http://ko-fi.com/localboast)
-[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dlocalboast%26type%3Dpatrons&style=flat)](https://patreon.com/localboast)
-[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCt-IaL4qQsOU6_rbS7zky1Q?label=Subscribers&style=flat&logo=Youtube)](http://youtube.com/channel/UCt-IaL4qQsOU6_rbS7zky1Q/live)
-[![Twitch Channel](https://img.shields.io/twitch/status/localboast?label=Twitch&style=flat&logo=Twitch)](http://twitch.tv/localboast)`
+  () => `[![npm](https://img.shields.io/npm/dm/localboast?label=Downloads)](https://www.npmjs.com/package/localboast)
+  [![Ko-Fi](https://shields.io/badge/kofi-Buy_Me_a_Coffee-ffffff?logo=ko-fi&label=)](http://ko-fi.com/localboast)
+  [![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dlocalboast%26type%3Dpatrons&style=flat&label=Patreon)](https://patreon.com/localboast)
+  [![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCt-IaL4qQsOU6_rbS7zky1Q?label=Subscribers&style=flat&logo=Youtube)](http://youtube.com/channel/UCt-IaL4qQsOU6_rbS7zky1Q/live)
+  [![Twitch Channel](https://img.shields.io/twitch/status/localboast?label=Twitch&style=flat&logo=Twitch)](http://twitch.tv/localboast)`
 
 export const getMarkdownBanner = () =>
   `![BannerImage](assets/icons/ColourSolidWide.jpeg)`
@@ -332,7 +332,7 @@ export const getMarkdownTableOfContents = (
           filePath = fileName
         }
 
-        return `- [${title}](${filePath})`
+        return `- ${parentPath ? "####" : "###"} [${title}](${filePath})`
       })
       .join("\n")
   } else {
@@ -342,7 +342,7 @@ export const getMarkdownTableOfContents = (
         const exportFilePath = isStorybook
           ? getStoryURL(storyType)
           : `src/${exportName.toLocaleLowerCase()}`
-        return `- [${exportName}](${exportFilePath})\n${getMarkdownTableOfContents(
+        return `- ### [${exportName}](${exportFilePath})\n${getMarkdownTableOfContents(
           contents,
           isStorybook ? storyType : exportFilePath,
           isStorybook,
