@@ -19,7 +19,13 @@ export const Haptic = ({ children, style, ...otherProps }: HapticProps) => {
 
   return (
     <div
-      style={{ ...hapticStyle, display: "flex", ...style }}
+      style={{
+        ...hapticStyle,
+        height: "fit-content",
+        width: "fit-content",
+        display: "flex",
+        ...style,
+      }}
       {...otherHapticProps}
     >
       {children}

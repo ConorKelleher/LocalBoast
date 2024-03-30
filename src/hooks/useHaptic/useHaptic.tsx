@@ -15,13 +15,16 @@ export interface UseHapticOptions {
     click?: boolean
   }
 }
+export const BASE_FOCUS_SCALE = 0.07
+export const BASE_CLICK_SCALE = 0.05
+
 export const USE_HAPTIC_DEFAULT_OPTIONS: UseHapticOptions = {
   focusMs: 300,
   blurMs: 300,
   clickMs: 50,
   returnMs: 50,
-  focusScale: 1.07,
-  clickScale: 0.95,
+  focusScale: 1,
+  clickScale: 1,
   events: {
     focus: true,
     click: true,
@@ -44,12 +47,12 @@ export const useHaptic = (options?: UseHapticOptions) => {
   const isFocused = focused || hovered
 
   if (clicked) {
-    scale = mergedOptions.clickScale!
+    scale = 1 - mergedOptions.clickScale! * BASE_CLICK_SCALE
     transitionMs = mergedOptions.clickMs!
   } else if (returning) {
     transitionMs = mergedOptions.returnMs!
   } else if (isFocused) {
-    scale = mergedOptions.focusScale!
+    scale = 1 + mergedOptions.focusScale! * BASE_FOCUS_SCALE
     transitionMs = mergedOptions.focusMs!
   }
 
