@@ -115,27 +115,24 @@ const applyElStyles = (el: HTMLElement) => {
   if (styleString) {
     el.setAttribute("style", styleString)
   }
+  el.style.pointerEvents = "none"
+  el.style.overflow = "hidden !important"
 }
 
-const removeAllDescendentIds = (node: Node) => {
+const recursivelyCleanNode = (node: Node) => {
   if ("removeAttribute" in node) {
     const el = node as HTMLElement
-    el.childNodes.forEach((child) => removeAllDescendentIds(child))
+    el.childNodes.forEach((child) => recursivelyCleanNode(child))
 
     if (["STYLE", "SCRIPT"].includes(el.tagName)) {
       // Don't copy any non-display tag (scripts, stylesheets, etc.)
-      node.parentElement?.removeChild(node)
+      node.parentNode?.removeChild(node)
       return
     }
+    applyElStyles(el)
     el.removeAttribute("id")
     el.removeAttribute("name")
-    // el.removeAttribute("class");
-    applyElStyles(el)
-    el.style.overflow = "hidden !important"
-    if (el.parentElement?.tagName === "BODY") {
-      el.style.position = "fixed"
-      el.style.inset = "0"
-    }
+    el.removeAttribute("class")
   }
 }
 
@@ -173,7 +170,7 @@ export const useWipe = (options?: UseWipeOptions) => {
       ).toString()
     }
     document.querySelector("html")!.appendChild(clone)
-    removeAllDescendentIds(clone)
+    recursivelyCleanNode(clone)
     setTimeout(() => {
       document.querySelector("html")!.removeChild(clone)
     }, mergedOptionsRef.current.ms)
