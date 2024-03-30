@@ -21,6 +21,8 @@ export const useInterval = (
       intervalRef.current = undefined
     }
   }, [funcRef, ms, runAtStart])
+
+  return intervalRef
 }
 
 export default useInterval

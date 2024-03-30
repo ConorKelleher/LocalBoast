@@ -21,6 +21,8 @@ export const useTimeout = (
       timeoutRef.current = undefined
     }
   }, [funcRef, ms, runAtStart])
+
+  return timeoutRef
 }
 
 export default useTimeout

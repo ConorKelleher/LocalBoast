@@ -112,6 +112,8 @@ export const Code = (props: CodeProps) => {
         {...codeProps}
         style={{
           overflow: "visible",
+          height: "100%",
+          width: "100%",
           userSelect: editable ? "none" : undefined,
           ...codeProps?.style,
         }}
@@ -133,6 +135,7 @@ export const Code = (props: CodeProps) => {
             backgroundColor: "transparent",
             overflow: "visible",
             border: "none",
+            margin: 0,
             WebkitTextFillColor: "transparent",
             color: colorScheme === "dark" ? "white" : "black",
           }}
