@@ -15,6 +15,8 @@ yarn add localboast
 
 - ### [useAnimatedText](useAnimatedText)
 - ### [useAnimationFrames](useAnimationFrames)
+- ### [useDelayedValue](useDelayedValue)
+- ### [useHaptic](useHaptic)
 - ### [useTruncate](useTruncate)
 
 # To Use

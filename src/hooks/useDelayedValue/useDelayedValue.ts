@@ -3,19 +3,19 @@ import { merge } from "localboast/utils"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 export interface UseDelayedValueOptions {
-  delay: number
+  delay?: number
   immediateIf?: (value: unknown) => boolean
 }
 export const USE_DELAYED_VALUE_DEFAULT_OPTIONS = {
   delay: 200,
-  immediateIf: false,
 }
 export const useDelayedValue = <T>(
   value: T,
-  options: UseDelayedValueOptions,
+  options?: UseDelayedValueOptions,
 ) => {
   const [storedValue, setStoredValue] = useState(value)
   const timeoutRef = useRef<NodeJS.Timeout>()
+  const timeoutFunctionRef = useRef<Parameters<typeof setTimeout>[0]>()
   const lastValueRef = useRef(value)
   const mergedOptions = merge(USE_DELAYED_VALUE_DEFAULT_OPTIONS, options)
   const immediateIfRef = useUpdatingRef(mergedOptions.immediateIf)
@@ -25,11 +25,13 @@ export const useDelayedValue = <T>(
       const update = () => {
         setStoredValue(value)
         timeoutRef.current = undefined
+        timeoutFunctionRef.current = undefined
         lastValueRef.current = value
       }
       if (immediateIfRef.current && immediateIfRef.current(value)) {
         update()
       } else {
+        timeoutFunctionRef.current = update
         timeoutRef.current = setTimeout(update, mergedOptions.delay)
       }
     }
@@ -39,12 +41,14 @@ export const useDelayedValue = <T>(
     }
   }, [value, mergedOptions.delay, immediateIfRef])
 
-  const setImmediate = useCallback((immediateValue: T) => {
+  // Callback to clear the current timeout and execute the function immediately
+  const setImmediate = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }
-    setStoredValue(immediateValue)
-    lastValueRef.current = immediateValue
+    if (timeoutFunctionRef.current) {
+      timeoutFunctionRef.current()
+    }
   }, [])
 
   return [storedValue, setImmediate] as const

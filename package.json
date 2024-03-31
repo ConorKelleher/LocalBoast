@@ -46,7 +46,7 @@
     "@storybook/react-vite": "^7.6.12",
     "@storybook/testing-library": "^0.2.2",
     "@storybook/theming": "^7.6.12",
-    "@tabler/icons-react": "^3.0.1",
+    "@tabler/icons-react": "^3.1.0",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
     "@types/babel__core": "^7",
