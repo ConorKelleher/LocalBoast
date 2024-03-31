@@ -14,5 +14,12 @@ export default {
         },
       },
     },
+    argTypes: {
+      onClick: {
+        control: {
+          type: null,
+        },
+      },
+    },
   },
 } as StoryConfig
