@@ -3,10 +3,13 @@ import {
   USE_TRUNCATE_DEFAULT_OPTIONS,
   UseTruncateOptions,
 } from "localboast/hooks/useTruncate"
+import { merge } from "localboast/utils/objectHelpers"
 
 export { TruncateFrom } from "localboast/hooks/useTruncate"
 
-export interface TruncateProps extends UseTruncateOptions {
+export interface TruncateProps
+  extends UseTruncateOptions,
+    React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {
   /**
    * Raw string that is to be truncated. If you want to use a custom component, use the "tag" prop. Don't pass it as a child
    */
@@ -24,11 +27,31 @@ export const TRUNCATE_DEFAULT_PROPS = {
 }
 
 export const Truncate = (props: TruncateProps) => {
-  const { children: originalString, ...otherProps } = props
+  const {
+    children: originalString,
+    ellipsis,
+    threshold,
+    from,
+    startOffset,
+    endOffset,
+    disableNativeTruncate,
+    disableMutation,
+    disableWarnings,
+    ...otherProps
+  } = merge(TRUNCATE_DEFAULT_PROPS, props)
   const isValidChildType = typeof originalString === "string"
   const [truncatedText, ref] = useTruncate(
     isValidChildType ? originalString : "",
-    otherProps,
+    {
+      ellipsis,
+      threshold,
+      from,
+      startOffset,
+      endOffset,
+      disableNativeTruncate,
+      disableMutation,
+      disableWarnings,
+    },
   )
 
   if (!isValidChildType) {
@@ -41,7 +64,11 @@ export const Truncate = (props: TruncateProps) => {
   }
 
   const Tag = props.tag || "span"
-  return <Tag ref={ref}>{truncatedText}</Tag>
+  return (
+    <Tag ref={ref} {...otherProps}>
+      {truncatedText}
+    </Tag>
+  )
 }
 
 Truncate.defaultProps = TRUNCATE_DEFAULT_PROPS

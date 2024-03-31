@@ -14,7 +14,21 @@ const UseTruncateDemo = ({
   ...useTruncateOptions
 }: UseTruncateDemoProps) => {
   const [text, ref] = useTruncate(originalString, useTruncateOptions)
-  return <TruncateDemo ref={ref}>{text}</TruncateDemo>
+  return (
+    <h3
+      ref={ref}
+      style={{
+        resize: "both",
+        height: 30,
+        width: 500,
+        overflow: "hidden",
+        border: "solid 1px",
+        borderRadius: "4px",
+      }}
+    >
+      {text}
+    </h3>
+  )
 }
 
 UseTruncateDemo.defaultProps = USE_TRUNCATE_DEFAULT_OPTIONS
