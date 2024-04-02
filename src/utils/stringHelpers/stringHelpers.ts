@@ -104,3 +104,9 @@ export const capitalize = (input: string) =>
 
 export const isFirstLetterUppercase = (letter: string) =>
   letter[0].toUpperCase() === letter[0]
+
+export const dasherize = (input: string) =>
+  input
+    .replace(/([a-z])([A-Z])/, "$1-$2")
+    .replace(/_/, "-")
+    .toLowerCase()

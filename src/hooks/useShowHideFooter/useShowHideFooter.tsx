@@ -67,7 +67,6 @@ export const useShowHideFooter = (
     let topPixels = 0
     if (footerLoadedAndWindowHeight && scrollTop !== undefined) {
       const rect = footerRef.current!.getBoundingClientRect()
-      console.log({ rect })
       topPixels = rect.top
     }
     return topPixels
