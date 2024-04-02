@@ -3,6 +3,7 @@ import cx from "localboast/utils/cx"
 import generateRandomId from "localboast/utils/generateRandomId"
 import { merge } from "localboast/utils/objectHelpers"
 import { Size, useSize } from "localboast/hooks/useSize"
+import { dasherize } from "localboast/utils/stringHelpers"
 import { useCallback, useEffect, useRef } from "react"
 
 const getSVGForegroundTransition = (ms: number) =>
@@ -93,46 +94,82 @@ const getNewSVG = (
   return newSVG
 }
 
+const STYLE_VALUES_TO_IGNORE: CSSStyleValue[] = ["normal", "0s"]
+const ZERO_STYLE_VALUES: CSSStyleValue[] = [0, "0", "0px"]
+const ZERO_STYLE_KEYS_TO_IGNORE = [
+  "padding-top",
+  "padding-left",
+  "padding-right",
+  "padding-bottom",
+  "margin-top",
+  "margin-right",
+  "margin-bottom",
+  "margin-left",
+]
+
+const shouldIgnoreStyle = (styleName: string, styleValue: CSSStyleValue) =>
+  STYLE_VALUES_TO_IGNORE.includes(styleValue) ||
+  (ZERO_STYLE_VALUES.includes(styleValue) &&
+    ZERO_STYLE_KEYS_TO_IGNORE.includes(styleName))
+
 const stringifyStyles = (styles: CSSStyleDeclaration) => {
   return Object.values(styles)
     .map((styleName) => {
       const styleValue = styles[styleName as keyof typeof styles]
-
-      if (
-        // @ts-ignore
-        ![undefined, "auto", "none", "normal", "0s", null].includes(styleValue)
-      ) {
-        return `${styleName}: ${styleValue}`
+      // loose equality to rule out null or undefined
+      if (styleValue != null && !shouldIgnoreStyle(styleName, styleValue)) {
+        return `${dasherize(styleName)}: ${styleValue}`
       }
     })
     .filter(Boolean)
     .join("; ")
 }
 
-const applyElStyles = (el: HTMLElement) => {
-  const styles = window.getComputedStyle(el)
+const applyElStyles = (el: HTMLElement, styles: CSSStyleDeclaration) => {
   const styleString = stringifyStyles(styles)
-  if (styleString) {
-    el.setAttribute("style", styleString)
-  }
-  el.style.pointerEvents = "none"
-  el.style.overflow = "hidden !important"
+  el.style.cssText = styleString + +"; pointer-events: none"
 }
 
-const recursivelyCleanNode = (node: Node) => {
-  if ("removeAttribute" in node) {
-    const el = node as HTMLElement
-    el.childNodes.forEach((child) => recursivelyCleanNode(child))
+const recursivelyCleanNode = (
+  originalNode: Node | undefined,
+  cloneNode: Node,
+  providedNodesToRemove?: Node[],
+) => {
+  const nodesToRemove = providedNodesToRemove || []
+  if ("removeAttribute" in cloneNode) {
+    const originalEl = originalNode as HTMLElement
+    const cloneEl = cloneNode as HTMLElement
+    for (
+      let childIndex = 0;
+      childIndex < cloneEl.childNodes.length;
+      childIndex++
+    ) {
+      const nextCloneNode = cloneNode.childNodes[childIndex]
+      const nextOriginalNode = originalNode?.childNodes[childIndex]
+      recursivelyCleanNode(nextOriginalNode, nextCloneNode, nodesToRemove)
+    }
 
-    if (["STYLE", "SCRIPT"].includes(el.tagName)) {
+    if (["STYLE", "SCRIPT"].includes(cloneEl.tagName)) {
       // Don't copy any non-display tag (scripts, stylesheets, etc.)
-      node.parentNode?.removeChild(node)
+      nodesToRemove?.push(cloneNode)
       return
     }
-    applyElStyles(el)
-    el.removeAttribute("id")
-    el.removeAttribute("name")
-    el.removeAttribute("class")
+
+    // Use original tag as source for styles (since get computed style has issues on newly created nodes)
+    // Only exception is body tag, since that has a bunch of new stuff done to it
+    const styleSource = cloneEl.tagName === "BODY" ? cloneEl : originalEl
+    applyElStyles(cloneEl, window.getComputedStyle(styleSource))
+    cloneEl.removeAttribute("id")
+    cloneEl.removeAttribute("name")
+    // Not removing class since it's essential for pseudoelements to persist
+    // cloneEl.removeAttribute("class");
+    cloneEl.scrollTop = originalEl.scrollTop
+    cloneEl.scrollLeft = originalEl.scrollLeft
+  }
+
+  if (!providedNodesToRemove) {
+    // at top-level call, perform removals AFTER recursion
+    nodesToRemove.forEach((node) => node.parentNode?.removeChild(node))
   }
 }
 
@@ -170,7 +207,7 @@ export const useWipe = (options?: UseWipeOptions) => {
       ).toString()
     }
     document.querySelector("html")!.appendChild(clone)
-    recursivelyCleanNode(clone)
+    recursivelyCleanNode(document.body, clone)
     setTimeout(() => {
       document.querySelector("html")!.removeChild(clone)
     }, mergedOptionsRef.current.ms)
