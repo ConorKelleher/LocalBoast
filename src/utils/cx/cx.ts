@@ -1,10 +1,10 @@
-export type CSArg = string | { [key: string]: boolean }
+export type CSArg = string | undefined | { [key: string]: boolean }
 const cx = (...args: CSArg[]) => {
   const classes: string[] = []
   args.forEach((arg) => {
     if (typeof arg === "string") {
       classes.push(arg)
-    } else {
+    } else if (arg) {
       Object.entries(arg).forEach(([key, value]) => {
         if (value) {
           classes.push(key)
