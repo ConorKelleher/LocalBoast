@@ -76,9 +76,16 @@ export default {
       },
     },
     argTypes: {
-      tag: {
+      component: {
         control: {
           type: null,
+        },
+        table: {
+          type: {
+            summary: "React.ElementType",
+            detail:
+              "string | ComponentClass<any, any> | FunctionComponent<any>",
+          },
         },
       },
     },

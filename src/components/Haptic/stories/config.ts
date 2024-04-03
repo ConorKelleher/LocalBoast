@@ -20,6 +20,18 @@ export default {
           type: null,
         },
       },
+      component: {
+        control: {
+          type: null,
+        },
+        table: {
+          type: {
+            summary: "React.ElementType",
+            detail:
+              "string | ComponentClass<any, any> | FunctionComponent<any>",
+          },
+        },
+      },
     },
   },
 } as StoryConfig

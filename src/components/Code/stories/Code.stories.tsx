@@ -59,18 +59,14 @@ type Story = StoryObj<typeof Code>
 export const CodeBasic: Story = {
   args: {
     "children": "import React from \"react\"\n\nconst MyComponent = () => {\n  return \"This is a nice component, innit?\"\n}\n",
-    "editable": false
+    "editable": false,
+    "colorScheme": "dark"
   }
 }
 export const CodeEditable: Story = {
   args: {
     "children": "import React from \"react\"\n\nconst MyComponent = () => {\n  return \"This is a nice component, innit?\"\n}\n",
-    "editable": true
-  }
-}
-export const CodeCustomThemeName: Story = {
-  args: {
-    "children": "import React from \"react\"\n\nconst MyComponent = () => {\n  return \"This is a nice component, innit?\"\n}\n",
-    "themeName": "monokai-sublime.min"
+    "editable": true,
+    "colorScheme": "dark"
   }
 }

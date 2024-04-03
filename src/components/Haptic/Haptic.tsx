@@ -3,22 +3,27 @@ import useHaptic, {
   UseHapticOptions,
 } from "localboast/hooks/useHaptic"
 import { merge } from "localboast/utils/objectHelpers"
+import { ComponentPropsWithoutRef, ElementType } from "react"
 
-export interface HapticProps
-  extends UseHapticOptions,
-    Omit<
-      React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLDivElement>,
-        HTMLDivElement
-      >,
-      "onClick"
-    > {}
+const DEFAULT_COMPONENT = "div"
 
 export const HAPTIC_DEFAULT_PROPS = {
   ...USE_HAPTIC_DEFAULT_OPTIONS,
+  component: DEFAULT_COMPONENT,
 }
 
-export const Haptic = ({ children, ...otherProps }: HapticProps) => {
+export type HapticProps<C extends ElementType = typeof DEFAULT_COMPONENT> = {
+  /**
+   * Custom component or tag name to receive styles
+   */
+  component?: C
+} & UseHapticOptions &
+  ComponentPropsWithoutRef<C>
+
+export const Haptic = <C extends ElementType>({
+  children,
+  ...otherProps
+}: HapticProps<C>) => {
   const {
     onClick,
     events,
@@ -28,6 +33,7 @@ export const Haptic = ({ children, ...otherProps }: HapticProps) => {
     blurMs,
     clickMs,
     returnMs,
+    component: Component,
     ...otherMergedProps
   } = merge(HAPTIC_DEFAULT_PROPS, otherProps)
 
@@ -43,7 +49,7 @@ export const Haptic = ({ children, ...otherProps }: HapticProps) => {
   })
 
   return (
-    <div
+    <Component
       {...otherMergedProps}
       style={{
         ...hapticStyle,
@@ -55,7 +61,7 @@ export const Haptic = ({ children, ...otherProps }: HapticProps) => {
       {...otherHapticProps}
     >
       {children}
-    </div>
+    </Component>
   )
 }
 

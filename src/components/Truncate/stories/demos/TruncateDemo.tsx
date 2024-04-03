@@ -7,7 +7,7 @@ const TruncateDemo = (props: TruncateProps) => {
   return (
     <Truncate
       {...props}
-      tag="h3"
+      component="h3"
       style={{
         resize: "both",
         height: 30,
