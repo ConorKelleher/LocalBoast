@@ -21,7 +21,7 @@ export const merge = <
       merged[key] = { ...merged[key] }
     } else {
       // If key doesn't exist or is anything but extensible object, reset it
-      merged[key] = {}
+      delete merged[key]
     }
     if (Array.isArray(value)) {
       merged[key] = [
