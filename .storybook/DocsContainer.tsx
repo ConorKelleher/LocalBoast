@@ -2,8 +2,15 @@ import {
   DocsContainer as BaseContainer,
   DocsContainerProps,
 } from "@storybook/blocks"
-import React, { FC, PropsWithChildren, useEffect, useState } from "react"
+import React, {
+  FC,
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
 import { DARK_THEME, LIGHT_THEME } from "./Themes"
+import useMutationObserver from "../src/hooks/useMutationObserver"
 
 export const DocsContainer: FC<PropsWithChildren<DocsContainerProps>> = ({
   children,
@@ -11,8 +18,9 @@ export const DocsContainer: FC<PropsWithChildren<DocsContainerProps>> = ({
 }) => {
   const [isDark, setDark] = useState(true)
 
-  useEffect(() => {
-    const observer = new MutationObserver(function (mutations) {
+  useMutationObserver(
+    useMemo(() => document.querySelector("html")!, []),
+    (mutations) => {
       mutations.forEach(function (mutation) {
         if (
           mutation.type === "attributes" &&
@@ -24,16 +32,11 @@ export const DocsContainer: FC<PropsWithChildren<DocsContainerProps>> = ({
           if (colorScheme) setDark(colorScheme === "dark")
         }
       })
-    })
-
-    observer.observe(document.querySelector("html")!, {
+    },
+    {
       attributes: true, //configure it to listen to attribute changes
-    })
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
+    },
+  )
 
   return (
     <BaseContainer theme={isDark ? DARK_THEME : LIGHT_THEME} context={context}>
