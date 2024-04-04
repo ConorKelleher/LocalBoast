@@ -1,4 +1,3 @@
-import { typography } from "@storybook/theming"
 import { create } from "@storybook/theming/create"
 
 const SHARED_THEME = {

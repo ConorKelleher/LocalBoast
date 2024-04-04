@@ -23,7 +23,7 @@ export const getGithubStoryLink = (type: StoryTypes, name: string) =>
 export const getGithubURL = (type: StoryTypes, name: string) =>
   `${githubMainBranch}/src/${type.toLocaleLowerCase()}s/${name}`
 export const getStoryGithubLink = (type: StoryTypes, name: string) =>
-  `<h4>[<img src="${octocatURL}" height="25px" style="margin-bottom: -5px" />&nbsp;&nbsp;See this ${type}'s Source Code](${getGithubURL(
+  `<h4>[<img class="octocat-icon" src="${octocatURL}" height="25px" style="margin-bottom: -5px" />&nbsp;&nbsp;See this ${type}'s Source Code](${getGithubURL(
     type,
     name,
   )})</h4>`

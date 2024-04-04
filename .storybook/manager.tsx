@@ -118,7 +118,7 @@ const LabelRenderer = ({ item }: { item: API_HashEntry }) => {
 LabelRenderer.displayName = "LabelRenderer"
 
 addons.setConfig({
-  theme: DARK_THEME,
+  theme: DARK_THEME, // always dark since can't switch at runtime
   showToolbar: false,
   enableShortcuts: false,
   initialActive: "canvas",
