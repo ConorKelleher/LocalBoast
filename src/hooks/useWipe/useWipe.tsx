@@ -127,18 +127,26 @@ const stringifyStyles = (styles: CSSStyleDeclaration) => {
 
 const applyElStyles = (el: HTMLElement, styles: CSSStyleDeclaration) => {
   const styleString = stringifyStyles(styles)
-  el.style.cssText = styleString + +"; pointer-events: none"
+  el.style.cssText = styleString + +"; pointer-events: none !important"
 }
 
 const recursivelyCleanNode = (
   originalNode: Node | undefined,
-  cloneNode: Node,
+  cloneNode: Node | undefined,
   providedNodesToRemove?: Node[],
 ) => {
   const nodesToRemove = providedNodesToRemove || []
-  if ("removeAttribute" in cloneNode) {
+  if (cloneNode && "removeAttribute" in cloneNode) {
     const originalEl = originalNode as HTMLElement
     const cloneEl = cloneNode as HTMLElement
+
+    // Commenting out since this doesn't work yet :(
+    // if (cloneEl.tagName === "IFRAME" && originalEl.tagName === "IFRAME") {
+    //   recursivelyCleanNode(
+    //     (originalEl as HTMLIFrameElement).contentDocument?.body,
+    //     (cloneEl as HTMLIFrameElement).contentDocument?.body
+    //   );
+    // } else {
     for (
       let childIndex = 0;
       childIndex < cloneEl.childNodes.length;
@@ -148,6 +156,7 @@ const recursivelyCleanNode = (
       const nextOriginalNode = originalNode?.childNodes[childIndex]
       recursivelyCleanNode(nextOriginalNode, nextCloneNode, nodesToRemove)
     }
+    // }
 
     if (["STYLE", "SCRIPT"].includes(cloneEl.tagName)) {
       // Don't copy any non-display tag (scripts, stylesheets, etc.)
@@ -173,6 +182,41 @@ const recursivelyCleanNode = (
   }
 }
 
+// eslint-disable-next-line
+const copyIframeContents = (originalEl: HTMLElement, cloneEl: HTMLElement) => {
+  Array.from(originalEl.getElementsByTagName("iframe")).forEach(
+    (originalIframe, index) => {
+      const newIframe = cloneEl.getElementsByTagName("iframe")[index]
+      const htmlElementToCopy =
+        originalIframe.contentDocument?.querySelector("html")
+      if (htmlElementToCopy) {
+        const copiedHtmlElement = htmlElementToCopy.cloneNode(
+          true,
+        ) as HTMLElement
+        let newContentContainer: HTMLElement | Document
+        if (newIframe.contentDocument) {
+          const newIframeHtml = newIframe.contentDocument.querySelector("html")
+          if (newIframeHtml) {
+            newIframe.contentDocument.removeChild(newIframeHtml)
+          }
+          newContentContainer = newIframe.contentDocument
+        } else {
+          newContentContainer = newIframe
+        }
+        copyIframeContents(htmlElementToCopy, copiedHtmlElement)
+        newContentContainer.appendChild(copiedHtmlElement)
+      }
+    },
+  )
+}
+
+const deepClonePage = (originalPage: HTMLElement) => {
+  const clonedPage = originalPage.cloneNode(true) as HTMLDivElement
+  // Commenting out since this doesn't work yet :(
+  // copyIframeContents(originalPage, clonedPage);
+  return clonedPage
+}
+
 export const useWipe = (options?: UseWipeOptions) => {
   const { size, setRef: setSizeRef } = useSize()
   const svgContainerRef = useRef<HTMLDivElement>(getSVGContainer())
@@ -193,7 +237,7 @@ export const useWipe = (options?: UseWipeOptions) => {
   }, [setSizeRef])
 
   const setupCloneRef = useRef((wipeId: string) => {
-    const clone = document.body.cloneNode(true) as HTMLDivElement
+    const clone = deepClonePage(document.body)
     clone.style.position = "fixed"
     clone.style.zIndex = "9000"
     clone.style.inset = "0"
