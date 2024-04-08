@@ -38,6 +38,7 @@ yarn add localboast
 	- #### [useDelayedValue](src/hooks/useDelayedValue)
 	- #### [useHaptic](src/hooks/useHaptic)
 	- #### [useTruncate](src/hooks/useTruncate)
+	- #### [useTwitchChat](src/hooks/useTwitchChat)
 - ### [Utils](src/utils)
 	- #### [cx](src/utils/cx)
 

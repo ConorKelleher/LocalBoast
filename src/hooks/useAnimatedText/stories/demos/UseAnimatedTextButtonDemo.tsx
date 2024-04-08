@@ -2,11 +2,18 @@ import useAnimatedText from "localboast/hooks/useAnimatedText"
 import { useState } from "react"
 
 const sampleStrings = [
-  "Test",
-  "Test: this is a demo",
-  "Test: this is a demo of animating text.",
-  "Test: these are demos of animating text.",
-  "Test: these are demos of animating text that I hope you like.",
+  `export const USE_ANIMATED_TEXT_DEFAULT_OPTIONS = {
+  }`,
+  `export const USE_ANIMATED_TEXT_DEFAULT_OPTIONS = {
+    msPerChar: 15,
+  }`,
+  `export const USE_ANIMATED_TEXT_DEFAULT_OPTIONS = {
+    msPerChar: 25,
+  }`,
+  `export const USE_ANIMATED_TEXT_DEFAULT_OPTIONS = {
+    msPerChar: 25,
+    someAttribute: false,
+  }`,
 ]
 
 const UseAnimatedTextButtonDemo = () => {
