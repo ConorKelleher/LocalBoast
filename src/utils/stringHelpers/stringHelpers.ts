@@ -28,7 +28,7 @@ const diffStringAdditions = (
 ): StringAddition => {
   let addedIndex = 0
   let added = ""
-  let foundAddition = false
+  let foundDifference = false
 
   // Find startIndex of additions to aString
   for (let i = 0; i < bString.length; i++) {
@@ -36,18 +36,21 @@ const diffStringAdditions = (
     if (charsEqual) {
       addedIndex += 1
     } else {
-      foundAddition = true
+      foundDifference = true
       break
     }
   }
-  if (foundAddition) {
+  if (foundDifference) {
     // If found startIndex for addition, find full scale of addition
     for (let i = 0; i < bString.length - addedIndex; i++) {
+      const offsetFromAString = aString.length - 1 - i
+      const offsetFromBString = bString.length - 1 - i
+
       const charsEqual =
-        aString.charAt(aString.length - 1 - i) ===
-        bString.charAt(bString.length - 1 - i)
+        offsetFromAString >= addedIndex &&
+        aString.charAt(offsetFromAString) === bString.charAt(offsetFromBString)
       if (!charsEqual) {
-        added = bString.slice(addedIndex, bString.length - i)
+        added = bString.slice(addedIndex, offsetFromBString + 1)
         break
       }
     }
