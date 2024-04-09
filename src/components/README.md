@@ -15,6 +15,7 @@ yarn add localboast
 
 - ### [AnimatedText](AnimatedText)
 - ### [Code](Code)
+- ### [ErrorBoundary](ErrorBoundary)
 - ### [Haptic](Haptic)
 - ### [Truncate](Truncate)
 

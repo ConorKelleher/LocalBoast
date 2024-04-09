@@ -78,19 +78,25 @@ export const Code = <C extends ElementType>({
   const codeContent = Array.isArray(children)
     ? Children.map(children, () => children.toString()).join("")
     : children?.toString()
-  const codeContentRef = useUpdatingRef(codeContent)
   const onChangeRef = useUpdatingRef(onChange)
   const [dirtyCodeContent, setDirtyCodeContent] = useState(codeContent)
+  const codeContentRef = useRef(codeContent)
+  const dirtyCodeContentRef = useRef(dirtyCodeContent)
   const codeEl = useRef<HTMLElement>()
 
   // When props value changes, update our local state
   useEffect(() => {
     setDirtyCodeContent(codeContent)
+    codeContentRef.current = codeContent
+    dirtyCodeContentRef.current = codeContent
   }, [codeContent])
 
   // If we have an onChange callback and our dirty state differs from props
   useEffect(() => {
-    if (onChangeRef.current && codeContentRef.current !== dirtyCodeContent) {
+    if (
+      onChangeRef.current &&
+      codeContentRef.current !== dirtyCodeContentRef.current
+    ) {
       onChangeRef.current(dirtyCodeContent)
     }
   }, [dirtyCodeContent, onChangeRef, codeContentRef])
@@ -103,7 +109,9 @@ export const Code = <C extends ElementType>({
 
   const onChangeEditableCode = useCallback((e: ChangeEvent) => {
     // @ts-ignore // todo fix this
-    setDirtyCodeContent(e.target.value)
+    const newContent = e.target.value
+    setDirtyCodeContent(newContent)
+    dirtyCodeContentRef.current = newContent
   }, [])
 
   const updateCodeEl = (el: HTMLElement) => {

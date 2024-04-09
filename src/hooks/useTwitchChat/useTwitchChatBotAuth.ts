@@ -56,11 +56,13 @@ export const USE_TWITCH_CHAT_BOT_AUTH_DEFAULT_OPTIONS = {
 }
 
 export const useTwitchChatBotAuth = (options: UseTwitchChatBotAuthOptions) => {
-  const [lsAuthToken, , clearLsAuthToken] = useLocalStorage(
+  const [lsAuthToken, , clearLsAuthToken] = useLocalStorage<string | null>(
     LS_KEY_TWITCH_AUTH_TOKEN,
+    null,
   )
-  const [, setLsCSRFToken, clearLsCSRFToken] = useLocalStorage(
+  const [, setLsCSRFToken, clearLsCSRFToken] = useLocalStorage<string | null>(
     LS_KEY_TWITCH_CSRF_TOKEN,
+    null,
   )
   const [oauthToken, setOauthToken] = useState<string | null>(lsAuthToken)
   const authWindowRef = useRef<Window | null>(null)
