@@ -4,6 +4,7 @@ import {
 } from "localboast/hooks/useLocalStorage"
 import UseLocalStorageTextDemo from "./UseLocalStorageUsage"
 import UseLocalStorageNumberDemo from "./UseLocalStorageNumberDemo"
+import UseLocalStorageBooleanDemo from "./UseLocalStorageBooleanDemo"
 import UseLocalStorageArrayDemo from "./UseLocalStorageArrayDemo"
 import UseLocalStorageTypedDemo from "./UseLocalStorageTypedDemo"
 import UseLocalStorageComplexDemo from "./UseLocalStorageComplexDemo"
@@ -21,7 +22,7 @@ export interface UseLocalStorageDemoProps<T = string> {
    * Optional object specifying the custom parse and stringify functions to use if serialization is needed
    */
   options?: UseLocalStorageOptions<T>
-  demoType: "string" | "number" | "array" | "typed" | "complex"
+  demoType: "string" | "number" | "array" | "typed" | "complex" | "boolean"
 }
 
 const UseLocalStorageDemo = ({ demoType }: UseLocalStorageDemoProps) => {
@@ -30,6 +31,8 @@ const UseLocalStorageDemo = ({ demoType }: UseLocalStorageDemoProps) => {
       {demoType === "string" && <UseLocalStorageTextDemo />}
 
       {demoType === "number" && <UseLocalStorageNumberDemo />}
+
+      {demoType === "boolean" && <UseLocalStorageBooleanDemo />}
 
       {demoType === "array" && <UseLocalStorageArrayDemo />}
 

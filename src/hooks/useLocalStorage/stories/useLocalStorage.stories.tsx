@@ -73,6 +73,11 @@ export const NumberExample: Story = {
     "demoType": "number"
   }
 }
+export const BooleanExample: Story = {
+  args: {
+    "demoType": "boolean"
+  }
+}
 export const ArrayExample: Story = {
   args: {
     "demoType": "array"

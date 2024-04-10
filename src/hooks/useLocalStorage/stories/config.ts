@@ -2,6 +2,7 @@ import { StoryContext } from "@storybook/react"
 import { StoryConfig } from "storybook_utils/packageConstants"
 import UseLocalStorageStringDemoString from "./demos/UseLocalStorageUsage?raw"
 import UseLocalStorageNumberDemoString from "./demos/UseLocalStorageNumberDemo?raw"
+import UseLocalStorageBooleanDemoString from "./demos/UseLocalStorageBooleanDemo?raw"
 import UseLocalStorageArrayDemoString from "./demos/UseLocalStorageArrayDemo?raw"
 import UseLocalStorageTypedDemoString from "./demos/UseLocalStorageTypedDemo?raw"
 import UseLocalStorageComplexDemoString from "./demos/UseLocalStorageComplexDemo?raw"
@@ -20,6 +21,10 @@ export default {
                 break
               case "number": {
                 demoText = UseLocalStorageNumberDemoString
+                break
+              }
+              case "boolean": {
+                demoText = UseLocalStorageBooleanDemoString
                 break
               }
               case "array": {
@@ -88,6 +93,10 @@ export default {
     {
       name: "NumberExample",
       args: { demoType: "number" },
+    },
+    {
+      name: "BooleanExample",
+      args: { demoType: "boolean" },
     },
     {
       name: "ArrayExample",

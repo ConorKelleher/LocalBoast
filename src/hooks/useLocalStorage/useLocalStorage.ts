@@ -44,7 +44,7 @@ const parseValue = <T>(
 }
 const stringifyValue = <T>(value: T, stringifier: Stringifier<T>) => {
   let stringValue: string | undefined = undefined
-  const needsStringifying = value && typeof value !== "string"
+  const needsStringifying = typeof value !== "string"
 
   if (needsStringifying) {
     try {
@@ -56,8 +56,8 @@ const stringifyValue = <T>(value: T, stringifier: Stringifier<T>) => {
         e,
       )
     }
-  } else if (value) {
-    stringValue = value as string
+  } else {
+    stringValue = value
   }
   return stringValue
 }
