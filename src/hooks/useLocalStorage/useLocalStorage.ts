@@ -3,12 +3,12 @@ import useUpdatingRef from "localboast/hooks/useUpdatingRef"
 import { merge } from "localboast/utils"
 
 // Return type nullable to match JSON.parse return spec
-type Parser = <T>(value: string) => T | null
+type Parser<T> = (value: string) => T | null
 // Return type possibly undefined to match JSON.stringify spec
-type Stringifier = <T>(value: T) => string | undefined
-export interface UseLocalStorageOptions {
-  stringify?: Stringifier
-  parse?: Parser
+type Stringifier<T> = (value: T) => string | undefined
+export interface UseLocalStorageOptions<T> {
+  stringify?: Stringifier<T>
+  parse?: Parser<T>
 }
 export const USE_LOCAL_STORAGE_DEFAULT_OPTIONS = {
   stringify: JSON.stringify,
@@ -19,7 +19,7 @@ const parseValue = <T>(
   key: string,
   valueToParse: string | null,
   defaultValue: T,
-  parser: Parser,
+  parser: Parser<T>,
 ) => {
   let parsedValue: T | null = null
   const needsParsing =
@@ -28,7 +28,7 @@ const parseValue = <T>(
     typeof defaultValue !== "string"
   if (needsParsing) {
     try {
-      parsedValue = parser<T>(valueToParse)
+      parsedValue = parser(valueToParse)
     } catch (e) {
       console.warn(
         "useLocalStorage - Failed to parse localStorage string: ",
@@ -42,13 +42,13 @@ const parseValue = <T>(
   }
   return parsedValue
 }
-const stringifyValue = <T>(value: T, stringifier: Stringifier) => {
+const stringifyValue = <T>(value: T, stringifier: Stringifier<T>) => {
   let stringValue: string | undefined = undefined
   const needsStringifying = value && typeof value !== "string"
 
   if (needsStringifying) {
     try {
-      stringValue = stringifier<T>(value)
+      stringValue = stringifier(value)
     } catch (e) {
       console.warn(
         "useLocalStorage - Failed to stringify new state value: ",
@@ -70,7 +70,7 @@ const getDefaultValue = <T>(defaultValue: T | (() => T)) =>
 const useLocalStorage = <T = string>(
   key: string,
   defaultValue: T | (() => T),
-  options?: UseLocalStorageOptions,
+  options?: UseLocalStorageOptions<T>,
 ) => {
   const mergedOptions = merge(USE_LOCAL_STORAGE_DEFAULT_OPTIONS, options)
   const mergedOptionsRef = useUpdatingRef(mergedOptions)
@@ -111,11 +111,11 @@ const useLocalStorage = <T = string>(
   useEffect(() => {
     if (lastValueRef.current !== value) {
       const defaultValue = getDefaultValue(defaultValueRef.current)
-      const stringValue = stringifyValue(
+      const stringValue = stringifyValue<T>(
         value,
         mergedOptionsRef.current.stringify,
       )
-      const defaultStringValue = stringifyValue(
+      const defaultStringValue = stringifyValue<T>(
         defaultValue,
         mergedOptionsRef.current.stringify,
       )
