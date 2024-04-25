@@ -38,6 +38,11 @@ const UseHapticDemo = (props: UseHapticOptions) => {
     events: { focus: false, click: true },
   })
 
+  const [hapticProps4] = useHaptic({
+    ...props,
+    type: "spin",
+  })
+
   return (
     <Group>
       <div
@@ -65,6 +70,15 @@ const UseHapticDemo = (props: UseHapticOptions) => {
         <Button style={{ pointerEvents: "none" }}>
           Haptic on click but not focus
         </Button>
+      </div>
+
+      <div
+        {...hapticProps4}
+        style={{ cursor: "pointer", ...hapticProps4.style }}
+      >
+        <ActionIcon size="lg" style={{ pointerEvents: "none" }}>
+          <IconRocket />
+        </ActionIcon>
       </div>
     </Group>
   )

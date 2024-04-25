@@ -43,6 +43,11 @@ const UseHapticDemo = (props: UseHapticOptions) => {
     events: { focus: false, click: true },
   })
 
+  const [hapticProps4] = useHaptic({
+    ...props,
+    type: "spin",
+  })
+
   return (
     <Group>
       <div
@@ -71,6 +76,15 @@ const UseHapticDemo = (props: UseHapticOptions) => {
           Haptic on click but not focus
         </Button>
       </div>
+
+      <div
+        {...hapticProps4}
+        style={{ cursor: "pointer", ...hapticProps4.style }}
+      >
+        <ActionIcon size="lg" style={{ pointerEvents: "none" }}>
+          <IconRocket />
+        </ActionIcon>
+      </div>
     </Group>
   )
 }
@@ -96,4 +110,8 @@ export default meta
 
 type Story = StoryObj<typeof UseHapticDemo>
 
-export const Default: Story = { args: {} }
+export const UseHaptic: Story = {
+  args: {
+    "animateReturn": false
+  }
+}

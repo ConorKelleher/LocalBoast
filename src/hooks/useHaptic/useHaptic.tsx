@@ -1,7 +1,18 @@
 import useUpdatingRef from "localboast/hooks/useUpdatingRef"
-import { useCallback, useMemo, useRef, useState } from "react"
+import useTransition, {
+  Vector,
+  UseTransitionType,
+} from "localboast/hooks/useTransition"
+import { useCallback, useRef, useState } from "react"
+import { merge } from "localboast/utils/objectHelpers"
 
 export type InteractionEvent = React.MouseEvent | React.KeyboardEvent
+
+export const HapticType = {
+  pop: "pop",
+  spin: "spin",
+} as const
+export type HapticType = keyof typeof HapticType
 export interface UseHapticOptions {
   /**
    * Optional click handler callback. Clicks are detected automatically when using the provided onClick function.
@@ -18,6 +29,12 @@ export interface UseHapticOptions {
     focus?: boolean
     click?: boolean
   }
+  // todo write explanation
+  type?: HapticType
+  rotationVector?: Vector
+  focusRotation?: number
+  clickRotation?: number
+  animateReturn?: boolean
   /**
    * Multiplier for scaling build-in focus scale factor.
    * (e.g. 1 performs default scale, 0.5 halves the default scale, -2 will invert the scale direction and double it)
@@ -44,21 +61,65 @@ export interface UseHapticOptions {
    * Time in milliseconds for the scale to return to normal after clicking
    */
   returnMs?: number
+  /**
+   * Default scale for scale-based transitions
+   */
+  initialScale?: number
+  /**
+   * Default rotation for rotation-based transitions
+   */
+  initialRotation?: number
 }
 export const BASE_FOCUS_SCALE = 0.07
 export const BASE_CLICK_SCALE = 0.05
+export const FORWARD_VECTOR: Vector = [0, 0, 1]
 
-export const USE_HAPTIC_DEFAULT_OPTIONS: UseHapticOptions = {
+export const USE_HAPTIC_DEFAULT_OPTIONS = {
   focusMs: 300,
-  blurMs: 300,
+  blurMs: 350,
   clickMs: 50,
   returnMs: 50,
+  initialScale: 1,
+  initialRotation: 0,
   focusScaleMultiplier: 1,
   clickScaleMultiplier: 1,
+  animateReturn: true,
+  focusRotation: 20,
+  clickRotation: 360,
+  type: HapticType.pop,
+  rotationVector: FORWARD_VECTOR,
   events: {
     focus: true,
     click: true,
   },
+}
+
+type TransitionState = {
+  focused: boolean
+  returning: boolean
+  clicked: boolean
+}
+
+const getTransitionType = (
+  type: HapticType,
+  transitionState: TransitionState,
+) => {
+  let transitionType: UseTransitionType = UseTransitionType.scale
+  if (type === HapticType.pop) {
+    if (transitionState.returning) {
+      transitionType = UseTransitionType.scaleUp
+    } else if (transitionState.clicked) {
+      transitionType = UseTransitionType.scaleDown
+    } else if (transitionState.focused) {
+      transitionType = UseTransitionType.scaleUp
+    } else {
+      transitionType = UseTransitionType.scale
+    }
+  } else if (type === HapticType.spin) {
+    // When using type spin, we always provide a vector, so no need to specify direction
+    transitionType = UseTransitionType.rotate
+  }
+  return transitionType
 }
 
 export const useHaptic = (options?: UseHapticOptions) => {
@@ -67,24 +128,51 @@ export const useHaptic = (options?: UseHapticOptions) => {
   const [clicked, setClicked] = useState(false)
   const [returning, setReturning] = useState(false)
   const unclickTimeoutRef = useRef<NodeJS.Timeout>()
-  const mergedOptions = {
-    ...USE_HAPTIC_DEFAULT_OPTIONS,
-    ...options,
-  }
+  const mergedOptions = merge(USE_HAPTIC_DEFAULT_OPTIONS, options)
   const mergedOptionsRef = useUpdatingRef(mergedOptions)
-  let scale = 1
-  let transitionMs = mergedOptions.focusMs!
+  const { initialScale, initialRotation } = mergedOptions
   const isFocused = focused || hovered
+  let transitionMs = mergedOptions.blurMs
+  let scale = initialScale
+  let rotation = initialRotation
 
-  if (clicked) {
-    scale = 1 - mergedOptions.clickScaleMultiplier! * BASE_CLICK_SCALE
-    transitionMs = mergedOptions.clickMs!
-  } else if (returning) {
-    transitionMs = mergedOptions.returnMs!
-  } else if (isFocused) {
-    scale = 1 + mergedOptions.focusScaleMultiplier! * BASE_FOCUS_SCALE
-    transitionMs = mergedOptions.focusMs!
+  if (mergedOptions.type === HapticType.pop) {
+    if (clicked) {
+      scale = 1 - mergedOptions.clickScaleMultiplier! * BASE_CLICK_SCALE
+      transitionMs = mergedOptions.clickMs
+    } else if (returning) {
+      transitionMs = mergedOptions.animateReturn ? mergedOptions.returnMs : 0
+    } else if (isFocused) {
+      scale = 1 + mergedOptions.focusScaleMultiplier * BASE_FOCUS_SCALE
+      transitionMs = mergedOptions.focusMs
+    }
+  } else {
+    if (returning) {
+      transitionMs = mergedOptions.animateReturn ? mergedOptions.returnMs : 0
+    } else if (clicked) {
+      rotation = mergedOptions.clickRotation
+      transitionMs = mergedOptions.clickMs
+    } else if (isFocused) {
+      rotation = mergedOptions.focusRotation
+      transitionMs = mergedOptions.focusMs
+    }
   }
+  // console.log({ transitionMs, rotation, clicked, returning, isFocused })
+
+  const transitionStyle = useTransition(
+    getTransitionType(mergedOptions.type, {
+      focused,
+      clicked,
+      returning,
+    }),
+    {
+      initialRotation,
+      initialScale,
+      scale,
+      rotation,
+      ms: transitionMs,
+    },
+  )
 
   const hapticOnClick = useCallback(
     (e?: InteractionEvent) => {
@@ -120,13 +208,7 @@ export const useHaptic = (options?: UseHapticOptions) => {
 
   return [
     {
-      style: useMemo(
-        () => ({
-          transform: `scale(${scale})`,
-          transition: `all ${transitionMs / 1000}s ease`,
-        }),
-        [scale, transitionMs],
-      ),
+      style: transitionStyle,
       onClick: hapticOnClick,
       onKeyDown: useCallback(
         (e: React.KeyboardEvent) => {

@@ -33,6 +33,11 @@ export const Haptic = <C extends ElementType>({
     blurMs,
     clickMs,
     returnMs,
+    animateReturn,
+    type,
+    rotationVector,
+    focusRotation,
+    clickRotation,
     component: Component,
     ...otherMergedProps
   } = merge(HAPTIC_DEFAULT_PROPS, otherProps)
@@ -46,6 +51,11 @@ export const Haptic = <C extends ElementType>({
     blurMs,
     clickMs,
     returnMs,
+    animateReturn,
+    type,
+    rotationVector,
+    focusRotation,
+    clickRotation,
   })
 
   return (

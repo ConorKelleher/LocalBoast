@@ -22,4 +22,12 @@ export default {
       },
     },
   },
+  stories: [
+    {
+      name: "UseHaptic",
+      args: {
+        animateReturn: false,
+      },
+    },
+  ],
 } as StoryConfig
