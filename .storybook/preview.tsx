@@ -27,7 +27,10 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <MantineProvider theme={appTheme as MantineThemeOverride}>
+      <MantineProvider
+        theme={appTheme as MantineThemeOverride}
+        defaultColorScheme="dark"
+      >
         <Story />
       </MantineProvider>
     ),

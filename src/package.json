@@ -1,0 +1,8 @@
+{
+  "name": "localboast",
+  "type": "module",
+  "module": "index.ts",
+  "devDependencies": {
+    "localboast": "file:../src"
+  }
+}

@@ -17,6 +17,7 @@ yarn add localboast
 - ### [useAnimationFrames](useAnimationFrames)
 - ### [useDelayedValue](useDelayedValue)
 - ### [useHaptic](useHaptic)
+- ### [useImageLoader](useImageLoader)
 - ### [useLocalStorage](useLocalStorage)
 - ### [useTruncate](useTruncate)
 - ### [useTwitchChat](useTwitchChat)

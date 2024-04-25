@@ -1,15 +1,25 @@
 import { Component, type ReactNode } from "react"
+import { merge } from "localboast/utils/objectHelpers"
 
 export interface ErrorBoundaryProps {
-  children: (callbackArgs: {
+  children?: (callbackArgs: {
     error: Error | undefined
     resetError: () => void
   }) => ReactNode
   logger?: (error: Error, errorInfo: unknown) => void
 }
 
+export const ERROR_BOUNDARY_DEFAULT_PROPS = {
+  logger: console.error,
+}
+
 export interface ErrorBoundaryState {
   error: Error | undefined
+}
+
+export interface ErrorBoundaryReturnValues {
+  error: Error | undefined
+  resetError: () => void
 }
 
 export class ErrorBoundary extends Component<
@@ -56,9 +66,14 @@ export class ErrorBoundary extends Component<
 
   componentDidCatch = (error: Error, errorInfo: unknown) => {
     // You can also log the error to an error reporting service
-    if (this.props.logger) {
-      this.props.logger(error, errorInfo)
+    const { logger } = this.getMergedProps()
+    if (logger) {
+      logger(error, errorInfo)
     }
+  }
+
+  getMergedProps = () => {
+    return merge(ERROR_BOUNDARY_DEFAULT_PROPS, this.props)
   }
 
   resetError = () => {
@@ -66,10 +81,13 @@ export class ErrorBoundary extends Component<
   }
 
   render = () => {
-    return this.props.children({
-      error: this.state.error,
-      resetError: this.resetError,
-    })
+    const { children } = this.getMergedProps()
+    return children
+      ? children({
+          error: this.state.error,
+          resetError: this.resetError,
+        } as ErrorBoundaryReturnValues)
+      : null
   }
 }
 

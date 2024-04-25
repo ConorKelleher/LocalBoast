@@ -18,8 +18,8 @@ export const USE_LOCAL_STORAGE_DEFAULT_OPTIONS = {
 const parseValue = <T>(
   key: string,
   valueToParse: string | null,
-  defaultValue: T,
   parser: Parser<T>,
+  defaultValue: T | null,
 ) => {
   let parsedValue: T | null = null
   const needsParsing =
@@ -62,32 +62,73 @@ const stringifyValue = <T>(value: T, stringifier: Stringifier<T>) => {
   return stringValue
 }
 
-const getDefaultValue = <T>(defaultValue: T | (() => T)) =>
+const getDefaultValue = <T>(defaultValue: T | (() => T) | null) =>
   typeof defaultValue === "function"
     ? (defaultValue as () => T)()
     : defaultValue
 
-const useLocalStorage = <T = string>(
+const useLocalStorage = <T = string | null>(
   key: string,
-  defaultValue: T | (() => T),
+  defaultValue: T | (() => T) | null = null,
   options?: UseLocalStorageOptions<T>,
 ) => {
   const mergedOptions = merge(USE_LOCAL_STORAGE_DEFAULT_OPTIONS, options)
   const mergedOptionsRef = useUpdatingRef(mergedOptions)
   const defaultValueRef = useUpdatingRef(defaultValue)
-  const [value, setValue] = useState<T>(() => {
+  const [value, setValue] = useState<T | null>(() => {
+    const defaultValueToUse = getDefaultValue<T>(defaultValue)
     const persistedValue = parseValue<T>(
       key,
       localStorage.getItem(key),
-      getDefaultValue(defaultValue),
       mergedOptions.parse,
+      defaultValueToUse,
     )
-    return persistedValue === null
-      ? getDefaultValue(defaultValue)
-      : persistedValue
+    return persistedValue === null ? defaultValueToUse : persistedValue
   })
   const lastKeyRef = useRef(key)
   const lastValueRef = useRef(value)
+
+  const writeToLs = useCallback(
+    (value: T | null) => {
+      const defaultValue = getDefaultValue(defaultValueRef.current)
+      const stringValue = stringifyValue<T | null>(
+        value,
+        mergedOptionsRef.current.stringify,
+      )
+      const defaultStringValue = defaultValue
+        ? stringifyValue<T>(defaultValue, mergedOptionsRef.current.stringify)
+        : undefined
+      if (stringValue === defaultStringValue) {
+        localStorage.removeItem(lastKeyRef.current)
+      } else {
+        if (stringValue === undefined) {
+          // Failed to stringify non-null value, clear LS
+          localStorage.removeItem(lastKeyRef.current)
+        } else {
+          localStorage.setItem(lastKeyRef.current, stringValue)
+        }
+      }
+    },
+    [defaultValueRef, mergedOptionsRef],
+  )
+
+  const setValueImmediate = useCallback(
+    (
+      setStateArg: Parameters<
+        React.Dispatch<React.SetStateAction<T | null>>
+      >[0],
+    ) => {
+      setValue((oldValue) => {
+        const newValue =
+          typeof setStateArg === "function"
+            ? (setStateArg as (prevState: T | null) => T | null)(oldValue)
+            : setStateArg
+        writeToLs(newValue)
+        return newValue
+      })
+    },
+    [writeToLs],
+  )
 
   // Update state with correct LS value when key changes
   useEffect(() => {
@@ -96,8 +137,8 @@ const useLocalStorage = <T = string>(
       let newParsedValue = parseValue<T>(
         key,
         newStringValue,
-        getDefaultValue(defaultValueRef.current),
         mergedOptionsRef.current.parse,
+        getDefaultValue(defaultValueRef.current),
       )
       if (newParsedValue === null) {
         newParsedValue = getDefaultValue(defaultValueRef.current)
@@ -110,28 +151,10 @@ const useLocalStorage = <T = string>(
   // When state value updates, either update or remove LS value
   useEffect(() => {
     if (lastValueRef.current !== value) {
-      const defaultValue = getDefaultValue(defaultValueRef.current)
-      const stringValue = stringifyValue<T>(
-        value,
-        mergedOptionsRef.current.stringify,
-      )
-      const defaultStringValue = stringifyValue<T>(
-        defaultValue,
-        mergedOptionsRef.current.stringify,
-      )
-      if (stringValue === defaultStringValue) {
-        localStorage.removeItem(lastKeyRef.current)
-      } else {
-        if (stringValue === undefined) {
-          // Failed to stringify non-null value, clear LS
-          localStorage.removeItem(lastKeyRef.current)
-        } else {
-          localStorage.setItem(lastKeyRef.current, stringValue)
-        }
-      }
+      writeToLs(value)
       lastValueRef.current = value
     }
-  }, [value, mergedOptionsRef, defaultValueRef])
+  }, [value, writeToLs])
 
   // When localStorage updates outside of our doing, sync our state
   useEffect(() => {
@@ -143,8 +166,8 @@ const useLocalStorage = <T = string>(
         const parsedValue = parseValue<T>(
           lastKeyRef.current,
           e.newValue,
-          getDefaultValue(defaultValueRef.current),
           mergedOptionsRef.current.parse,
+          getDefaultValue(defaultValueRef.current),
         )
         const newValue =
           parsedValue === null
@@ -165,7 +188,7 @@ const useLocalStorage = <T = string>(
     setValue(getDefaultValue(defaultValueRef.current))
   }, [defaultValueRef])
 
-  return [value, setValue, remove] as const
+  return [value, setValueImmediate, remove] as const
 }
 
 export default useLocalStorage

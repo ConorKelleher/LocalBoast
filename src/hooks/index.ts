@@ -1,6 +1,5 @@
 export * from "./useAnimatedText"
 export * from "./useAnimationFrames"
-export * from "./useFooterPadding"
 export * from "./useImageLoader"
 export * from "./useInterval"
 export * from "./useLocalStorage"

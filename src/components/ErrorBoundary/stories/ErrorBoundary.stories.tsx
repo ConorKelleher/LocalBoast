@@ -2,12 +2,12 @@
 // Instead edit the story's individual "stories/config" file, the demo components or the storiesTemplate
 import type { Meta, StoryObj } from "@storybook/react"
 import { merge } from "localboast/utils"
-import ErrorBoundary from ".."
+import ErrorBoundaryDemo from "../stories/demos/ErrorBoundaryDemo"
 import storyConfig from "./config"
 
 let meta = {
   title: "Components/ErrorBoundary",
-  component: ErrorBoundary,
+  component: ErrorBoundaryDemo,
   parameters: {
     layout: "centered",
     docs: {
@@ -22,9 +22,53 @@ Basic wrapper component for creating a custom ErrorBoundary. Implements the requ
 
 <br>
 
-
+<h3 style="margin-bottom: -15px">Usage</h3>
 
 \`\`\`javascript
+import ErrorBoundary, {
+  ErrorBoundaryReturnValues,
+} from "localboast/components/ErrorBoundary"
+import { useState } from "react"
+
+export const ErrorBoundaryDemo = () => {
+  return (
+    <ErrorBoundary>
+      {(errorValues: ErrorBoundaryReturnValues) => (
+        <ErrorBoundaryChild {...errorValues} />
+      )}
+    </ErrorBoundary>
+  )
+}
+
+export const ErrorBoundaryChild = ({
+  error,
+  resetError,
+}: ErrorBoundaryReturnValues) => {
+  const [shouldError, setShouldError] = useState(false)
+
+  if (shouldError) {
+    throw new Error("I have a complaint!")
+  }
+
+  return error ? (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      Ruh-roh!
+      {error.message}
+      <button onClick={resetError}>Clear Error</button>
+    </div>
+  ) : (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      There is no error yet. This button will create one though :O
+      <button
+        onClick={() => {
+          setShouldError(true)
+        }}
+      >
+        You know you want to click me
+      </button>
+    </div>
+  )
+}
 
 \`\`\`
 <h3 style="margin-bottom: -10px">Demo</h3>`.replace("https://localboast.com/docs?path", "?path"),
@@ -33,14 +77,14 @@ Basic wrapper component for creating a custom ErrorBoundary. Implements the requ
     deepControls: { enabled: true },
   },
   tags: ["autodocs"],
-} as Meta<typeof ErrorBoundary>
+} as Meta<typeof ErrorBoundaryDemo>
 
 if (storyConfig.metaMutations) {
-  meta = merge(meta, storyConfig.metaMutations as Meta<typeof ErrorBoundary>)
+  meta = merge(meta, storyConfig.metaMutations as Meta<typeof ErrorBoundaryDemo>)
 }
 
 export default meta
 
-type Story = StoryObj<typeof ErrorBoundary>
+type Story = StoryObj<typeof ErrorBoundaryDemo>
 
 export const Default: Story = { args: {} }
