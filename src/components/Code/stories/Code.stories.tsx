@@ -32,8 +32,7 @@ export const srcCode = \`import React from "react"
 
 const MyComponent = () => {
   return "This is a nice component, innit?"
-}
-\`
+}\`
 
 export const SomeComponent = () => {
   return <Code>{srcCode}</Code>
@@ -58,14 +57,14 @@ type Story = StoryObj<typeof Code>
 
 export const CodeBasic: Story = {
   args: {
-    "children": "import React from \"react\"\n\nconst MyComponent = () => {\n  return \"This is a nice component, innit?\"\n}\n",
+    "children": "import React from \"react\"\n\nconst MyComponent = () => {\n  return \"This is a nice component, innit?\"\n}",
     "editable": false,
     "colorScheme": "dark"
   }
 }
 export const CodeEditable: Story = {
   args: {
-    "children": "import React from \"react\"\n\nconst MyComponent = () => {\n  return \"This is a nice component, innit?\"\n}\n",
+    "children": "import React from \"react\"\n\nconst MyComponent = () => {\n  return \"This is a nice component, innit?\"\n}",
     "editable": true,
     "colorScheme": "dark"
   }

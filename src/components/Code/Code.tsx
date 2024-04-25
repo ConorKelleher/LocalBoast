@@ -35,6 +35,10 @@ export type CodeProps<C extends ElementType = typeof DEFAULT_COMPONENT> = {
    */
   editable?: boolean
   /**
+   * Option to disable syntax highlighting
+   */
+  highlight?: boolean
+  /**
    * Regular style object passed to the top-level `pre` tag in the component
    * Some styles are provided by default and can be overridden with this prop
    */
@@ -56,6 +60,7 @@ export const CODE_DEFAULT_PROPS = {
   ...USE_SYNTAX_HIGHLIGHTING_DEFAULT_OPTIONS,
   component: DEFAULT_COMPONENT,
   editable: false,
+  highlight: true,
   children: "",
   style: {},
   codeProps: {},
@@ -71,6 +76,7 @@ export const Code = <C extends ElementType>({
     codeProps,
     editable,
     onChange,
+    highlight,
     ...syntaxHighlightingOptions
   } = merge(CODE_DEFAULT_PROPS, otherProps)
   const { highlightElement } = useSyntaxHighlighting(syntaxHighlightingOptions)
@@ -102,10 +108,14 @@ export const Code = <C extends ElementType>({
   }, [dirtyCodeContent, onChangeRef, codeContentRef])
 
   useEffect(() => {
-    if (codeEl.current && !codeEl.current.classList.contains("hljs")) {
+    if (
+      codeEl.current &&
+      !codeEl.current.classList.contains("hljs") &&
+      highlight
+    ) {
       highlightElement(codeEl.current)
     }
-  }, [dirtyCodeContent, highlightElement])
+  }, [dirtyCodeContent, highlightElement, highlight])
 
   const onChangeEditableCode = useCallback((e: ChangeEvent) => {
     // @ts-ignore // todo fix this
@@ -115,49 +125,62 @@ export const Code = <C extends ElementType>({
   }, [])
 
   const updateCodeEl = (el: HTMLElement) => {
-    if (el) {
+    if (el && highlight) {
       codeEl.current = el
       highlightElement(el)
     }
   }
 
   return (
-    <pre style={{ position: "relative", overflow: "auto", ...style }}>
-      <CodeTag
-        ref={updateCodeEl}
-        {...codeProps}
+    <div style={{ overflow: "auto", ...style }}>
+      <pre
         style={{
-          overflow: "visible",
-          height: "100%",
-          width: "100%",
-          userSelect: editable ? "none" : undefined,
-          ...codeProps?.style,
+          height: "fit-content",
+          width: "fit-content",
+          minHeight: "100%",
+          minWidth: "100%",
+          position: "relative",
+          margin: 0,
         }}
-        className={codeProps?.className}
       >
-        {dirtyCodeContent}
-      </CodeTag>
-      {!!editable && (
-        <textarea
-          value={dirtyCodeContent}
-          onChange={onChangeEditableCode}
+        <CodeTag
+          ref={updateCodeEl}
+          {...codeProps}
           style={{
-            position: "absolute",
-            inset: 0,
-            resize: "none",
-            width: "100%",
-            height: "100%",
-            padding: "1em", // todo - derive this automatically - it's theme specific
-            backgroundColor: "transparent",
             overflow: "visible",
-            border: "none",
-            margin: 0,
-            WebkitTextFillColor: "transparent",
-            color: colorScheme === "dark" ? "white" : "black",
+            minHeight: "100%",
+            minWidth: "100%",
+            width: "fit-content",
+            height: "fit-content",
+            userSelect: editable ? "none" : undefined,
+            ...codeProps?.style,
           }}
-        />
-      )}
-    </pre>
+        >
+          {dirtyCodeContent}
+        </CodeTag>
+        {!!editable && (
+          <textarea
+            value={dirtyCodeContent}
+            onChange={onChangeEditableCode}
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              resize: "none",
+              padding: "1em", // todo - derive this automatically - it's theme specific
+              backgroundColor: "transparent",
+              overflow: "hidden",
+              border: "none",
+              outline: "none",
+              margin: 0,
+              WebkitTextFillColor: "transparent",
+              color: colorScheme === "dark" ? "white" : "black",
+            }}
+          />
+        )}
+      </pre>
+    </div>
   )
 }
 

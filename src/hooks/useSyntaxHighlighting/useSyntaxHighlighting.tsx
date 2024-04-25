@@ -4,6 +4,10 @@ import lightThemeURL from "./themes/codeLight.css?url"
 
 export interface UseSyntaxHighlightingOptions {
   /**
+   * Optional language attribute to help syntax highlighting - hljs detects this automatically but specifying this may help with ambiguity and performance.
+   */
+  language?: string
+  /**
    * Which of the default colour sets to use - light or dark
    * Note:
    * - This value is ignored if a custom "themeName" option is provided
@@ -103,17 +107,34 @@ export const useSyntaxHighlighting = (
 
   return {
     highlightAll: useCallback(() => {
-      if (hljsLoaded && themeLoaded) {
-        hljsRef.current!.highlightAll()
+      if (hljsLoaded && themeLoaded && hljsRef.current) {
+        hljsRef.current.highlightAll()
       }
     }, [hljsLoaded, themeLoaded]),
     highlightElement: useCallback(
       (el: HTMLElement) => {
-        if (hljsLoaded && themeLoaded) {
-          hljsRef.current!.highlightElement(el)
+        if (hljsLoaded && themeLoaded && hljsRef.current) {
+          if (mergedOptions.language) {
+            const currentClasses = Array.from(el.classList)
+            const newClass = `language-${mergedOptions.language}`
+            let hasClass = false
+            currentClasses.forEach((currentClass) => {
+              if (currentClass.startsWith("language-")) {
+                if (currentClass === newClass) {
+                  hasClass = true
+                } else {
+                  el.classList.remove(currentClass)
+                }
+              }
+            })
+            if (!hasClass) {
+              el.classList.add(newClass)
+            }
+          }
+          hljsRef.current.highlightElement(el)
         }
       },
-      [hljsLoaded, themeLoaded],
+      [hljsLoaded, themeLoaded, mergedOptions.language],
     ),
   }
 }
