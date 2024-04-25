@@ -1,4 +1,5 @@
 export { default } from "./useTwitchChat"
+export * from "./useTwitchAuthRedirect"
 export * from "./useTwitchChat"
 export * from "./useTwitchChatBot"
 export * from "./useTwitchChatBotAuth"
