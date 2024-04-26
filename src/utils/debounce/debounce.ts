@@ -8,7 +8,10 @@ export const DEFAULT_DEBOUNCE_OPTIONS = {
   maxDebounceMs: undefined,
 }
 
-const debounce = (funcToDebounce: () => void, options?: DebounceOptions) => {
+export const debounce = (
+  funcToDebounce: () => void,
+  options?: DebounceOptions,
+) => {
   const mergedOptions = {
     ...DEFAULT_DEBOUNCE_OPTIONS,
     ...options,

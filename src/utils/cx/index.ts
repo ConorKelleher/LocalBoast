@@ -1,1 +1,2 @@
-export { type CSArg, default } from "./cx"
+export { default } from "./cx"
+export * from "./cx"

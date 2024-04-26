@@ -1,4 +1,4 @@
-const attachCustomVH = () => {
+export const attachCustomVH = () => {
   // https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
   const resetVHProperty = () => {
     const vh = window.innerHeight * 0.01

@@ -1,5 +1,5 @@
 export type CSArg = string | undefined | { [key: string]: boolean }
-const cx = (...args: CSArg[]) => {
+export const cx = (...args: CSArg[]) => {
   const classes: string[] = []
   args.forEach((arg) => {
     if (typeof arg === "string") {

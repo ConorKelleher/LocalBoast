@@ -1,4 +1,4 @@
-const parseURLParams = (paramsString: string) => {
+export const parseURLParams = (paramsString: string) => {
   // remove optional # or ? from start of string
   const trimmedParams = decodeURIComponent(paramsString.replace(/^[#?]/, ""))
   const splitParams = trimmedParams.split("&")

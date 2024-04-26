@@ -1,5 +1,2 @@
-export {
-  type DebounceOptions,
-  DEFAULT_DEBOUNCE_OPTIONS,
-  default,
-} from "./debounce"
+export { default } from "./debounce"
+export * from "./debounce"
