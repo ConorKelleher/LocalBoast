@@ -12,27 +12,27 @@ export const USE_POLLING_DEFAULT_OPTIONS = {
 }
 
 export const usePolling = (
-  func: (endPolling: () => void) => void,
+  func: (endPolling: (() => void) | null) => void,
   ms: number,
   options?: UsePollingOptions,
 ) => {
   const mergedOptions = merge(USE_POLLING_DEFAULT_OPTIONS, options)
-  const endPollingRef = useRef<() => void>()
+  const endPollingRef = useRef<(() => void) | null>(null)
 
-  const intervalData = useInterval(
+  const cancelPolling = useInterval(
     () => {
-      func(endPollingRef.current!)
+      func(endPollingRef.current)
     },
     ms,
     mergedOptions,
   )
-  const endPolling = intervalData[1]
+  const endPolling = cancelPolling
 
   useEffect(() => {
     endPollingRef.current = endPolling
   }, [endPolling])
 
-  return intervalData
+  return cancelPolling
 }
 
 export default usePolling

@@ -1,5 +1,6 @@
 export * from "./useAnimatedText"
 export * from "./useAnimationFrames"
+export * from "./useCopyToClipboard"
 export * from "./useImageLoader"
 export * from "./useInterval"
 export * from "./useLocalStorage"

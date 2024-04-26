@@ -42,16 +42,17 @@ export const useShowHideFooter = (
   const footerLoadedAndWindowHeight = footerLoaded && windowHeight
 
   // We only want to mount the footer after a second to allow docs auto-scrolling to occur first. After that, the delay should be much shorter
-  const revealDelayUpdateTimeoutRef = useTimeout(() => {
+  // const cancelFooterRevealDelayTimeout = useTimeout(() => {
+  useTimeout(() => {
     setFooterRevealDelay(mergedOptionsRef.current.revealDelay)
   }, mergedOptions.initialRevealDelay)
 
-  // Effect to keep local reveal delay in sync with options ONLY if
-  useEffect(() => {
-    if (!revealDelayUpdateTimeoutRef.current) {
-      setFooterRevealDelay(mergedOptions.revealDelay)
-    }
-  }, [revealDelayUpdateTimeoutRef, mergedOptions.revealDelay])
+  // // Effect to keep local reveal delay in sync with options ONLY if
+  // useEffect(() => {
+  //   if (!cancelFooterRevealDelayTimeout) {
+  //     setFooterRevealDelay(mergedOptions.revealDelay)
+  //   }
+  // }, [cancelFooterRevealDelayTimeout, mergedOptions.revealDelay])
 
   // Effect to clear up lingering timeout
   useEffect(() => {
