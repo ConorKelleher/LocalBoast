@@ -1,6 +1,6 @@
 {
   "name": "localboast",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "author": "Conor Kelleher - localboast@outlook.com",
   "type": "module",
@@ -26,6 +26,7 @@
     "readmes-internal": "tsx --loader esm-loader-css --loader esm-loader-images  --experimental-import-meta-resolve ./scripts/generateReadmes.ts",
     "readmes": "MODE=development yarn readmes-internal",
     "build-storybook": "MODE=production yarn readmes-internal && storybook build -o ../localboast.com/assets/storybook-static",
+    "release": "MODE=production yarn readmes-internal && npm version",
     "test": "jest"
   },
   "devDependencies": {
