@@ -1,8 +1,9 @@
 import {
   ComponentPropsWithRef,
-  ComponentType,
   CSSProperties,
   ElementType,
+  forwardRef,
+  ForwardRefRenderFunction,
 } from "react"
 
 export type PolymorphicComponentProps<
@@ -19,16 +20,25 @@ export type PolymorphicExtraProps = {
 }
 
 export function withPolymorphism<D extends ElementType, P>(
-  component: ComponentType,
+  component: ForwardRefRenderFunction<HTMLElement, P>,
+  displayName: string,
 ) {
   type ComponentProps<C extends ElementType> = PolymorphicComponentProps<C, P>
 
   type PolymorphicAttributes = <C extends ElementType = D>(
     props: ComponentProps<C>,
   ) => React.ReactElement
-  type StaticAttributes = ComponentType<ComponentProps<any>>
+  type StaticAttributes = ForwardRefRenderFunction<
+    HTMLElement,
+    ComponentProps<any>
+  >
 
   type PolymorphicComponent = PolymorphicAttributes & StaticAttributes
 
-  return component as PolymorphicComponent
+  const wrappedComponent = forwardRef<HTMLElement, P>(
+    component as PolymorphicComponent,
+  )
+  wrappedComponent.displayName = displayName
+
+  return wrappedComponent
 }
