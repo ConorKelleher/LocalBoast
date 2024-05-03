@@ -1,5 +1,4 @@
 import {
-  ComponentPropsWithRef,
   ComponentPropsWithoutRef,
   ComponentType,
   CSSProperties,
@@ -8,19 +7,24 @@ import {
   ReactElement,
   RefAttributes,
   ForwardRefRenderFunction,
+  ComponentPropsWithRef,
 } from "react"
 
+type InheritedProps<C extends ElementType> = C extends ComponentType
+  ? ComponentPropsWithoutRef<C>
+  : ComponentPropsWithRef<C>
+
 export type PolymorphicProps<
-  Props,
+  Props = object,
   C extends ElementType = "div",
-> = ComponentPropsWithoutRef<C> & {
+> = InheritedProps<C> & {
   style?: CSSProperties
   /**
    * Custom top-level Element type to render. Polymorphic, so any required props can be passed inline as normal
    */
   component?: C
 } & Props &
-  RefAttributes<C>
+  RefAttributes<HTMLElement>
 
 export function withPolymorphism<P = object, D extends ElementType = "div">(
   component: ForwardRefRenderFunction<HTMLElement, PolymorphicProps<P, any>>,
