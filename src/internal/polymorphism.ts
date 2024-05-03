@@ -1,44 +1,54 @@
 import {
   ComponentPropsWithRef,
+  ComponentPropsWithoutRef,
+  ComponentType,
   CSSProperties,
   ElementType,
   forwardRef,
+  ReactElement,
+  RefAttributes,
   ForwardRefRenderFunction,
 } from "react"
 
-export type PolymorphicComponentProps<
-  C extends ElementType,
-  Props = object,
-> = ComponentPropsWithRef<C> &
-  Props & {
-    component?: C
-  }
-
-export type PolymorphicExtraProps = {
+export type PolymorphicProps<
+  Props,
+  C extends ElementType = "div",
+> = ComponentPropsWithoutRef<C> & {
   style?: CSSProperties
-  component?: ElementType
-}
+  /**
+   * Custom top-level Element type to render. Polymorphic, so any required props can be passed inline as normal
+   */
+  component?: C
+} & Props &
+  RefAttributes<C>
 
-export function withPolymorphism<D extends ElementType, P>(
-  component: ForwardRefRenderFunction<HTMLElement, P>,
+export function withPolymorphism<P = object, D extends ElementType = "div">(
+  component: ForwardRefRenderFunction<HTMLElement, PolymorphicProps<P, any>>,
   displayName: string,
 ) {
-  type ComponentProps<C extends ElementType> = PolymorphicComponentProps<C, P>
+  // Generator for component props. Pass actual value to narrow props to a component type or "any" to get static props
+  type ComponentProps<C extends ElementType> = PolymorphicProps<P, C>
 
+  // Define polymorphic function component's attributes
   type PolymorphicAttributes = <C extends ElementType = D>(
     props: ComponentProps<C>,
-  ) => React.ReactElement
-  type StaticAttributes = ForwardRefRenderFunction<
-    HTMLElement,
-    ComponentProps<any>
-  >
+  ) => ReactElement
+  // Define static component attributes, omitting ones that can never exist
+  type StaticAttributes = Omit<ComponentType<ComponentProps<any>>, never>
 
+  // Join Poly and static types to get a single polymorphic component structure
   type PolymorphicComponent = PolymorphicAttributes & StaticAttributes
 
-  const wrappedComponent = forwardRef<HTMLElement, P>(
-    component as PolymorphicComponent,
+  // Wrap provided function with forwardRef
+  const wrappedComponent = forwardRef<HTMLElement, PolymorphicProps<P, any>>(
+    component,
   )
-  wrappedComponent.displayName = displayName
 
-  return wrappedComponent
+  // Cast wrapped component to our Polymorphic structure
+  const polymorphicComponent = wrappedComponent as PolymorphicComponent
+
+  // Enforcing display name passed in since forwardRef nukes that
+  polymorphicComponent.displayName = displayName
+
+  return polymorphicComponent
 }
