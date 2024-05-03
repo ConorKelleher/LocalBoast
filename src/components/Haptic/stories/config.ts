@@ -15,7 +15,7 @@ export default {
       },
     },
     argTypes: {
-      onClick: {
+      delayedOnClick: {
         control: {
           type: null,
         },
@@ -34,4 +34,13 @@ export default {
       },
     },
   },
+  stories: [
+    {
+      name: "Haptic",
+      args: {
+        animateReturn: true,
+        type: "pop",
+      },
+    },
+  ],
 } as StoryConfig

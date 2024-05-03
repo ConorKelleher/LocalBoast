@@ -4,28 +4,25 @@ import useHaptic, {
 } from "localboast/hooks/useHaptic"
 import {
   withPolymorphism,
-  PolymorphicComponentProps,
-  PolymorphicExtraProps,
+  PolymorphicProps,
 } from "localboast/internal/polymorphism"
 import { merge } from "localboast/utils/objectHelpers"
-import { ElementType, PropsWithChildren } from "react"
+import { ElementType } from "react"
 
 const DEFAULT_COMPONENT = "div"
 type DEFAULT_COMPONENT = typeof DEFAULT_COMPONENT
 
 export const HAPTIC_DEFAULT_PROPS = {
+  component: DEFAULT_COMPONENT,
   ...USE_HAPTIC_DEFAULT_OPTIONS,
-  component: DEFAULT_COMPONENT as ElementType,
 }
 
-type _HapticProps = UseHapticOptions & PropsWithChildren & PolymorphicExtraProps
-export type HapticProps<C extends ElementType = DEFAULT_COMPONENT> =
-  PolymorphicComponentProps<C, _HapticProps>
+type _HapticProps = UseHapticOptions
 
-export const Haptic = withPolymorphism<DEFAULT_COMPONENT, _HapticProps>(
-  ({ children, ...otherProps }, ref) => {
+export const Haptic = withPolymorphism<_HapticProps, DEFAULT_COMPONENT>(
+  (props, ref) => {
     const {
-      onClick,
+      delayedOnClick,
       events,
       focusScaleMultiplier,
       clickScaleMultiplier,
@@ -42,10 +39,10 @@ export const Haptic = withPolymorphism<DEFAULT_COMPONENT, _HapticProps>(
       initialRotation,
       component: Component,
       ...polymorphicProps
-    } = merge(HAPTIC_DEFAULT_PROPS, otherProps)
+    } = merge(HAPTIC_DEFAULT_PROPS, props)
 
     const [{ style: hapticStyle, ...otherHapticProps }] = useHaptic({
-      onClick,
+      delayedOnClick,
       events,
       focusScaleMultiplier,
       clickScaleMultiplier,
@@ -74,13 +71,16 @@ export const Haptic = withPolymorphism<DEFAULT_COMPONENT, _HapticProps>(
           ...polymorphicProps.style,
         }}
         {...otherHapticProps}
-      >
-        {children}
-      </Component>
+      />
     )
   },
   "Haptic",
 )
+
+export type HapticProps<C extends ElementType> = PolymorphicProps<
+  _HapticProps,
+  C
+>
 
 Haptic.defaultProps = HAPTIC_DEFAULT_PROPS
 

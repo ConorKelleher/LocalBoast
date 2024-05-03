@@ -15,7 +15,7 @@ export default {
       },
     },
     argTypes: {
-      onClick: {
+      delayedOnClick: {
         control: {
           type: null,
         },
@@ -26,7 +26,8 @@ export default {
     {
       name: "UseHaptic",
       args: {
-        animateReturn: false,
+        animateReturn: true,
+        type: "pop",
       },
     },
   ],

@@ -83,4 +83,9 @@ export default meta
 
 type Story = StoryObj<typeof HapticDemo>
 
-export const Default: Story = { args: {} }
+export const Haptic: Story = {
+  args: {
+    "animateReturn": true,
+    "type": "pop"
+  }
+}

@@ -15,36 +15,9 @@ export const HapticType = {
 export type HapticType = keyof typeof HapticType
 export interface UseHapticOptions {
   /**
-   * Optional click handler callback. Clicks are detected automatically when using the provided onClick function.
-   * Providing a value here allows the built-in click-handler to perform some delayed action in sync with animation
-   * (e.g. if haptic is on a navigation button, you may want to have the navigation happen here to allow the scale transition to occur before navigating).
+   * Which Haptic behaviour preset to use
    */
-  onClick?: (e?: InteractionEvent) => void
-  /**
-   * Events to which to add haptic scaling.
-   * `focus: true` allows scaling in response to hover/focus events
-   * `click: true` allows scaling in response to click/tap events
-   */
-  events?: {
-    focus?: boolean
-    click?: boolean
-  }
-  // todo write explanation
   type?: HapticType
-  rotationVector?: Vector
-  focusRotation?: number
-  clickRotation?: number
-  animateReturn?: boolean
-  /**
-   * Multiplier for scaling build-in focus scale factor.
-   * (e.g. 1 performs default scale, 0.5 halves the default scale, -2 will invert the scale direction and double it)
-   */
-  focusScaleMultiplier?: number
-  /**
-   * Multiplier for scaling build-in click scale factor.
-   * (e.g. 1 performs default scale, 0.5 halves the default scale, -2 will invert the scale direction and double it)
-   */
-  clickScaleMultiplier?: number
   /**
    * Time in milliseconds for the focus scale event
    */
@@ -62,13 +35,54 @@ export interface UseHapticOptions {
    */
   returnMs?: number
   /**
-   * Default scale for scale-based transitions
+   * Vector3 to apply to any rotations. Defaults to forward vector to allow rotations to behave as 2D. Provide a custom value to rotate in 3D space
+   */
+  rotationVector?: Vector
+  /**
+   * How many degrees of rotation to apply on hover (only affects "spin" type haptics)
+   */
+  focusRotation?: number
+  /**
+   * How many degrees of rotation to apply on click (only affects "spin" type haptics)
+   */
+  clickRotation?: number
+  /**
+   * Whether or not the "return" part of the animation should play. Recommended true for anything other than 360 rotations (leaving return animations on in this case leads to flip flopping, instead of a single spin)
+   */
+  animateReturn?: boolean
+  /**
+   * Multiplier for scaling build-in focus scale factor.
+   * (e.g. 1 performs default scale, 0.5 halves the default scale, -2 will invert the scale direction and double it)
+   */
+  focusScaleMultiplier?: number
+  /**
+   * Multiplier for scaling build-in click scale factor.
+   * (e.g. 1 performs default scale, 0.5 halves the default scale, -2 will invert the scale direction and double it)
+   */
+  clickScaleMultiplier?: number
+  /**
+   * Default scale (only affects "pop" type haptics)
    */
   initialScale?: number
   /**
-   * Default rotation for rotation-based transitions
+   * Default rotation (only affects "spin" type haptics)
    */
   initialRotation?: number
+  /**
+   * Events to which to add haptic scaling.
+   * `focus: true` allows scaling in response to hover/focus events
+   * `click: true` allows scaling in response to click/tap events
+   */
+  events?: {
+    focus?: boolean
+    click?: boolean
+  }
+  /**
+   * Optional click handler callback. Haptic clicks are received through the built-in onClick handler.
+   * Providing a value here allows the built-in click-handler to perform some delayed action in sync with animation
+   * (e.g. if haptic is on a navigation button, you may want to have the navigation happen here to allow the scale transition to occur before navigating).
+   */
+  delayedOnClick?: (e?: InteractionEvent) => void
 }
 export const BASE_FOCUS_SCALE = 0.07
 export const BASE_CLICK_SCALE = 0.05
@@ -136,28 +150,23 @@ export const useHaptic = (options?: UseHapticOptions) => {
   let scale = initialScale
   let rotation = initialRotation
 
-  if (mergedOptions.type === HapticType.pop) {
-    if (clicked) {
+  if (returning) {
+    transitionMs = mergedOptions.animateReturn ? mergedOptions.returnMs : 0
+  } else if (clicked) {
+    if (mergedOptions.type === HapticType.pop) {
       scale = 1 - mergedOptions.clickScaleMultiplier! * BASE_CLICK_SCALE
-      transitionMs = mergedOptions.clickMs
-    } else if (returning) {
-      transitionMs = mergedOptions.animateReturn ? mergedOptions.returnMs : 0
-    } else if (isFocused) {
-      scale = 1 + mergedOptions.focusScaleMultiplier * BASE_FOCUS_SCALE
-      transitionMs = mergedOptions.focusMs
-    }
-  } else {
-    if (returning) {
-      transitionMs = mergedOptions.animateReturn ? mergedOptions.returnMs : 0
-    } else if (clicked) {
+    } else if (mergedOptions.type === HapticType.spin) {
       rotation = mergedOptions.clickRotation
-      transitionMs = mergedOptions.clickMs
-    } else if (isFocused) {
-      rotation = mergedOptions.focusRotation
-      transitionMs = mergedOptions.focusMs
     }
+    transitionMs = mergedOptions.clickMs
+  } else if (isFocused) {
+    if (mergedOptions.type === HapticType.pop) {
+      scale = 1 + mergedOptions.focusScaleMultiplier * BASE_FOCUS_SCALE
+    } else if (mergedOptions.type === HapticType.spin) {
+      rotation = mergedOptions.focusRotation
+    }
+    transitionMs = mergedOptions.focusMs
   }
-  // console.log({ transitionMs, rotation, clicked, returning, isFocused })
 
   const transitionStyle = useTransition(
     getTransitionType(mergedOptions.type, {
@@ -180,7 +189,7 @@ export const useHaptic = (options?: UseHapticOptions) => {
         ;(document.activeElement as HTMLElement)?.blur()
         return
       }
-      const onClick = mergedOptionsRef.current.onClick
+      const { delayedOnClick } = mergedOptionsRef.current
 
       setClicked(true)
       setReturning(false)
@@ -189,8 +198,8 @@ export const useHaptic = (options?: UseHapticOptions) => {
       }
 
       unclickTimeoutRef.current = setTimeout(() => {
-        if (onClick) {
-          onClick(e)
+        if (delayedOnClick) {
+          delayedOnClick(e)
         }
         if (e?.type === "click") {
           ;(document.activeElement as HTMLElement)?.blur()

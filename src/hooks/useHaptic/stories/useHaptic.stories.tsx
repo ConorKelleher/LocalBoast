@@ -112,6 +112,7 @@ type Story = StoryObj<typeof UseHapticDemo>
 
 export const UseHaptic: Story = {
   args: {
-    "animateReturn": false
+    "animateReturn": true,
+    "type": "pop"
   }
 }

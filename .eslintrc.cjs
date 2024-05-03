@@ -19,7 +19,7 @@ module.exports = {
     "react-refresh/only-export-components": "off",
     "no-debugger": "warn",
     "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "prefer-const": "warn",
     "no-constant-condition": "warn",
