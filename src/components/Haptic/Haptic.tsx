@@ -1,7 +1,9 @@
 import useHaptic, {
   USE_HAPTIC_DEFAULT_OPTIONS,
+  UseHapticOptionsKeys,
   UseHapticOptions,
 } from "localboast/hooks/useHaptic"
+import { collectEnumValues } from "localboast/internal/assertTypes"
 import {
   withPolymorphism,
   PolymorphicProps,
@@ -21,43 +23,15 @@ type _HapticProps = UseHapticOptions
 
 export const Haptic = withPolymorphism<_HapticProps, DEFAULT_COMPONENT>(
   (props, ref) => {
-    const {
-      delayedOnClick,
-      events,
-      focusScaleMultiplier,
-      clickScaleMultiplier,
-      focusMs,
-      blurMs,
-      clickMs,
-      returnMs,
-      animateReturn,
-      type,
-      rotationVector,
-      focusRotation,
-      clickRotation,
-      initialScale,
-      initialRotation,
-      component: Component,
-      ...polymorphicProps
-    } = merge(HAPTIC_DEFAULT_PROPS, props)
+    const mergedProps = merge(HAPTIC_DEFAULT_PROPS, props)
+    const [useHapticOptions, otherProps] = collectEnumValues(
+      mergedProps,
+      UseHapticOptionsKeys,
+    )
+    const { component: Component, ...polymorphicProps } = otherProps
 
-    const [{ style: hapticStyle, ...otherHapticProps }] = useHaptic({
-      delayedOnClick,
-      events,
-      focusScaleMultiplier,
-      clickScaleMultiplier,
-      focusMs,
-      blurMs,
-      clickMs,
-      returnMs,
-      animateReturn,
-      type,
-      rotationVector,
-      focusRotation,
-      clickRotation,
-      initialScale,
-      initialRotation,
-    })
+    const [{ style: hapticStyle, ...otherUseHapticProps }] =
+      useHaptic(useHapticOptions)
 
     return (
       <Component
@@ -70,7 +44,7 @@ export const Haptic = withPolymorphism<_HapticProps, DEFAULT_COMPONENT>(
           display: "flex",
           ...polymorphicProps.style,
         }}
-        {...otherHapticProps}
+        {...otherUseHapticProps}
       />
     )
   },

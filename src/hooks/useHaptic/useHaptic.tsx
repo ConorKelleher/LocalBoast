@@ -5,6 +5,7 @@ import useTransition, {
 } from "localboast/hooks/useTransition"
 import { useCallback, useRef, useState } from "react"
 import { merge } from "localboast/utils/objectHelpers"
+import { VerifyOptions } from "localboast/internal/assertTypes"
 
 export type InteractionEvent = React.MouseEvent | React.KeyboardEvent
 
@@ -84,6 +85,30 @@ export interface UseHapticOptions {
    */
   delayedOnClick?: (e?: InteractionEvent) => void
 }
+
+export enum UseHapticOptionsKeys {
+  type,
+  focusMs,
+  blurMs,
+  clickMs,
+  returnMs,
+  rotationVector,
+  focusRotation,
+  clickRotation,
+  animateReturn,
+  focusScaleMultiplier,
+  clickScaleMultiplier,
+  initialScale,
+  initialRotation,
+  events,
+  delayedOnClick,
+}
+
+type _optionsVerified = VerifyOptions<
+  UseHapticOptions,
+  typeof UseHapticOptionsKeys
+>
+
 export const BASE_FOCUS_SCALE = 0.07
 export const BASE_CLICK_SCALE = 0.05
 export const FORWARD_VECTOR: Vector = [0, 0, 1]
