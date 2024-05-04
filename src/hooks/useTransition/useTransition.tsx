@@ -1,3 +1,4 @@
+import { InterfaceIsImplemented } from "localboast/internal/assertTypes"
 import { merge } from "localboast/utils/objectHelpers"
 import { useEffect, useMemo, useState } from "react"
 
@@ -66,6 +67,20 @@ export interface UseTransitionOptions {
   scale?: number
   rotation?: number
 }
+export enum UseTransitionOptionsKeys {
+  shouldTransition,
+  ms,
+  rotationVector,
+  initialScale,
+  initialRotation,
+  scale,
+  rotation,
+}
+
+type _verifyOptions = InterfaceIsImplemented<
+  UseTransitionOptions,
+  typeof UseTransitionOptionsKeys
+>
 
 export const USE_TRANSITION_DEFAULT_OPTIONS = {
   shouldTransition: true,
@@ -85,7 +100,7 @@ export const useTransition = (
   const [rotation, setRotation] = useState(mergedOptions.initialRotation)
   const [vectorX, vectorY, vectorZ] = mergedOptions.rotationVector || []
   let scaleToUse = mergedOptions.scale
-  if (!scaleToUse) {
+  if (scaleToUse === undefined) {
     // No custom vector provided, use default depending on type
     scaleToUse =
       type === UseTransitionType.scaleDown

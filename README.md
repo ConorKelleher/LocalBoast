@@ -32,6 +32,7 @@ yarn add localboast
 	- #### [Code](src/components/Code)
 	- #### [ErrorBoundary](src/components/ErrorBoundary)
 	- #### [Haptic](src/components/Haptic)
+	- #### [Transition](src/components/Transition)
 	- #### [Truncate](src/components/Truncate)
 - ### [Hooks](src/hooks)
 	- #### [useAnimatedText](src/hooks/useAnimatedText)

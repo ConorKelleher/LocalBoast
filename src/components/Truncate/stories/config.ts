@@ -60,7 +60,7 @@ export const TRUNCATE_STORIES = [
 
 export default {
   description: `Component to allow any rendered string to be programmatically truncated with customizable truncation position, offsets and ellipsis.<br>
-  This wraps the <strong>useTruncate</strong> component to allow ease-of use with JSX.`,
+  This wraps the <strong>useTruncate</strong> hook to allow ease-of use with JSX.`,
   alternative: "useTruncate",
   imports: 'import { TruncateFrom } from "localboast/components/Truncate"',
   metaMutations: {

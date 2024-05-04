@@ -5,7 +5,7 @@ import useTransition, {
 } from "localboast/hooks/useTransition"
 import { useCallback, useRef, useState } from "react"
 import { merge } from "localboast/utils/objectHelpers"
-import { VerifyOptions } from "localboast/internal/assertTypes"
+import { InterfaceIsImplemented } from "localboast/internal/assertTypes"
 
 export type InteractionEvent = React.MouseEvent | React.KeyboardEvent
 
@@ -104,7 +104,7 @@ export enum UseHapticOptionsKeys {
   delayedOnClick,
 }
 
-type _optionsVerified = VerifyOptions<
+type _optionsVerified = InterfaceIsImplemented<
   UseHapticOptions,
   typeof UseHapticOptionsKeys
 >
