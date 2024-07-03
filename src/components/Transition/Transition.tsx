@@ -12,9 +12,9 @@ import {
 import { collectEnumValues } from "localboast/internal/assertTypes"
 import { ElementType } from "react"
 
-type _TransitionProps = {
+interface _TransitionProps extends UseTransitionOptions {
   type: UseTransitionType
-} & UseTransitionOptions
+}
 
 const DEFAULT_COMPONENT = "div"
 type DEFAULT_COMPONENT = typeof DEFAULT_COMPONENT
@@ -47,5 +47,7 @@ const Transition = withPolymorphism<_TransitionProps, DEFAULT_COMPONENT>(
   "Transition",
 )
 export type TransitionProps = PolymorphicProps<_TransitionProps>
+
+Transition.defaultProps = TRANSITION_DEFAULT_PROPS
 
 export default Transition

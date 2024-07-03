@@ -20,10 +20,21 @@ export const collectEnumValues = <
   e: E,
 ) => {
   const inEnum = Object.fromEntries(
-    Object.entries(source).filter(([key]) => e[key]),
+    Object.entries(source).filter(([key]) => e[key] !== undefined),
   ) as Pick<T, keyof typeof e>
   const notInEnum = Object.fromEntries(
-    Object.entries(source).filter(([key]) => !e[key]),
+    Object.entries(source).filter(([key]) => e[key] === undefined),
   ) as Omit<T, keyof typeof e>
   return [inEnum, notInEnum] as const
 }
+
+// https://stackoverflow.com/a/52991061
+export type RequiredKeys<T> = {
+  [K in keyof T]-?: object extends Pick<T, K> ? never : K
+}[keyof T]
+export type OptionalKeys<T> = {
+  [K in keyof T]-?: object extends Pick<T, K> ? K : never
+}[keyof T]
+
+export type OnlyRequired<T> = Pick<T, RequiredKeys<T>>
+export type OnlyOptional<T> = Pick<T, OptionalKeys<T>>

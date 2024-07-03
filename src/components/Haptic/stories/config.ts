@@ -20,6 +20,11 @@ export default {
           type: null,
         },
       },
+      ref: {
+        table: {
+          disable: true,
+        },
+      },
       component: {
         control: {
           type: null,

@@ -17,6 +17,8 @@ export const useInterval = (
   ms: number,
   options?: UseIntervalOptions,
 ) => {
+  // Used as a dep for our useEffect to allow external "resetting" of the interval
+  const [intervalIndex, setIntervalIndex] = useState(0)
   const mergedOptions = merge(USE_INTERVAL_DEFAULT_OPTIONS, options)
   const intervalRef = useRef<NodeJS.Timeout>()
   const funcRef = useUpdatingRef(func)
@@ -26,6 +28,10 @@ export const useInterval = (
     clearInterval(intervalRef.current)
     intervalRef.current = undefined
     setIntervalActive(false)
+  }, [])
+
+  const resetInterval = useCallback(() => {
+    setIntervalIndex((prevIndex) => prevIndex + 1)
   }, [])
 
   useEffect(() => {
@@ -46,12 +52,17 @@ export const useInterval = (
   }, [
     funcRef,
     ms,
+    intervalIndex,
     mergedOptions.runAtStart,
     mergedOptions.active,
     cancelInterval,
   ])
 
-  return intervalActive ? cancelInterval : null
+  return {
+    cancel: cancelInterval,
+    reset: resetInterval,
+    active: intervalActive,
+  }
 }
 
 export default useInterval

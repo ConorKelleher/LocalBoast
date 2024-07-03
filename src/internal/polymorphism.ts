@@ -5,7 +5,6 @@ import {
   ElementType,
   forwardRef,
   ReactElement,
-  RefAttributes,
   ForwardRefRenderFunction,
   ComponentPropsWithRef,
 } from "react"
@@ -18,16 +17,18 @@ export type PolymorphicProps<
   Props = object,
   C extends ElementType = "div",
 > = InheritedProps<C> & {
+  /**
+   * Style attributes passed to top level tag. Will be merged with build-in styles to allow overriding
+   */
   style?: CSSProperties
   /**
    * Custom top-level Element type to render. Polymorphic, so any required props can be passed inline as normal
    */
   component?: C
-} & Props &
-  RefAttributes<HTMLElement>
+} & Props
 
 export function withPolymorphism<P = object, D extends ElementType = "div">(
-  component: ForwardRefRenderFunction<HTMLElement, PolymorphicProps<P, any>>,
+  component: ForwardRefRenderFunction<HTMLElement, PolymorphicProps<P, D>>,
   displayName: string,
 ) {
   // Generator for component props. Pass actual value to narrow props to a component type or "any" to get static props

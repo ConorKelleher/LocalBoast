@@ -19,7 +19,7 @@ export const HAPTIC_DEFAULT_PROPS = {
   ...USE_HAPTIC_DEFAULT_OPTIONS,
 }
 
-type _HapticProps = UseHapticOptions
+interface _HapticProps extends UseHapticOptions {}
 
 export const Haptic = withPolymorphism<_HapticProps, DEFAULT_COMPONENT>(
   (props, ref) => {
@@ -28,7 +28,8 @@ export const Haptic = withPolymorphism<_HapticProps, DEFAULT_COMPONENT>(
       mergedProps,
       UseHapticOptionsKeys,
     )
-    const { component: Component, ...polymorphicProps } = otherProps
+    const { component, ...polymorphicProps } = otherProps
+    const Component = component as ElementType
 
     const [{ style: hapticStyle, ...otherUseHapticProps }] =
       useHaptic(useHapticOptions)
@@ -51,10 +52,10 @@ export const Haptic = withPolymorphism<_HapticProps, DEFAULT_COMPONENT>(
   "Haptic",
 )
 
-export type HapticProps<C extends ElementType> = PolymorphicProps<
-  _HapticProps,
-  C
->
+// polymorphic component not getting props documented
+
+export type HapticProps<C extends ElementType = DEFAULT_COMPONENT> =
+  PolymorphicProps<_HapticProps, C>
 
 Haptic.defaultProps = HAPTIC_DEFAULT_PROPS
 
