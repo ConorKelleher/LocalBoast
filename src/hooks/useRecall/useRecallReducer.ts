@@ -15,8 +15,8 @@ import useUpdatingRef from "../useUpdatingRef"
 import useRecall, { UseRecallOptions } from "./useRecall"
 
 // All of the following type signatures are stole directly from the useReducer typings.
-// Some have been ts-ignored since the single implementation uses typings that don't match
-// All implementations in reality are the same however, passing args straight through to useReducer
+// All implementations in reality are the same however, passing args straight through to useReducer,
+// with additional recallOptions object
 export function useRecallReducer<
   R extends ReducerWithoutAction<any>,
   I,

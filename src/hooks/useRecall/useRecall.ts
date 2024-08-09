@@ -31,9 +31,9 @@ export const useRecall = <D, S = string>(
 ) => {
   const mergedOptions = merge(USE_RECALL_DEFAULT_OPTIONS, options)
   const mergedOptionsRef = useUpdatingRef(mergedOptions)
-  const [stackState, setStackState] = useState(() => [
-    mergedOptions.serialize(paramState),
-  ])
+  const [stackState, setStackState] = useState(() =>
+    paramState === undefined ? [] : [mergedOptions.serialize(paramState)],
+  )
   const stackStateRef = useUpdatingRef(stackState)
   const [stateIndex, setStateIndex] = useState(0)
   const stateIndexRef = useRef(stateIndex)
