@@ -19,7 +19,7 @@ export const usePolling = (
   const mergedOptions = merge(USE_POLLING_DEFAULT_OPTIONS, options)
   const endPollingRef = useRef<(() => void) | null>(null)
 
-  const cancelPolling = useInterval(
+  const { cancel: cancelPolling } = useInterval(
     () => {
       func(endPollingRef.current)
     },

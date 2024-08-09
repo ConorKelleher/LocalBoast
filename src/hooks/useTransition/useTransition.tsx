@@ -227,7 +227,7 @@ export const useTransition = (
   // On mount if shouldTransition on mount, or whenever shouldTransition becomes true, or values change
   useEffect(() => {
     if (shouldTransition) {
-      setScale(scaleToUse)
+      setScale(scaleToUse!) // not optional but build compiler thinks it is?
       setRotation(mergedOptions.rotation)
       setPanX(mergedOptions.panX)
       setPanY(mergedOptions.panY)
