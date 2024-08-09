@@ -1,4 +1,4 @@
-export type CSArg = string | undefined | { [key: string]: boolean }
+export type CSArg = string | undefined | { [key: string]: any }
 export const cx = (...args: CSArg[]) => {
   const classes: string[] = []
   args.forEach((arg) => {
