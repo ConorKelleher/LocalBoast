@@ -1,7 +1,14 @@
 // Trick to turn a record of (potentially optional) types into a required set of keys, comparable with enum values
 // https://medium.com/terria/typescript-transforming-optional-properties-to-required-properties-that-may-be-undefined-7482cb4e1585
-type AllKeys<T extends Record<any, any>> = {
+export type AllKeys<T extends Record<any, any>> = {
   [P in keyof Required<T>]: number
+}
+
+// https://medium.com/terria/typescript-transforming-optional-properties-to-required-properties-that-may-be-undefined-7482cb4e1585
+export type RequiredWithUndefined<T> = {
+  [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>>
+    ? T[P]
+    : T[P] | undefined
 }
 
 // Trick to enforce that an enum satisfies an interface
