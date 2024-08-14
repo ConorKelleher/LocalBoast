@@ -19,6 +19,7 @@ yarn add localboast
 - ### [useHaptic](useHaptic)
 - ### [useImageLoader](useImageLoader)
 - ### [useLocalStorage](useLocalStorage)
+- ### [usePortal](usePortal)
 - ### [useTruncate](useTruncate)
 - ### [useTwitchChat](useTwitchChat)
 

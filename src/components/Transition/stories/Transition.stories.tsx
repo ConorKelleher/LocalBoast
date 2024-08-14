@@ -66,6 +66,7 @@ const TransitionDemo = (props: TransitionProps) => {
 }
 
 TransitionDemo.defaultProps = Transition.defaultProps
+export type TransitionDemo = typeof Transition
 
 export default TransitionDemo
 

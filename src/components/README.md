@@ -17,6 +17,7 @@ yarn add localboast
 - ### [Code](Code)
 - ### [ErrorBoundary](ErrorBoundary)
 - ### [Haptic](Haptic)
+- ### [Portal](Portal)
 - ### [Transition](Transition)
 - ### [Truncate](Truncate)
 

@@ -1,16 +1,6 @@
 import { StoryConfig } from "storybook_utils/packageConstants.ts"
 
 export default {
-  description: `Basic wrapper component for creating a custom ErrorBoundary. Implements the required lifecycle methods and passes any encountered errors to the child component by invoking its children as a function.
-  
-  Takes an optional \`logger\` prop for immediately responding to the error, with the full component stack trace`,
-  metaMutations: {
-    argTypes: {
-      logger: {
-        control: {
-          type: null,
-        },
-      },
-    },
-  },
+  description: `Simple component that allows any passed in children to be rendered inside of a portal, with DOM updates handled automatically. Creation of elements or selecting of existing elements can be controlled through options.`,
+  alternative: "usePortal",
 } as StoryConfig

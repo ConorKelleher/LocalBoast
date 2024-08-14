@@ -140,6 +140,7 @@ export const Code = <C extends ElementType>({
           minHeight: "100%",
           minWidth: "100%",
           position: "relative",
+          fontSize: "inherit",
           margin: 0,
         }}
       >
@@ -150,6 +151,7 @@ export const Code = <C extends ElementType>({
             overflow: "visible",
             minHeight: "100%",
             minWidth: "100%",
+            fontSize: "inherit !important",
             width: "fit-content",
             height: "fit-content",
             userSelect: editable ? "none" : undefined,
@@ -168,6 +170,7 @@ export const Code = <C extends ElementType>({
               width: "100%",
               height: "100%",
               resize: "none",
+              fontSize: "inherit !important",
               padding: "1em", // todo - derive this automatically - it's theme specific
               backgroundColor: "transparent",
               overflow: "hidden",
